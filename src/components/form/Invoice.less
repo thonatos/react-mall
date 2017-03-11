@@ -1,0 +1,25 @@
+.invoice-group {
+    width: 100%;
+
+    &:after{
+      content: ' ';
+      display: block;
+      clear: both;
+    }
+    
+    .ant-radio-button-wrapper {
+        display: block;
+        width: 48%;
+        height: 3em;
+        margin: 1em 1em 1em 0;
+        float: left;
+        line-height: 3em;
+        border: 1px solid #d9d9d9;
+        box-shadow: none;
+        color: #2d2d2d;
+        border-radius: 0;
+        &.ant-radio-button-wrapper-checked {
+            border-color: #ffd200;
+        }
+    }
+}

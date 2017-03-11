@@ -1,0 +1,77 @@
+@import 'utils';
+@import 'color';
+@import 'fonts';
+
+*, :after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;  
+}
+
+html,
+body{
+    margin: 0;
+    padding: 0;
+    background: #fff;
+
+    font-family:
+    'Noto Sans CJK SC',
+    'Source Han Sans CN',
+    'Source Han Sans TC',
+    'Source Han Sans',
+    'Nimbus Sans L',
+    'Liberation Sans',
+    'Hiragino Sans GB',
+    'Nota Han Sans',
+    'Microsoft YaHei',
+    'Droid Sans',
+    'Droid Sans Fallback',
+    'Wenquanyi Micro Hei ',
+    'WenQuanYi Zen Hei',
+    'ST Heiti',
+    SimHei,
+    'WenQuanYi Zen Hei Sharp',
+    sans-serif;    
+}
+
+body {
+    -webkit-font-smoothing: antialiased;        
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    padding: 0 16px;
+    max-width: 1240px;
+    margin: auto;
+}
+
+#root {        
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    padding-top: 64px;
+
+    .wrap {
+        width: 100%;
+        .content {
+            padding: 0 2em;
+            // 设置内部宽度最大值为1366px
+            > div {
+                // max-width: 1366px;
+                // max-width: 1240px;
+                // padding: 0 16px;             
+                // margin: 0 auto;
+
+                // 这里统一体验，为col设置了12px的padding
+                // > div {
+                //     padding: 12px;
+                // }
+            }
+        }
+    }    
+}
+
+
