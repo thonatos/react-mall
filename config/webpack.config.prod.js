@@ -9,6 +9,8 @@ var url = require('url');
 var paths = require('./paths');
 var getClientEnvironment = require('./env');
 
+var theme = require('./theme');
+
 function ensureSlash(path, needsSlash) {
   var hasSlash = path.endsWith('/');
   if (hasSlash && !needsSlash) {
@@ -111,7 +113,8 @@ module.exports = {
       },
       { 
         test: /\.less$/,
-        loader: "style-loader!css-loader!less-loader"
+        // loader: "style-loader!css-loader!less-loader"
+        loader: `style!css!postcss!less?{modifyVars:${JSON.stringify(theme)}}`
       },      
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.

@@ -27,11 +27,11 @@ class Payment extends Component {
     const invoiceArray = [
       {
         type: 'none',
-        desc: 'no invoice'
+        desc: '在线支付'
       },
       {
         type: 'zzs',
-        desc: 'zen zhhi su'
+        desc: '货到付款'
       }                
     ]
 
@@ -41,7 +41,7 @@ class Payment extends Component {
           <RadioGroup onChange={this.onChange} value={this.state.invoice} defaultValue={this.state.invoice} className="invoice-group">
             {
               invoiceArray.map((obj, key) =>
-                <RadioButton value={key} key={key}>{key},{obj.desc}</RadioButton>
+                <RadioButton value={key} key={key}>{obj.desc}</RadioButton>
               )
             }
           </RadioGroup>

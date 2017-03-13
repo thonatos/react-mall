@@ -86,7 +86,7 @@ class OrderList extends Component {
         <Col span={16} className="info">
           {/* Account */}
           <Col span={24} className="account">
-            <Row type="flex" align="bottom">
+            <Row type="flex" align="middle">
               <Col span={4}>
                 <img src={user.thumb} alt="" style={{ maxWidth: '100px' }} />
               </Col>
@@ -100,16 +100,20 @@ class OrderList extends Component {
           {/* Detail */}
           <Col span={24} className="orders">
             <Tabs defaultActiveKey="1" onChange={this.callback}>
-              <TabPane tab="Orders" key="1">
+              <TabPane tab="全部有效订单" key="1">
                 <Orders data={d1}></Orders>
               </TabPane>
-              <TabPane tab="Cancelled Orders" key="2">
+              <TabPane tab="待支付" key="2">
                 <Orders data={d2}></Orders>
               </TabPane>
+              <TabPane tab="待收货" key="3">
+                <Orders data={d2}></Orders>
+              </TabPane>
+              <TabPane tab="已关闭" key="4">
+                <Orders data={d2}></Orders>
+              </TabPane>                            
             </Tabs>
           </Col>
-
-
         </Col>
       </Row >
     )

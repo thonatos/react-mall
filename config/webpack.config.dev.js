@@ -9,6 +9,8 @@ var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeMod
 var getClientEnvironment = require('./env');
 var paths = require('./paths');
 
+var theme = require('./theme');
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 var publicPath = '/';
@@ -100,7 +102,8 @@ module.exports = {
         loader: 'babel',
         query: {
           plugins: [
-            ['import', [{ libraryName: "antd", style: 'css' }]],
+            // ['import', [{ libraryName: "antd", style: 'css' }]],
+            ['import', [{ libraryName: "antd", style: true }]],
           ],
           // This is a feature of `babel-loader` for webpack (not Babel itself).
           // It enables caching results in ./node_modules/.cache/react-scripts/
@@ -114,7 +117,8 @@ module.exports = {
       // less-loader
       {
         test: /\.less$/,
-        loader: "style-loader!css-loader!less-loader"
+        // loader: "style-loader!css-loader!less-loader"
+        loader: `style!css!postcss!less?{modifyVars:${JSON.stringify(theme)}}`
       },
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
