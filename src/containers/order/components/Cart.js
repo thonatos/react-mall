@@ -6,7 +6,6 @@ class Cart extends Component {
 
   render() {
 
-
     const columns = [
       {
         title: 'Thumb',
@@ -37,15 +36,7 @@ class Cart extends Component {
       }
     ]
 
-    const data = [
-      {
-        key: 'pro',
-        thumb: require('../../assets/product/pro/pro-large@2x.png'),
-        name: 'Insta360 Pro',
-        count: 1,
-        price: 2000,
-      }
-    ]
+    const data = this.props.data
 
     return (
       <Row className="cart" type="flex" align="top">

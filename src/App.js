@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Row, Col } from 'antd'
-import { Breadcrumb } from './components'
 
-// style
 import "./less/common/base.less"
 
 export default class App extends Component {

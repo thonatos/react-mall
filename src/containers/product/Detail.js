@@ -3,12 +3,15 @@ import { connect } from 'react-redux'
 
 import React, { Component } from 'react'
 import { Row, Col, Radio, Button } from 'antd'
-import './Product.less'
+import './Detail.less'
 
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
-class Product extends Component {
+
+import { products } from '../data'
+
+class Detail extends Component {
 
   constructor(props) {
     super(props)
@@ -25,45 +28,6 @@ class Product extends Component {
   }
 
   render() {
-
-    const products = {
-      pro: {
-        name: 'Insta360 Pro',
-        img: require('../assets/product/pro/pro-large@2x.png'),
-        suits: [
-          {
-            name: 'default',
-            price: '$3000',
-            goods: 'Camera PRO + XX + XX',
-            specs: [1, 2, 3, 4, 5, 6]
-          },
-          {
-            name: 'extral',
-            price: '$8000',
-            goods: 'Camera PRO + XX + XX + XX',
-            specs: [1, 6]
-          }
-        ]
-      },
-      nano: {
-        name: 'Insta360 Nano',
-        img: require('../assets/product/pro/pro-large@2x.png'),
-        suits: [
-          {
-            name: 'default',
-            price: '$300',
-            goods: 'Camera Nano + XX + XX',
-            specs: [1, 2, 3, 4, 5, 6]
-          },
-          {
-            name: 'extral',
-            price: '$800',
-            goods: 'Camera Nano + XX + XX + XX',
-            specs: [1, 6]
-          }
-        ]
-      }
-    }
 
     const { productName } = this.props.params
     const product = products[productName]
@@ -111,7 +75,7 @@ class Product extends Component {
   }
 }
 
-function mapStateToProps(state) {    
+function mapStateToProps(state) {
   return {}
 }
 
@@ -119,4 +83,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Product)
+export default connect(mapStateToProps, mapDispatchToProps)(Detail)

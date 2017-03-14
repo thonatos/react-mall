@@ -4,78 +4,13 @@ import './Distribution.less'
 
 const FormItem = Form.Item
 
-const cities = [{
-  value: 'zhejiang',
-  label: 'Zhejiang',
-  children: [{
-    value: 'hangzhou',
-    label: 'Hangzhou',
-    children: [{
-      value: 'xihu',
-      label: 'West Lake',
-    }],
-  }],
-}, {
-  value: 'jiangsu',
-  label: 'Jiangsu',
-  children: [{
-    value: 'nanjing',
-    label: 'Nanjing',
-    children: [{
-      value: 'zhonghuamen',
-      label: 'Zhong Hua Men',
-    }],
-  }],
-}]
-
 class Distribution extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       visible: false,
-      addr: [
-        {
-          id: '1',
-          address: "jiangsu nanjing xinsisis",
-          city: [
-            'jiangsu', 'nanjing', 'zhonghuamen'
-          ],
-          name: "thonatos 0",
-          phone: "18013140312",
-          zip: "000000"
-        },
-        {
-          id: '2',
-          address: "jiangsu nanjing xinsisis",
-          city: [
-            'jiangsu', 'nanjing', 'zhonghuamen'
-          ],
-          name: "thonatos 1",
-          phone: "18013140312",
-          zip: "000000"
-        },
-        {
-          id: '3',
-          address: "jiangsu nanjing xinsisis",
-          city: [
-            'jiangsu', 'nanjing', 'zhonghuamen'
-          ],
-          name: "thonatos 2",
-          phone: "18013140312",
-          zip: "000000"
-        },
-        {
-          id: '4',
-          address: "jiangsu nanjing xinsisis",
-          city: [
-            'jiangsu', 'nanjing', 'zhonghuamen'
-          ],
-          name: "thonatos 3",
-          phone: "18013140312",
-          zip: "000000"
-        }
-      ]
+      addr: [...this.props.data.user.address]
     }
   }
 
@@ -197,8 +132,9 @@ class Distribution extends Component {
   // Render
   render() {
 
-    const { getFieldDecorator } = this.props.form
-    const addr = this.state.addr
+    const { getFieldDecorator } = this.props.form    
+    const {cities} = this.props.data.order
+    const address = this.state.addr
 
     return (
       <div className="section">
@@ -210,7 +146,7 @@ class Distribution extends Component {
           marginTop: '1em'
         }}>
           {
-            addr.map((obj, key) =>
+            address.map((obj, key) =>
               <Col span={8} key={key}>
                 <Card title={obj.name} extra={
                   <div>

@@ -4,14 +4,16 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Row, Col, Button } from 'antd'
 
-import Distribution from '../components/form/Distribution'
-import Invoice from '../components/form/Invoice'
-import Payment from '../components/form/Payment'
-import Logistics from '../components/form/Logistics'
-import Contact from '../components/form/Contact'
-import Cart from '../components/form/Cart'
+import Distribution from './components/Distribution'
+import Invoice from './components/Invoice'
+import Payment from './components/Payment'
+import Logistics from './components/Logistics'
+import Contact from './components/Contact'
+import Cart from './components/Cart'
 
-import './Order.less'
+import './Info.less'
+
+import { order, user } from '../data'
 
 function mapStateToProps(state) {
   return {}
@@ -21,23 +23,27 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-class OrderComfirm extends Component {
+class Info extends Component {
 
   handleDistribution = (v) => {
     console.log('Received values of child: ', v)
   }
 
   render() {
+
     return (
       <Row className="container order">
 
         <Col span={24}>
-          <Distribution handleResult={this.handleDistribution}></Distribution>
+          <Distribution data={{
+            order: order,
+            user: user
+          }} handleResult={this.handleDistribution}></Distribution>
         </Col>
 
         <Col span={24}>
           <h3>发票信息</h3>
-          <Invoice></Invoice>
+          <Invoice data={order.invoice}></Invoice>
         </Col>
 
         <Col span={24}>
@@ -57,7 +63,7 @@ class OrderComfirm extends Component {
 
         <Col span={24}>
           <h3>订单概览</h3>
-          <Cart></Cart>
+          <Cart data={user.cart}></Cart>
         </Col>
 
         <Col span={24} className="action-block">
@@ -70,4 +76,4 @@ class OrderComfirm extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderComfirm)
+export default connect(mapStateToProps, mapDispatchToProps)(Info)

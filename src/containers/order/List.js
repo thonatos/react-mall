@@ -6,8 +6,10 @@ import { Row, Col, Tabs, Menu } from 'antd'
 
 const TabPane = Tabs.TabPane
 
-import Orders from '../components/Orders'
-import './OrderList.less'
+import Orders from './components/Orders'
+import './List.less'
+
+import { user } from '../data'
 
 function mapStateToProps(state) {
   return {}
@@ -17,16 +19,10 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-class OrderList extends Component {
+class List extends Component {
 
   state = {
     current: '1',
-  }
-
-  changeTheme = (value) => {
-    this.setState({
-      theme: value ? 'dark' : 'light',
-    });
   }
 
   handleClick = (e) => {
@@ -42,30 +38,10 @@ class OrderList extends Component {
 
   render() {
 
-    const user = {
-      thumb: require('../assets/product/pro/pro-large@2x.png'),
-      mail: 'thonatos@sina.com'
-    }
+    const profile = user.profile
+    const orders = user.orders
 
-    const d1 = [
-      {
-        key: 'xxx',
-        thumb: require('../assets/product/pro/pro-large@2x.png'),
-        sn: 'Insta360 Pro',
-        datetime: '2014-12-24 23:12:00',
-        price: 2000,
-      }
-    ]
-
-    const d2 = [
-      {
-        key: 'xxx',
-        thumb: require('../assets/product/pro/pro-large@2x.png'),
-        sn: 'Insta360 Nano',
-        datetime: '2014-12-24 23:12:00',
-        price: 100000,
-      }
-    ]
+    console.log(orders)
 
     return (
       <Row className="container order-list" type="flex" align="top">
@@ -88,11 +64,11 @@ class OrderList extends Component {
           <Col span={24} className="account">
             <Row type="flex" align="middle">
               <Col span={4}>
-                <img src={user.thumb} alt="" style={{ maxWidth: '100px' }} />
+                <img src={profile.thumb} alt="" style={{ maxWidth: '100px' }} />
               </Col>
               <Col span={20}>
-                <h2>{user.mail}</h2>
-                <p>{user.mail}</p>
+                <h2>{profile.mail}</h2>
+                <p>{profile.mail}</p>
               </Col>
             </Row>
           </Col>
@@ -101,17 +77,17 @@ class OrderList extends Component {
           <Col span={24} className="orders">
             <Tabs defaultActiveKey="1" onChange={this.callback}>
               <TabPane tab="全部有效订单" key="1">
-                <Orders data={d1}></Orders>
+                <Orders data={orders.receiving}></Orders>
               </TabPane>
               <TabPane tab="待支付" key="2">
-                <Orders data={d2}></Orders>
+                <Orders data={orders.paying}></Orders>
               </TabPane>
               <TabPane tab="待收货" key="3">
-                <Orders data={d2}></Orders>
+                <Orders data={orders.receiving}></Orders>
               </TabPane>
               <TabPane tab="已关闭" key="4">
-                <Orders data={d2}></Orders>
-              </TabPane>                            
+                <Orders data={orders.closed}></Orders>
+              </TabPane>
             </Tabs>
           </Col>
         </Col>
@@ -120,4 +96,4 @@ class OrderList extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderList)
+export default connect(mapStateToProps, mapDispatchToProps)(List)

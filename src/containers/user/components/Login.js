@@ -16,8 +16,7 @@ class Login extends Component {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
-        this.props.handleResult(values)
+        this.props.handleLogin(values)
       }
     })
   }
@@ -28,7 +27,6 @@ class Login extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit} style={{ marginTop: '2em' }}>
-
         <Row type="flex" align="top">
           {/* Email */}
           <Col span={24}>
