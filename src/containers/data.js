@@ -5,39 +5,49 @@ export const assets = {
 export const products = {
   pro: {
     name: 'Insta360 Pro',
-    img: require('../assets/product/pro/pro-large@2x.png'),
+    thumb: [
+      require('../assets/product/pro/pro-large@2x.png'),
+      require('../assets/product/pro/pro-large@2x.png'),
+      require('../assets/product/pro/pro-large@2x.png')
+    ],
     suits: [
       {
-        name: 'default',
+        id: 'default',
         price: '$3000',
-        goods: 'Camera PRO + XX + XX',
-        specs: [1, 2, 3, 4, 5, 6]
+        desc: 'Camera PRO + XX + XX',
+        items: [1, 2, 3, 4, 5, 6]
       },
       {
-        name: 'extral',
+        id: 'extral',
         price: '$8000',
-        goods: 'Camera PRO + XX + XX + XX',
-        specs: [1, 6]
+        desc: 'Camera PRO + XX + XX + XX',
+        items: [1, 6]
       }
-    ]
+    ],
+    specs: [1, 6,323,5454]
   },
   nano: {
     name: 'Insta360 Nano',
-    img: require('../assets/product/pro/pro-large@2x.png'),
+    thumb: [
+      require('../assets/product/pro/pro-large@2x.png'),
+      require('../assets/product/pro/pro-large@2x.png'),
+      require('../assets/product/pro/pro-large@2x.png')
+    ],
     suits: [
       {
-        name: 'default',
+        id: 'default',
         price: '$300',
-        goods: 'Camera Nano + XX + XX',
-        specs: [1, 2, 3, 4, 5, 6]
+        desc: 'Camera Nano + XX + XX',
+        items: [1, 2, 3, 4, 5, 6]
       },
       {
-        name: 'extral',
+        id: 'extral',
         price: '$800',
-        goods: 'Camera Nano + XX + XX + XX',
-        specs: [1, 6]
+        desc: 'Camera Nano + XX + XX + XX',
+        items: []        
       }
-    ]
+    ],
+    specs: [1, 6]
   }
 }
 
@@ -107,7 +117,7 @@ export const order = {
 
 export const user = {
   profile: {
-    thumb: require('../assets/product/pro/pro-large@2x.png'),
+    avatar: require('../assets/product/pro/pro-large@2x.png'),
     mail: 'thonatos@sina.com'
   },
   address: [

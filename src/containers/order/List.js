@@ -64,7 +64,7 @@ class List extends Component {
           <Col span={24} className="account">
             <Row type="flex" align="middle">
               <Col span={4}>
-                <img src={profile.thumb} alt="" style={{ maxWidth: '100px' }} />
+                <img src={profile.avatar} alt="" style={{ maxWidth: '100px' }} />
               </Col>
               <Col span={20}>
                 <h2>{profile.mail}</h2>

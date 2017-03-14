@@ -2,7 +2,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import React, { Component } from 'react'
-import { Row, Col, Radio, Button } from 'antd'
+import { Row, Col, Radio, Button, Carousel } from 'antd'
 import './Detail.less'
 
 const RadioButton = Radio.Button
@@ -31,15 +31,24 @@ class Detail extends Component {
 
     const { productName } = this.props.params
     const product = products[productName]
-    const suits = products[productName].suits
 
+    const suits = products[productName].suits
     const suit = product.suits[this.state.suit]
+    const thumb = product.thumb
 
     return (
       <Row className="container product-detail" type="flex" align="top">
 
         <Col md={12} style={{ textAlign: 'center' }}>
-          <img src={product.img} width="388" alt="" />
+          <Carousel autoplay effect="fade">
+            {
+              thumb.map((obj, key) =>
+                <div key={key}>
+                  <img src={obj} alt="" style={{ textAlign: 'center', 'width': '388px', 'margin': '0 auto' }} />
+                </div>
+              )
+            }
+          </Carousel>
         </Col>
 
         <Col md={8} offset={4}>
@@ -51,7 +60,7 @@ class Detail extends Component {
               <RadioGroup onChange={this.onChange} value={this.state.suit} className="suits-radio-group">
                 {
                   suits.map((obj, key) =>
-                    <RadioButton key={key} value={key}>{obj.goods}</RadioButton>
+                    <RadioButton key={key} value={key}>{obj.desc}</RadioButton>
                   )
                 }
               </RadioGroup>
@@ -59,7 +68,7 @@ class Detail extends Component {
 
             <div className="specs">
               {
-                suit.specs.map((obj, key) =>
+                product.specs.map((obj, key) =>
                   <Col md={12} key={key}>
                     <p>{obj}</p>
                   </Col>
