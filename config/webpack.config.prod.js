@@ -107,7 +107,8 @@ module.exports = {
         loader: 'babel',
         query: {
           plugins: [
-            ['import', [{ libraryName: "antd", style: 'css' }]],
+            // ['import', [{ libraryName: "antd", style: 'css' }]],
+            ['import', [{ libraryName: "antd", style: true }]],
           ]
         }        
       },
