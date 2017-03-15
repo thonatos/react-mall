@@ -1,21 +1,28 @@
-import React, { Component } from 'react'
-import { Row, Col } from 'antd'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as authActions from '../../actions/auth'
 
-import './Register.less'
+import React, { Component } from 'react'
+import { Row, Col, message } from 'antd'
+
 import LoginForm from './components/Login'
-import { assets } from '../data'
+import { assets } from '../../data/'
+import './Register.less'
 
 class Login extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      t: ''
+  componentWillReceiveProps(nextProps) {
+    const { auth, router } = nextProps
+    if (auth.isLoggedIn) {
+      router.push('/product/nano')
+    } else {
+      message.error('Login Failed. Please Try Again.')
     }
   }
 
-  handleLogin = (v) => {
-    console.log('Received values of child: ', v)
+  handleLogin = (user) => {
+    console.log('Received values of child: ', user)
+    const { loginAuth } = this.props
+    loginAuth(user)
   }
 
   render() {
@@ -54,4 +61,14 @@ class Login extends Component {
   }
 }
 
-export default Login
+function mapStateToProps(state) {
+  return {
+    auth: state.auth
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(authActions, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

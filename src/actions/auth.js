@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Cache from '../utils/cache'
+import { user } from '../data/'
 
 export const AUTH = 'AUTH'
 export const AUTH_INIT = 'AUTH_INIT'
@@ -8,7 +9,7 @@ export const AUTH_SUCCESS = 'AUTH_SUCCESS'
 
 const AUTH_URL = 'https://api.insta360.com'
 
-function init() {
+function authInit() {
   function getInitialState() {
     const cache = new Cache()
     return cache.get('auth') || {
@@ -23,60 +24,88 @@ function init() {
   }
 }
 
-function start() {
+function authStart() {
   return {
     type: AUTH
   }
 }
 
-function success(data) {
+function authSuccess(data) {
   function setInitialState(state) {
     const cache = new Cache()
-    cache.set('auth', state)
+    cache.set('auth', JSON.stringify(state))
   }
 
   if (data.flag) {
-    // auth success
-    setInitialState(data)
+    // auth success    
+    const _data = Object.assign({
+      isLoggedIn: true
+    }, user)
+
+    setInitialState(_data)
 
     return {
       type: AUTH_SUCCESS,
-      data: data
+      data: _data
     }
   }
 
   return {
     type: AUTH_ERROR,
-    data: data
+    data: {
+      isLoggedIn: false
+    }
   }
 }
 
-function error(data) {
+function authError() {
   return {
     type: AUTH_ERROR,
-    data: data
+    data: {
+      isLoggedIn: false
+    }
   }
 }
 
-export function authInit() {
+export function initAuth() {
   return (dispatch) => {
-    dispatch(init())
+    dispatch(authInit())
   }
 }
 
-export function auth(user) {
-  return (dispatch) => {
-    dispatch(start())
-    return axios({
-      url: AUTH_URL,
-      timeout: 20000,
-      method: 'post',
-      data: user,
-      responseType: 'json'
-    }).then(function (response) {
-      dispatch(success(response.data.data))
-    }).catch(function (response) {
-      dispatch(error(response.data.data))
-    })
+export function loginAuth(user) {
+
+  if (process.env.NODE_ENV === 'production') {
+    // pro
+    return (dispatch) => {
+      dispatch(authStart())
+      return axios({
+        url: AUTH_URL,
+        timeout: 20000,
+        method: 'post',
+        data: user,
+        responseType: 'json'
+      }).then(function (response) {
+        dispatch(authSuccess(response.data.data))
+      }).catch(function (response) {
+        dispatch(authError(response.data.data))
+      })
+    }
+
+  } else {
+    // dev
+    console.log('#action:auth:loginAuth')
+    if (user.email === 'thonatos@sina.com') {
+      return (dispatch) => {
+        return dispatch(authSuccess({
+          flag: true,
+          user: user
+        }))
+      }
+    } else {
+      return (dispatch) => {
+        return dispatch(authError())
+      }
+    }
   }
 }

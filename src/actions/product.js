@@ -7,20 +7,20 @@ export const FETCH_SUCCESS = 'FETCH_SUCCESS'
 
 const FETCH_URL = 'https://api.insta360.com'
 
-function start() {
+function fetchStart() {
   return {
     type: FETCH
   }
 }
 
-function success(data) {
+function fetchSuccess(data) {
   return {
     type: FETCH_SUCCESS,
     data: data
   }
 }
 
-function error(data) {
+function fetchError(data) {
   return {
     type: FETCH_ERROR,
     data: data
@@ -30,37 +30,35 @@ function error(data) {
 export function fetch(product) {
 
   if (process.env.NODE_ENV === 'production') {
-
     // pro
     return (dispatch) => {
-      dispatch(start())
+      dispatch(fetchStart())
       return axios({
         url: FETCH_URL,
         timeout: 20000,
         method: 'get',
         responseType: 'json'
       }).then(function (response) {
-        dispatch(success(response.data.data))
+        dispatch(fetchSuccess(response.data.data))
       }).catch(function (response) {
-        dispatch(error(response.data.data))
+        dispatch(fetchError(response.data.data))
       })
     }
 
   } else {
-
     // dev
     console.log('#action:product:fetch', products)
     if (products[product]) {
       return (dispatch) => {
         setTimeout(function () {
-          return dispatch(success(products[product]))
+          return dispatch(fetchSuccess(products[product]))
         }, 3000)
       }
     } else {
       return (dispatch) => {
-        return dispatch(error({}))
+        return dispatch(fetchError({}))
       }
     }
-
   }
+  
 }

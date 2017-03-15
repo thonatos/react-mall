@@ -17,7 +17,7 @@ export default class App extends Component {
   }
 
   componentDidMount(){
-    console.log('init')
+    console.log('#app:componentDidMount')
     // check auth       
       // set state
         // set interval
@@ -30,9 +30,7 @@ export default class App extends Component {
   }
 
   render() {
-
-    console.log(this.props.router.location.pathname)
-
+    console.log('#app:path', this.props.router.location.pathname)    
     return (
       <Row className="wrap">        
         <Col span={24} className="content">

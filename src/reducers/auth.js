@@ -1,4 +1,4 @@
-import { AUTH_INIT, AUTH_ERROR, AUTH_SUCCESS } from '../actions/auth'
+import { AUTH_INIT, AUTH_SUCCESS , AUTH_ERROR} from '../actions/auth'
 
 const initialState = {}
 

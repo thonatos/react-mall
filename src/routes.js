@@ -1,7 +1,8 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import App from './App'
+import Cache from './utils/cache'
 
+import App from './App'
 import { NoMatch, Home } from './containers'
 
 import OrderList from './containers/order/List'
@@ -12,8 +13,12 @@ import UserRegister from './containers/user/Register'
 
 import ProductDetail from './containers/product/Detail'
 
-function loggedIn() {  
-  return false
+const cache = new Cache()
+
+function loggedIn() {
+  const authString = cache.get('auth')
+  const auth = JSON.parse(authString)
+  return auth.isLoggedIn
 }
 
 function requireAuth(nextState, replace) {
@@ -26,7 +31,7 @@ function requireAuth(nextState, replace) {
 
 export default (
   <Route path="/" component={App}>
-  
+
     <IndexRoute component={Home} />
 
     <Route path="product">
@@ -36,13 +41,13 @@ export default (
 
     <Route path="user">
       <IndexRoute component={NoMatch} />
-      <Route path="login" component={UserLogin}/>    
-      <Route path="register" component={UserRegister} />        
-    </Route>    
+      <Route path="login" component={UserLogin} />
+      <Route path="register" component={UserRegister} />
+    </Route>
 
     <Route path="order">
-      <Route path="list" component={OrderList} onEnter={requireAuth}/>
-      <Route path="info" component={OrderInfo} onEnter={requireAuth}/>
+      <Route path="list" component={OrderList} onEnter={requireAuth} />
+      <Route path="info" component={OrderInfo} onEnter={requireAuth} />
     </Route>
     <Route path="*" component={NoMatch} />
   </Route>

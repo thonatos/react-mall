@@ -42,6 +42,11 @@ class Detail extends Component {
     })
   }
 
+  onSubmit = (e) => {
+    const { router } = this.props
+    router.push('/order/info')
+  }
+
   render() {
     let content
     const { product } = this.props
@@ -88,7 +93,7 @@ class Detail extends Component {
                 }
               </div>
 
-              <Button type="primary" className="btn-next">Next</Button>
+              <Button type="primary" className="btn-next" onClick={this.onSubmit}>Next</Button>
             </div>
           </Col>
         </Row>
