@@ -1,11 +1,13 @@
 import cookie from 'js-cookie'
 
 class Cache {
-  constructor (namespace) {
+
+  constructor(namespace) {
     this.namespace = namespace || 'default'
     this.obj = {}
   }
-  set (key, value) {
+
+  set(key, value) {
     if (window.localStorage) {
       window.localStorage.setItem(key, value)
     } else {
@@ -13,10 +15,12 @@ class Cache {
     }
     this.obj[key] = value
   }
-  gets () {
+
+  gets() {
     return this.obj
   }
-  get (key) {
+
+  get(key) {
     var value
     if (window.localStorage) {
       value = window.localStorage.getItem(key)
@@ -26,7 +30,8 @@ class Cache {
     this.obj[key] = value
     return value
   }
-  remove (key) {
+
+  remove(key) {
     if (window.localStorage) {
       window.localStorage.removeItem(key)
     } else {
@@ -34,7 +39,8 @@ class Cache {
     }
     delete this.obj[key]
   }
-  removes (keys) {
+  
+  removes(keys) {
     if (keys.constructor === Array && keys.length > 0) {
       var i, key
       for (i = 0; i < keys.length; i++) {

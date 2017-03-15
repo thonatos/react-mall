@@ -6,11 +6,13 @@ import { createStore, applyMiddleware, compose } from 'redux'
 
 import rootReducer from '../reducers'
 
-// import * as ImagesActions from '../actions/images'
+import * as authActions from '../actions/auth'
+import * as productActions from '../actions/product'
 
 
 const actionCreators = {
-  // ImagesActions,
+  authActions,
+  productActions,
   push,
 }
 
@@ -37,12 +39,10 @@ const enhancer = composeEnhancers(
 
 export default function configureStore(initialState: Object) {
   const store = createStore(rootReducer, initialState, enhancer)
-
   if (module.hot) {
     module.hot.accept('../reducers', () =>
       store.replaceReducer(require('../reducers')) // eslint-disable-line global-require
     )
   }
-
   return store
 }

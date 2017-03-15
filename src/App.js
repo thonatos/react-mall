@@ -34,15 +34,10 @@ export default class App extends Component {
     console.log(this.props.router.location.pathname)
 
     return (
-      <Row className="wrap">
-        {/*
-          <Breadcrumb router={this.props.router} />
-        */}
-        
+      <Row className="wrap">        
         <Col span={24} className="content">
           {this.props.children}
-        </Col>
-        
+        </Col>        
       </Row>
     )
   }

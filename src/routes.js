@@ -12,25 +12,37 @@ import UserRegister from './containers/user/Register'
 
 import ProductDetail from './containers/product/Detail'
 
+function loggedIn() {  
+  return false
+}
+
+function requireAuth(nextState, replace) {
+  if (!loggedIn()) {
+    replace({
+      pathname: '/user/login'
+    })
+  }
+}
+
 export default (
   <Route path="/" component={App}>
   
     <IndexRoute component={Home} />
-    
-    <Route path="user">
-      <IndexRoute component={NoMatch} />
-      <Route path="login" component={UserLogin} />    
-      <Route path="register" component={UserRegister} />        
-    </Route>    
 
     <Route path="product">
       <IndexRoute component={NoMatch} />
       <Route path=":productName" component={ProductDetail} />
     </Route>
 
+    <Route path="user">
+      <IndexRoute component={NoMatch} />
+      <Route path="login" component={UserLogin}/>    
+      <Route path="register" component={UserRegister} />        
+    </Route>    
+
     <Route path="order">
-      <Route path="list" component={OrderList} />
-      <Route path="info" component={OrderInfo} />
+      <Route path="list" component={OrderList} onEnter={requireAuth}/>
+      <Route path="info" component={OrderInfo} onEnter={requireAuth}/>
     </Route>
     <Route path="*" component={NoMatch} />
   </Route>
