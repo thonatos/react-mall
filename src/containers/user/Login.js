@@ -2,6 +2,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as authActions from '../../actions/auth'
 
+import md5 from 'crypto-js/md5'
+
 import React, { Component } from 'react'
 import { Row, Col, message } from 'antd'
 
@@ -14,13 +16,14 @@ class Login extends Component {
   componentWillReceiveProps(nextProps) {
     const { auth, router } = nextProps
     if (auth.isLoggedIn) {
-      router.push('/product/nano')
+      router.push('/product/pro')
     } else {
       message.error(auth.errorMsg)
     }
   }
 
   handleLogin = (user) => {
+    user['password'] = md5(user.password).toString()
     this.props.login(user)
   }
 

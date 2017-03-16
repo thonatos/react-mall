@@ -1,5 +1,6 @@
 import axios from 'axios'
-// import Cache from '../utils/cache'
+import Cache from '../utils/cache'
+import { Base64 } from 'js-base64'
 
 const USER_LOGIN = 'https://api.insta360.com/user/v1/account/signin'
 
@@ -20,17 +21,17 @@ export const LOGIN_ERROR = 'LOGIN_ERROR'
 //   }
 // }
 
-// function setInitialState(state) {
-//   const cache = new Cache()
-//   cache.set('auth', JSON.stringify(state))
-// }
+function setInitialState(state) {
+  const cache = new Cache()
+  cache.set(Base64.encode('auth'), Base64.encode(JSON.stringify(state)))
+}
 
 function loginSuccess(data) {
-  if (data.code === 0) {   
+  if (data.code === 0) {
     const _data = Object.assign({
       isLoggedIn: true
-    }, data)
-    // setInitialState(_data)
+    }, data.data)
+    setInitialState(_data)
     return {
       type: LOGIN_SUCCESS,
       data: _data
@@ -50,7 +51,8 @@ function loginError() {
   return {
     type: LOGIN_ERROR,
     data: {
-      isLoggedIn: false
+      isLoggedIn: false,
+      errorMsg: 'Server Error.'
     }
   }
 }
@@ -64,7 +66,7 @@ function loginError() {
 export function login(user) {
   // console.log('#action:auth:loginAuth')
   user['username'] = user.email
-  return (dispatch) => {    
+  return (dispatch) => {
     return axios({
       url: USER_LOGIN,
       timeout: 10000,
