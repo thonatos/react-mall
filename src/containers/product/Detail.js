@@ -23,7 +23,7 @@ class Detail extends Component {
 
   componentDidMount() {
     const { fetch } = this.props
-    const { productName } = this.props.params
+    const { productName } = this.props.params    
     fetch(productName)
   }
 
@@ -51,6 +51,8 @@ class Detail extends Component {
     let content
     const { product } = this.props
 
+    console.log(product)
+
     if (this.state.loading) {
       content = (<Loading />)
     } else {
@@ -59,9 +61,9 @@ class Detail extends Component {
           <Col md={12} style={{ textAlign: 'center' }}>
             <Carousel autoplay effect="fade">
               {
-                product.thumb.map((obj, key) =>
+                product.display.map((obj, key) =>
                   <div key={key}>
-                    <img src={obj} alt="" style={{ textAlign: 'center', 'width': '388px', 'margin': '0 auto' }} />
+                    <img src={obj.url} alt="" style={{ textAlign: 'center', 'width': '388px', 'margin': '0 auto' }} />
                   </div>
                 )
               }
@@ -70,7 +72,7 @@ class Detail extends Component {
 
           <Col md={8} offset={4}>
             <div className="detail">
-              <h2>{product.name}</h2>
+              <h2>{product.info.name}</h2>
               <p>Price: {product.suits[this.state.suit].price}</p>
 
               <div className="suits">

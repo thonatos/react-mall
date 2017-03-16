@@ -1,15 +1,13 @@
-import { AUTH_INIT, AUTH_SUCCESS , AUTH_ERROR} from '../actions/auth'
+import { LOGIN_SUCCESS, LOGIN_ERROR } from '../actions/auth'
 
 const initialState = {}
 
 export default function reducer(state = initialState, action = {}) {
   const { data } = action
   switch (action.type) {
-    case AUTH_INIT:
+    case LOGIN_SUCCESS:
       return Object.assign({}, data)
-    case AUTH_SUCCESS:
-      return Object.assign({}, data)
-    case AUTH_ERROR:
+    case LOGIN_ERROR:
       return Object.assign({}, data)
     default:
       return state

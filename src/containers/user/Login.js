@@ -10,19 +10,18 @@ import { assets } from '../../data/'
 import './Register.less'
 
 class Login extends Component {
+
   componentWillReceiveProps(nextProps) {
     const { auth, router } = nextProps
     if (auth.isLoggedIn) {
       router.push('/product/nano')
     } else {
-      message.error('Login Failed. Please Try Again.')
+      message.error(auth.errorMsg)
     }
   }
 
   handleLogin = (user) => {
-    console.log('Received values of child: ', user)
-    const { loginAuth } = this.props
-    loginAuth(user)
+    this.props.login(user)
   }
 
   render() {

@@ -16,9 +16,12 @@ import ProductDetail from './containers/product/Detail'
 const cache = new Cache()
 
 function loggedIn() {
-  const authString = cache.get('auth')
-  const auth = JSON.parse(authString)
-  return auth.isLoggedIn
+  const auth_raw = cache.get('auth') || false
+  if (auth_raw) {
+    const auth = JSON.parse(auth_raw)
+    return auth.isLoggedIn
+  }
+  return auth_raw
 }
 
 function requireAuth(nextState, replace) {

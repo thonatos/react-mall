@@ -1,21 +1,65 @@
+import axios from 'axios'
+import md5 from 'crypto-js/md5'
+
 import React, { Component } from 'react'
-import { Row, Col } from 'antd'
+import { Row, Col, message } from 'antd'
 import './Register.less'
 
 import RegisterForm from './components/Register'
 import { assets } from '../data'
 
+const USER_REGISTER = 'https://api.insta360.com/user/v1/account/signup'
+const CAPTCHA_SEND = 'https://api.insta360.com/user/v1/captcha/send'
+
 class Register extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      t: ''
-    }
+  handleGetCaptcha = (user) => {
+    user['type'] = 'signup'
+    axios({
+      url: CAPTCHA_SEND,
+      timeout: 10000,
+      method: 'post',
+      data: user,
+      responseType: 'json'
+    }).then(function (response) {
+      const data = response.data
+      if (data.code === 0) {
+        console.log('#captcha:send')
+      } else {
+        message.error(data.errorMsg)
+      }
+    }).catch(function (response) {
+      message.error('发送失败，请重试')
+    })
   }
 
-  handleRegister = (v) => {
-    console.log('Received values of child: ', v)
+  handleRedict() {
+    const { router } = this.props
+    router.push('/product/nano')
+  }
+
+  handleRegister = (user) => {
+    user['source'] = 'shop'
+    user['password'] = md5(user.password).toString()
+    delete user['confirm']
+
+    axios({
+      url: USER_REGISTER,
+      timeout: 10000,
+      method: 'post',
+      data: user,
+      responseType: 'json'
+    }).then(function (response) {
+      const data = response.data
+      if (data.code === 0) {
+        console.log('#register:success')
+        message.success('注册成功，请使用该账号登录', 5, this.handleRedict)
+      } else {
+        message.error(data.errorMsg)
+      }
+    }).catch(function (response) {
+      message.error('发送失败，请重试')
+    })
   }
 
   render() {
@@ -34,7 +78,10 @@ class Register extends Component {
             <p className="tips">如果您已在Insta360其他产品上注册过Insta360账号，可用原有账号直接登录。</p>
 
             {/* register form */}
-            <RegisterForm handleRegister={this.handleRegister} />
+            <RegisterForm
+              register={this.handleRegister}
+              getCaptcha={this.handleGetCaptcha}
+            />
             <p className="instruction">* 点击注册后，你将收到一个来自 Insta360 的验证邮件，请点击邮件中的链接完成邮箱认证</p>
           </div>
         </Col>

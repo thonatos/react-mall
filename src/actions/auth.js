@@ -1,111 +1,80 @@
 import axios from 'axios'
-import Cache from '../utils/cache'
-import { user } from '../data/'
+// import Cache from '../utils/cache'
 
-export const AUTH = 'AUTH'
-export const AUTH_INIT = 'AUTH_INIT'
-export const AUTH_ERROR = 'AUTH_ERROR'
-export const AUTH_SUCCESS = 'AUTH_SUCCESS'
+const USER_LOGIN = 'https://api.insta360.com/user/v1/account/signin'
 
-const AUTH_URL = 'https://api.insta360.com'
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+export const LOGIN_ERROR = 'LOGIN_ERROR'
 
-function authInit() {
-  function getInitialState() {
-    const cache = new Cache()
-    return cache.get('auth') || {
-      isLoggedIn: false,
-      profile: {}
-    }
-  }
+// function authInit() {
+//   function getInitialState() {
+//     const cache = new Cache()
+//     return cache.get('auth') || {
+//       isLoggedIn: false,
+//       profile: {}
+//     }
+//   }
+//   return {
+//     type: AUTH_INIT,
+//     data: getInitialState()
+//   }
+// }
 
-  return {
-    type: AUTH_INIT,
-    data: getInitialState()
-  }
-}
+// function setInitialState(state) {
+//   const cache = new Cache()
+//   cache.set('auth', JSON.stringify(state))
+// }
 
-function authStart() {
-  return {
-    type: AUTH
-  }
-}
-
-function authSuccess(data) {
-  function setInitialState(state) {
-    const cache = new Cache()
-    cache.set('auth', JSON.stringify(state))
-  }
-
-  if (data.flag) {
-    // auth success    
+function loginSuccess(data) {
+  if (data.code === 0) {   
     const _data = Object.assign({
       isLoggedIn: true
-    }, user)
-
-    setInitialState(_data)
-
+    }, data)
+    // setInitialState(_data)
     return {
-      type: AUTH_SUCCESS,
+      type: LOGIN_SUCCESS,
       data: _data
     }
   }
 
   return {
-    type: AUTH_ERROR,
+    type: LOGIN_ERROR,
     data: {
-      isLoggedIn: false
+      isLoggedIn: false,
+      errorMsg: data.errorMsg
     }
   }
 }
 
-function authError() {
+function loginError() {
   return {
-    type: AUTH_ERROR,
+    type: LOGIN_ERROR,
     data: {
       isLoggedIn: false
     }
   }
 }
 
-export function initAuth() {
-  return (dispatch) => {
-    dispatch(authInit())
-  }
-}
+// export function initAuth() {
+//   return (dispatch) => {
+//     dispatch(authInit())
+//   }
+// }
 
-export function loginAuth(user) {
-
-  if (process.env.NODE_ENV === 'production') {
-    // pro
-    return (dispatch) => {
-      dispatch(authStart())
-      return axios({
-        url: AUTH_URL,
-        timeout: 20000,
-        method: 'post',
-        data: user,
-        responseType: 'json'
-      }).then(function (response) {
-        dispatch(authSuccess(response.data.data))
-      }).catch(function (response) {
-        dispatch(authError(response.data.data))
-      })
-    }
-
-  } else {
-    // dev
-    console.log('#action:auth:loginAuth')
-    if (user.email === 'thonatos@sina.com') {
-      return (dispatch) => {
-        return dispatch(authSuccess({
-          flag: true,
-          user: user
-        }))
-      }
-    } else {
-      return (dispatch) => {
-        return dispatch(authError())
-      }
-    }
+export function login(user) {
+  // console.log('#action:auth:loginAuth')
+  user['username'] = user.email
+  return (dispatch) => {    
+    return axios({
+      url: USER_LOGIN,
+      timeout: 10000,
+      method: 'post',
+      data: user,
+      responseType: 'json'
+    }).then(function (response) {
+      dispatch(loginSuccess(response.data))
+    }).catch(function (response) {
+      dispatch(loginError())
+    })
   }
 }

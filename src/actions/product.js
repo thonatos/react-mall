@@ -1,64 +1,52 @@
 import axios from 'axios'
-import { products } from '../data/'
 
 export const FETCH = 'FETCH'
 export const FETCH_ERROR = 'FETCH_ERROR'
 export const FETCH_SUCCESS = 'FETCH_SUCCESS'
 
-const FETCH_URL = 'https://api.insta360.com'
+const FETCH_URL = 'http://192.168.8.242:8866/shop/v1/product/getInfo'
+// import { products } from '../data/'
 
-function fetchStart() {
-  return {
-    type: FETCH
-  }
+const PRODUCTS = {
+  'pro': 1,
+  'nano': 2
 }
 
 function fetchSuccess(data) {
+  if(data.code === 0){
+    return {
+      type: FETCH_SUCCESS,
+      data: data.data
+    }
+  }
+
   return {
-    type: FETCH_SUCCESS,
-    data: data
+    type: FETCH_ERROR    
   }
 }
 
 function fetchError(data) {
   return {
-    type: FETCH_ERROR,
-    data: data
+    type: FETCH_ERROR    
   }
 }
 
-export function fetch(product) {
-
-  if (process.env.NODE_ENV === 'production') {
-    // pro
-    return (dispatch) => {
-      dispatch(fetchStart())
-      return axios({
-        url: FETCH_URL,
-        timeout: 20000,
-        method: 'get',
-        responseType: 'json'
-      }).then(function (response) {
-        dispatch(fetchSuccess(response.data.data))
-      }).catch(function (response) {
-        dispatch(fetchError(response.data.data))
-      })
-    }
-
-  } else {
-    // dev
-    console.log('#action:product:fetch', products)
-    if (products[product]) {
-      return (dispatch) => {
-        setTimeout(function () {
-          return dispatch(fetchSuccess(products[product]))
-        }, 3000)
-      }
-    } else {
-      return (dispatch) => {
-        return dispatch(fetchError({}))
-      }
-    }
+export function fetch(product) {  
+  return (dispatch) => {    
+    return axios({
+      url: FETCH_URL,
+      timeout: 20000,
+      data: {
+        id: PRODUCTS[product]
+      },
+      method: 'post',
+      responseType: 'json'
+    }).then(function (response) {
+      console.log(response.data)
+      dispatch(fetchSuccess(response.data))
+    }).catch(function (response) {
+      console.log('#server', response)
+      dispatch(fetchError())
+    })
   }
-  
 }

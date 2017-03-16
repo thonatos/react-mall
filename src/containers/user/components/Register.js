@@ -38,14 +38,23 @@ class Register extends Component {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.handleRegister(values)        
+        this.props.register(values)
       }
     })
   }
 
-  handleReset = () => {
-    this.props.form.resetFields()
+  handleGetCaptcha = (e) => {
+    this.props.form.validateFields((err, values) => {
+      console.log(values)
+      if (values.email) {
+        this.props.getCaptcha(values)
+      }
+    })
   }
+
+  // handleReset = () => {
+  //   this.props.form.resetFields()
+  // }
 
   render() {
 
@@ -55,6 +64,7 @@ class Register extends Component {
       <Form onSubmit={this.handleSubmit} style={{ marginTop: '2em' }}>
 
         <Row type="flex" align="top">
+
           {/* Email */}
           <Col span={24}>
             <FormItem>
@@ -69,8 +79,8 @@ class Register extends Component {
                 )}
             </FormItem>
           </Col>
-          {/* Password */}
 
+          {/* Password */}
           <Col span={24}>
             <FormItem>
               {getFieldDecorator('password', {
@@ -106,7 +116,7 @@ class Register extends Component {
               <Row>
                 <Col span={12}>
                   {
-                    getFieldDecorator('captcha', {
+                    getFieldDecorator('code', {
                       rules: [{ required: true, message: '请输入验证码' }],
                     })(
                       <Input placeholder="验证码" prefix={<Icon type="message" />} />
@@ -114,7 +124,7 @@ class Register extends Component {
                   }
                 </Col>
                 <Col span={10} offset={2}>
-                  <Button size="large" style={{ width: '100%' }}>获取验证码</Button>
+                  <Button size="large" style={{ width: '100%' }} onClick={this.handleGetCaptcha}>获取验证码</Button>
                 </Col>
               </Row>
             </FormItem>
