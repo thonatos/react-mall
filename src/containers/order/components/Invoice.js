@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Row, Col, Radio } from 'antd'
+import { Radio } from 'antd'
 
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
-import './Invoice.less'
 
 class Invoice extends Component {
 
@@ -15,30 +14,29 @@ class Invoice extends Component {
     }
   }
 
-  onChange = (e) => {    
+  onChange = (e) => {
     this.setState({
       invoice: e.target.value
     })
-
     this.props.handleInvoice(this.props.data[this.state.invoice])
   }
-  
+
 
   render() {
-    const invoice = this.props.data  
+    const invoice = this.props.data
     return (
-      <Row type="flex" align="top">
-        <Col md={12}>
-          <RadioGroup onChange={this.onChange} className="invoice-group">
-            {
-              invoice.map((obj, key) =>
-                <RadioButton value={key} key={key}>{obj.name}</RadioButton>
-              )
-            }
-          </RadioGroup>
-        </Col>
-      </Row>
-
+      <div className="section">
+        <div className="header">
+          <h3>发票信息</h3>
+        </div>
+        <RadioGroup onChange={this.onChange} className="invoice-group">
+          {
+            invoice.map((obj, key) =>
+              <RadioButton value={key} key={key}>{obj.name}</RadioButton>
+            )
+          }
+        </RadioGroup>
+      </div>
     )
   }
 }

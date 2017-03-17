@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import { Card, Modal, Form, Input, Cascader, Radio } from 'antd'
 
 const RadioGroup = Radio.Group
-
-import './Distribution.less'
-
 const FormItem = Form.Item
+
 
 class Distribution extends Component {
 
@@ -177,17 +175,6 @@ class Distribution extends Component {
           onCancel={this.handleCancel}
         >
           <Form className="distribution-form">
-
-            {/* Submit 
-              onSubmit={this.handleSubmit} 
-              <div className="submit">
-                <FormItem >
-                  <Button type="primary" htmlType="submit" size="large">保存</Button>
-                  <Button type="default" onClick={this.handleReset} style={{ marginLeft: '1em' }}>取消</Button>
-                </FormItem>
-              </div>  
-            */}
-
 
             {/* id */}
             <div className="id">

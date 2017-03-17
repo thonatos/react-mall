@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Input, Checkbox } from 'antd'
-import './Contact.less'
+
 
 class Contact extends Component {
 

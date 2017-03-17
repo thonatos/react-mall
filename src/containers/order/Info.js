@@ -122,7 +122,7 @@ class Info extends Component {
     const { order, payOrder } = this.props
     payOrder({
       id: order.order.id,
-      channel: 'weixin'
+      channel: 'alipay'
     })
   }
 
@@ -143,20 +143,15 @@ class Info extends Component {
       cart = (<Cart data={_cart}></Cart>)
     }
 
-    let invoice = (<div></div>)
+    let invoice = (<div><h3>发票信息</h3></div>)
     if (order.invoiceTypes) {
       invoice = (<Invoice data={order.invoiceTypes} handleInvoice={this.handleInvoice}></Invoice>)
     }
 
-    let payment = (<div></div>)
+    let payment = (<div><h3>支付方式</h3></div>)
     if (order.payTypes) {
       payment = (<Payment data={order.payTypes} handlePayment={this.handlePayment}></Payment>)
     }
-
-    // let pay = (<div></div>)
-    // if(order.order){
-    //   pay = (<Pay show={this.state.showPay} data={order.order}></Pay>)
-    // }
 
     return (
       <Row className="container order">
@@ -168,18 +163,15 @@ class Info extends Component {
           }} handleResult={this.handleDistribution}></Distribution>
         </Col>
 
-        <Col span={24}>
-          <h3>发票信息</h3>
+        <Col span={14}>
           {invoice}
         </Col>
 
-        <Col span={24}>
-          <h3>支付方式</h3>
+        <Col span={14}>          
           {payment}
         </Col>
 
-        <Col span={24}>
-          <h3>物流方式</h3>
+        <Col span={14}>          
           <Logistics></Logistics>
         </Col>
 

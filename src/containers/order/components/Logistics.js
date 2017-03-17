@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Row, Col, Radio } from 'antd'
+import { Radio } from 'antd'
 
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
-import './Invoice.less'
 
 class Logistics extends Component {
 
@@ -32,22 +31,22 @@ class Logistics extends Component {
       {
         type: 'zzs',
         desc: '其他方式'
-      }                
+      }
     ]
 
     return (
-      <Row type="flex" align="top">
-        <Col md={12}>
-          <RadioGroup onChange={this.onChange} value={this.state.invoice} defaultValue={this.state.invoice} className="invoice-group">
-            {
-              invoiceArray.map((obj, key) =>
-                <RadioButton value={key} key={key}>{obj.desc}</RadioButton>
-              )
-            }
-          </RadioGroup>
-        </Col>
-      </Row>
-
+      <div className="section">
+        <div className="header">
+          <h3>物流方式</h3>
+        </div>
+        <RadioGroup onChange={this.onChange} value={this.state.invoice} defaultValue={this.state.invoice} className="invoice-group">
+          {
+            invoiceArray.map((obj, key) =>
+              <RadioButton value={key} key={key}>{obj.desc}</RadioButton>
+            )
+          }
+        </RadioGroup>
+      </div>
     )
   }
 }
