@@ -15,24 +15,24 @@ class Invoice extends Component {
     }
   }
 
-  onChange = (e) => {
-    console.log('radio checked', e.target.value)
+  onChange = (e) => {    
     this.setState({
-      invoice: e.target.value,
-    });
+      invoice: e.target.value
+    })
+
+    this.props.handleInvoice(this.props.data[this.state.invoice])
   }
+  
 
   render() {
-
-    const invoice = this.props.data
-
+    const invoice = this.props.data  
     return (
       <Row type="flex" align="top">
         <Col md={12}>
-          <RadioGroup onChange={this.onChange} value={this.state.invoice} defaultValue={this.state.invoice} className="invoice-group">
+          <RadioGroup onChange={this.onChange} className="invoice-group">
             {
               invoice.map((obj, key) =>
-                <RadioButton value={key} key={key}>{obj.desc}</RadioButton>
+                <RadioButton value={key} key={key}>{obj.name}</RadioButton>
               )
             }
           </RadioGroup>

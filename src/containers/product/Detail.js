@@ -1,6 +1,7 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as productActions from '../../actions/product'
+import * as shareActions from '../../actions/share'
 
 import React, { Component } from 'react'
 import { Row, Col, Radio, Button, Carousel, Spin } from 'antd'
@@ -22,9 +23,9 @@ class Detail extends Component {
   }
 
   componentDidMount() {
-    const { fetch } = this.props
-    const { productName } = this.props.params    
-    fetch(productName)
+    const { fetchProduct } = this.props
+    const { productName } = this.props.params
+    fetchProduct(productName)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,16 +44,19 @@ class Detail extends Component {
   }
 
   onSubmit = (e) => {
-    const { router } = this.props
+    const { router, product, updateCart } = this.props
+    let cart = Object.assign({}, {
+      product: product,
+      commodity: product.commodities[this.state.suit]
+    })
+    updateCart(cart)
     router.push('/order/info')
   }
 
   render() {
-    let content
+    let content    
+
     const { product } = this.props
-
-    console.log(product)
-
     if (this.state.loading) {
       content = (<Loading />)
     } else {
@@ -61,7 +65,7 @@ class Detail extends Component {
           <Col md={12} style={{ textAlign: 'center' }}>
             <Carousel autoplay effect="fade">
               {
-                product.display.map((obj, key) =>
+                product.displays.map((obj, key) =>
                   <div key={key}>
                     <img src={obj.url} alt="" style={{ textAlign: 'center', 'width': '388px', 'margin': '0 auto' }} />
                   </div>
@@ -73,26 +77,26 @@ class Detail extends Component {
           <Col md={8} offset={4}>
             <div className="detail">
               <h2>{product.info.name}</h2>
-              <p>Price: {product.suits[this.state.suit].price}</p>
+              <p>Price: {product.commodities[this.state.suit].price}</p>
 
               <div className="suits">
                 <RadioGroup onChange={this.onChange} value={this.state.suit} className="suits-radio-group">
                   {
-                    product.suits.map((obj, key) =>
-                      <RadioButton key={key} value={key}>{obj.desc}</RadioButton>
+                    product.commodities.map((obj, key) =>
+                      <RadioButton key={key} value={key}>{obj.name}</RadioButton>
                     )
                   }
                 </RadioGroup>
               </div>
 
               <div className="specs">
-                {
+                {/*
                   product.specs.map((obj, key) =>
                     <Col md={12} key={key}>
                       <p>{obj}</p>
                     </Col>
-                  )
-                }
+                  )                  
+                */}
               </div>
 
               <Button type="primary" className="btn-next" onClick={this.onSubmit}>Next</Button>
@@ -116,8 +120,8 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(productActions, dispatch)
+function mapDispatchToProps(dispatch) {  
+  return bindActionCreators(Object.assign({}, productActions, shareActions), dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Detail)

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import Cache from '../utils/cache'
-import { Base64 } from 'js-base64'
 
 const USER_LOGIN = 'https://api.insta360.com/user/v1/account/signin'
 
@@ -21,15 +20,21 @@ export const LOGIN_ERROR = 'LOGIN_ERROR'
 //   }
 // }
 
+
 function setInitialState(state) {
   const cache = new Cache()
-  cache.set(Base64.encode('auth'), Base64.encode(JSON.stringify(state)))
+  cache.set('auth', JSON.stringify(state))
+}
+
+function getExpiretion(){
+  return Math.ceil(Date.now()/1000) + 1000  
 }
 
 function loginSuccess(data) {
   if (data.code === 0) {
     const _data = Object.assign({
-      isLoggedIn: true
+      isLoggedIn: true,
+      expiration: getExpiretion()
     }, data.data)
     setInitialState(_data)
     return {

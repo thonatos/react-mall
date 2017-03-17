@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import { Row, Col, Card, Modal, Form, Input, Cascader } from 'antd'
+import { Card, Modal, Form, Input, Cascader, Radio } from 'antd'
+
+const RadioGroup = Radio.Group
+
 import './Distribution.less'
 
 const FormItem = Form.Item
@@ -49,17 +52,21 @@ class Distribution extends Component {
 
   handleOk = (e) => {
     console.log(e)
-    this.handleSubmit(e)        
+    this.handleSubmit(e)
     this.setState({
       visible: false,
     })
   }
 
   handleCancel = (e) => {
-    console.log(e)
     this.setState({
       visible: false,
     })
+  }
+
+  onChange = (e) => {
+    // this.props.handleResult(values)
+    console.log('Address checked', e.target.value, this.state.addr[e.target.value])    
   }
 
   // db
@@ -73,29 +80,28 @@ class Distribution extends Component {
             t[index] = addr
           }
         }
-
         break;
 
       case 'create':
         t.push(addr)
-        this.setState({
-          addr: [...t]
-        })
         break;
 
       default:
         break;
     }
+
+    this.setState({
+      addr: [...t]
+    })
   }
 
   // doAction 
   doAction = (action, index, event) => {
     console.log(action)
-
     function mapValues(object) {
       let newObj = {}
       for (let key in object) {
-        if(key){
+        if (key) {
           newObj[key] = {
             value: object[key]
           }
@@ -105,7 +111,6 @@ class Distribution extends Component {
     }
 
     switch (action) {
-
       case 'create':
         this.handleReset()
         this.showModal()
@@ -132,8 +137,8 @@ class Distribution extends Component {
   // Render
   render() {
 
-    const { getFieldDecorator } = this.props.form    
-    const {cities} = this.props.data.order
+    const { getFieldDecorator } = this.props.form
+    const { cities } = this.props.data.order
     const address = this.state.addr
 
     return (
@@ -142,12 +147,10 @@ class Distribution extends Component {
           <h3>收货地址</h3>
           <a onClick={this.doAction.bind(this, 'create')}>添加新地址</a>
         </div>
-        <Row gutter={16} style={{
-          marginTop: '1em'
-        }}>
+        <RadioGroup onChange={this.onChange} className="distribution-radio-group">
           {
             address.map((obj, key) =>
-              <Col span={8} key={key}>
+              <Radio value={key} key={key}>
                 <Card title={obj.name} extra={
                   <div>
                     <a onClick={this.doAction.bind(this, 'edit', key)}>编辑</a>
@@ -161,10 +164,10 @@ class Distribution extends Component {
                   <p>{obj.phone}</p>
                   <p>{obj.address}</p>
                 </Card>
-              </Col>
+              </Radio>
             )
           }
-        </Row>
+        </RadioGroup>
 
         <Modal title="添加新地址"
           visible={this.state.visible}

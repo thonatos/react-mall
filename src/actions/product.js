@@ -1,12 +1,10 @@
 import axios from 'axios'
 
-export const FETCH = 'FETCH'
-export const FETCH_ERROR = 'FETCH_ERROR'
-export const FETCH_SUCCESS = 'FETCH_SUCCESS'
+export const FETCH_PRODUCT = 'FETCH_PRODUCT'
+export const FETCH_PRODUCT_ERROR = 'FETCH_PRODUCT_ERROR'
+export const FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS'
 
-const FETCH_URL = 'http://192.168.8.242:8866/shop/v1/product/getInfo'
-// import { products } from '../data/'
-
+const FETCH_URL = 'http://192.168.8.184:8866/shop/v1/product/getInfo'
 const PRODUCTS = {
   'pro': 1,
   'nano': 2
@@ -15,32 +13,35 @@ const PRODUCTS = {
 function fetchSuccess(data) {
   if(data.code === 0){
     return {
-      type: FETCH_SUCCESS,
+      type: FETCH_PRODUCT_SUCCESS,
       data: data.data
     }
   }
 
   return {
-    type: FETCH_ERROR    
+    type: FETCH_PRODUCT_ERROR    
   }
 }
 
 function fetchError(data) {
   return {
-    type: FETCH_ERROR    
+    type: FETCH_PRODUCT_ERROR    
   }
 }
 
-export function fetch(product) {  
+export function fetchProduct(name) {  
   return (dispatch) => {    
     return axios({
       url: FETCH_URL,
       timeout: 20000,
       data: {
-        id: PRODUCTS[product]
+        id: PRODUCTS[name]
       },
       method: 'post',
-      responseType: 'json'
+      responseType: 'json',
+      headers: {
+        'X-Language': 'zh_cn'
+      }
     }).then(function (response) {
       console.log(response.data)
       dispatch(fetchSuccess(response.data))

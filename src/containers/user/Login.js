@@ -17,8 +17,8 @@ class Login extends Component {
     const { auth, router } = nextProps
     if (auth.isLoggedIn) {
       router.push('/product/pro')
-    } else {
-      message.error(auth.errorMsg)
+    } else {      
+      if(auth.errorMsg) message.error(auth.errorMsg)
     }
   }
 

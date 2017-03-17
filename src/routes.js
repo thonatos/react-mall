@@ -19,8 +19,10 @@ function loggedIn() {
   const auth_raw = cache.get('auth') || false
   if (auth_raw) {
     const auth = JSON.parse(auth_raw)
-    return auth.isLoggedIn
+    const expired = (Math.ceil(Date.now()/1000) < auth.expiration)    
+    return auth.isLoggedIn && expired
   }
+
   return auth_raw
 }
 
