@@ -1,10 +1,11 @@
 import axios from 'axios'
+import { API_SERVER_SHOP } from '../config/'
 
 export const FETCH_PRODUCT = 'FETCH_PRODUCT'
 export const FETCH_PRODUCT_ERROR = 'FETCH_PRODUCT_ERROR'
 export const FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS'
 
-const FETCH_URL = 'http://192.168.8.184:8866/shop/v1/product/getInfo'
+const FETCH_URL = API_SERVER_SHOP + '/product/getInfo'
 const PRODUCTS = {
   'pro': 1,
   'nano': 2

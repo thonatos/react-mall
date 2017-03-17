@@ -1,45 +1,23 @@
 import axios from 'axios'
-import Cache from '../utils/cache'
+import { API_SERVER_USER } from '../config/'
 
-const USER_LOGIN = 'https://api.insta360.com/user/v1/account/signin'
+const USER_LOGIN = API_SERVER_USER + '/account/signin'
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_ERROR = 'LOGIN_ERROR'
 
-// function authInit() {
-//   function getInitialState() {
-//     const cache = new Cache()
-//     return cache.get('auth') || {
-//       isLoggedIn: false,
-//       profile: {}
-//     }
-//   }
-//   return {
-//     type: AUTH_INIT,
-//     data: getInitialState()
-//   }
-// }
-
-
-function setInitialState(state) {
-  const cache = new Cache()
-  cache.set('auth', JSON.stringify(state))
-}
-
-function getExpiretion(){
-  return Math.ceil(Date.now()/1000) + 1000  
+function getExpiretion() {
+  return Math.ceil(Date.now() / 1000) + 60*30 // 30Min
 }
 
 function loginSuccess(data) {
   if (data.code === 0) {
-    const _data = Object.assign({
-      isLoggedIn: true,
-      expiration: getExpiretion()
-    }, data.data)
-    setInitialState(_data)
     return {
       type: LOGIN_SUCCESS,
-      data: _data
+      data: Object.assign({
+        isLoggedIn: true,
+        expiration: getExpiretion()
+      }, data.data)
     }
   }
 
@@ -62,14 +40,7 @@ function loginError() {
   }
 }
 
-// export function initAuth() {
-//   return (dispatch) => {
-//     dispatch(authInit())
-//   }
-// }
-
 export function login(user) {
-  // console.log('#action:auth:loginAuth')
   user['username'] = user.email
   return (dispatch) => {
     return axios({
