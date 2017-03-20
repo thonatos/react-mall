@@ -39,17 +39,23 @@ class Cart extends Component {
     const data = this.props.data
 
     return (
-      <Row className="cart" type="flex" align="top">
-        <Col span={24}>
-          <Table pagination={false}
-            columns={columns}
-            dataSource={data}
-            style={{
-              margin: '1em 0'
-            }}
-          />
-        </Col>
-      </Row>
+      <div className="section">
+        <div className="header">
+          <h3>订单概览</h3>
+        </div>
+        <Row className="cart" type="flex" align="top">
+          <Col span={24}>
+            <Table pagination={false}
+              columns={columns}
+              dataSource={data}
+              style={{
+                margin: '1em 0'
+              }}
+            />
+          </Col>
+        </Row>
+      </div>
+
     )
   }
 }

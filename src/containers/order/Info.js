@@ -9,12 +9,9 @@ import React, { Component } from 'react'
 import { Row, Col, Button, message } from 'antd'
 
 import Distribution from './components/Distribution'
-import Invoice from './components/Invoice'
-import Payment from './components/Payment'
-import Logistics from './components/Logistics'
 import Contact from './components/Contact'
 import Cart from './components/Cart'
-// import Pay from './components/Pay'
+import RadioContainer from './components/RadioContainer'
 
 import './Info.less'
 
@@ -28,7 +25,8 @@ class Info extends Component {
       submitStatus: 'disabled',
       payStatus: 'disabled',
       payEnabled: false,
-      delivery: 1
+      delivery: 1,
+      payType: 'online'
     }
   }
 
@@ -64,6 +62,7 @@ class Info extends Component {
     }
 
     if (order.payData && Object.keys(order.payData).length > 0) {
+      console.log(order.payData)
       pingpp.createPayment(order.payData, function (result, err) {
         console.log(result, err)
         if (result === "success") {
@@ -79,21 +78,22 @@ class Info extends Component {
 
   handleDistribution = (v) => {
     console.log('#handleDistribution', v)
-    // this.setState()
   }
 
-  handleInvoice = (inv) => {
-    console.log('#handleInvoice', inv)
-    this.setState({
-      invoice: {
-        type: inv.key,
-        title: '###' // 发票抬头
-      }
-    })
-  }
+  handleRadioChange = (type, values) => {
 
-  handlePayment = (v) => {
-    console.log('#handlePayment', v)
+    // this.setState({
+    //   invoice: {
+    //     type: inv.key,
+    //     title: '###' // 发票抬头
+    //   },
+    //   contactEmail: 'test@insta360.com'
+    // })
+    
+    const state = {}
+    state[type] = values
+    console.log(state)
+    // this.setState(state)
   }
 
   handleSubmit = (e) => {
@@ -132,6 +132,17 @@ class Info extends Component {
 
     let cart = (<div></div>)
 
+    const wuliu = [
+      {
+        key: 'none',
+        name: '默认物流方式    免费'
+      },
+      {
+        key: 'zzs',
+        name: '其他方式'
+      }
+    ]
+
     if (share.cart) {
       let _cart = [{
         count: 1,
@@ -141,16 +152,6 @@ class Info extends Component {
         price: share.cart.commodity.price
       }]
       cart = (<Cart data={_cart}></Cart>)
-    }
-
-    let invoice = (<div><h3>发票信息</h3></div>)
-    if (order.invoiceTypes) {
-      invoice = (<Invoice data={order.invoiceTypes} handleInvoice={this.handleInvoice}></Invoice>)
-    }
-
-    let payment = (<div><h3>支付方式</h3></div>)
-    if (order.payTypes) {
-      payment = (<Payment data={order.payTypes} handlePayment={this.handlePayment}></Payment>)
     }
 
     return (
@@ -164,24 +165,23 @@ class Info extends Component {
         </Col>
 
         <Col span={14}>
-          {invoice}
+          <RadioContainer title='发票信息' submitType='invoice' data={order.invoiceTypes} handleRadioChange={this.handleRadioChange}></RadioContainer>
+          <div></div>          
         </Col>
 
-        <Col span={14}>          
-          {payment}
+        <Col span={14}>
+          <RadioContainer title='支付方式' submitType='payment' data={order.payTypes} handleRadioChange={this.handleRadioChange}></RadioContainer>
         </Col>
 
-        <Col span={14}>          
-          <Logistics></Logistics>
+        <Col span={14}>
+          <RadioContainer title='物流方式' submitType='delivery' data={wuliu} handleRadioChange={this.handleRadioChange}></RadioContainer>
         </Col>
 
         <Col span={24}>
-          <h3>联系邮箱</h3>
           <Contact></Contact>
         </Col>
 
         <Col span={24}>
-          <h3>订单概览</h3>
           {cart}
         </Col>
 

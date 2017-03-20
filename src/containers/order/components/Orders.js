@@ -36,16 +36,6 @@ class Orders extends Component {
       }
     ]
 
-    // const demoData = [
-    //   {
-    //     key: 'xxx',
-    //     thumb: require('../assets/product/pro/pro-large@2x.png'),
-    //     sn: 'Insta360 Pro',
-    //     datetime: '2014-12-24 23:12:00',
-    //     price: 2000,
-    //   }
-    // ]
-
     const data = this.props.data 
 
     return (
