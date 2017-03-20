@@ -12,17 +12,15 @@ class RadioContainer extends Component {
   }
 
   onChange = (e) => {
-    console.log('radio checked', e.target.value)
-
     const { submitType, handleRadioChange, data } = this.props
-
     this.setState({
       value: e.target.value,
+    }, () => {
+      if (handleRadioChange) {
+        console.log(submitType, data[this.state.value])
+        handleRadioChange(submitType, data[this.state.value])
+      }
     })
-    
-    if (handleRadioChange) {
-      handleRadioChange(submitType, data[this.state.value])
-    }
   }
 
   render() {
@@ -41,7 +39,7 @@ class RadioContainer extends Component {
         <div className="header">
           <h3>{title}</h3>
         </div>
-        <RadioGroup onChange={this.onChange} value={this.state.value} defaultValue={this.state.value} className="radio-container">
+        <RadioGroup onChange={this.onChange} className="radio-container">
           {radioNodes}
         </RadioGroup>
       </div>

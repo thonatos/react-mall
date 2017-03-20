@@ -5,17 +5,51 @@ import { Input, Checkbox } from 'antd'
 class Contact extends Component {
 
   state = {
-    contact: '',
+    email: '',
     subscribe: false
   }
 
-  onPressEnter = (e) => {
-    e.preventDefault()
-    console.log(e.target.value)
+  handle = () => {
+    const { submitType, handleInputChange } = this.props
+    if (handleInputChange) {
+      handleInputChange(submitType, {
+        email: this.state.email,
+        subscribe: this.state.subscribe
+      })
+    }
+  }
+
+  onBlur = (e) => {
+    const { submitType, handleInputChange } = this.props
+    const value = e.target.value
+    const regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+
+    if (!regEmail.test()) {
+      alert('not ')
+      return
+    }
+
+    this.setState({
+      email: value
+    }, () => {
+      if (handleInputChange) {
+        handleInputChange(submitType, this.state)
+      }
+    })
+
   }
 
   onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`)
+    const { submitType, handleInputChange } = this.props
+    const checked = e.target.checked
+
+    this.setState({
+      subscribe: checked
+    }, () => {
+      if (handleInputChange) {
+        handleInputChange(submitType, this.state)
+      }
+    })
   }
 
   render() {
@@ -28,7 +62,7 @@ class Contact extends Component {
         <div className="contact">
           <p>联系邮箱非常重要，我们会将订单信息和订单状态查询地址发送您的邮箱。请放心，我们将对您的私人信息严格保密。</p>
           <div>
-            <Input onPressEnter={this.onPressEnter} placeholder="example@domain.com" />
+            <Input onBlur={this.onBlur} placeholder="example@domain.com" />
           </div>
           <div>
             <Checkbox onChange={this.onChange}>获取 Insta360 最新产品、服务、软件升级等信息</Checkbox>

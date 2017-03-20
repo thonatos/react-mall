@@ -8,9 +8,9 @@ import * as shareActions from '../../actions/share'
 import React, { Component } from 'react'
 import { Row, Col, Button, message } from 'antd'
 
-import Distribution from './components/Distribution'
-import Contact from './components/Contact'
 import Cart from './components/Cart'
+import Contact from './components/Contact'
+import Delivery from './components/Delivery'
 import RadioContainer from './components/RadioContainer'
 
 import './Info.less'
@@ -19,21 +19,16 @@ import { user } from '../data'
 
 class Info extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      submitStatus: 'disabled',
-      payStatus: 'disabled',
-      payEnabled: false,
-      delivery: 1,
-      payType: 'online'
-    }
+  state = {
+    submitStatus: 'disabled',
+    payStatus: 'disabled',
+    payEnabled: false,
+    delivery: 1
   }
 
   componentDidMount() {
-    const { share, listInvoice, listPayment } = this.props
-    listInvoice()
-    listPayment()
+    const { share, getAllMeta } = this.props
+    getAllMeta()
 
     // init
     if (!share.cart) {
@@ -76,45 +71,48 @@ class Info extends Component {
     }
   }
 
-  handleDistribution = (v) => {
-    console.log('#handleDistribution', v)
+  handleChildSubmit = (type, values) => {    
+    console.log(type, values)
+    let state = {}
+    switch (type) {
+      case 'invoice':
+        state[type] = {
+          type: values.key,
+          title: values.title || 'none'
+        }
+        break;
+      case 'contact':        
+        state[type] = values
+        break;
+      default:
+        state[type] = values.key
+        break;
+    }
+
+    this.setState(state, ()=>{
+      console.log(this.state)
+    })
   }
 
-  handleRadioChange = (type, values) => {
-
-    // this.setState({
-    //   invoice: {
-    //     type: inv.key,
-    //     title: '###' // 发票抬头
-    //   },
-    //   contactEmail: 'test@insta360.com'
-    // })
-    
-    const state = {}
-    state[type] = values
-    console.log(state)
-    // this.setState(state)
-  }
 
   handleSubmit = (e) => {
-
     const { createOrder } = this.props
-
     if (this.state.items.length < 1) {
       console.log('items')
       return false
     }
-
     if (!this.state.delivery) {
       console.log('delivery')
       return false
     }
-
     if (!this.state.invoice || !this.state.invoice.type) {
       console.log('invoice')
       return false
     }
-
+    if (!this.state.payType) {
+      console.log('payType')
+      return false
+    }
     createOrder(this.state)
   }
 
@@ -127,21 +125,9 @@ class Info extends Component {
   }
 
   render() {
-    // console.log(this.props)
     const { share, order } = this.props
 
     let cart = (<div></div>)
-
-    const wuliu = [
-      {
-        key: 'none',
-        name: '默认物流方式    免费'
-      },
-      {
-        key: 'zzs',
-        name: '其他方式'
-      }
-    ]
 
     if (share.cart) {
       let _cart = [{
@@ -158,27 +144,27 @@ class Info extends Component {
       <Row className="container order">
 
         <Col span={24}>
-          <Distribution data={{
+          <Delivery data={{
             order: order,
             user: user
-          }} handleResult={this.handleDistribution}></Distribution>
+          }} handleResult={this.handleDistribution}></Delivery>
         </Col>
 
         <Col span={14}>
-          <RadioContainer title='发票信息' submitType='invoice' data={order.invoiceTypes} handleRadioChange={this.handleRadioChange}></RadioContainer>
-          <div></div>          
+          <RadioContainer title='发票信息' submitType='invoice' data={order.invoiceTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>
+          <div>发票抬头</div>
         </Col>
 
         <Col span={14}>
-          <RadioContainer title='支付方式' submitType='payment' data={order.payTypes} handleRadioChange={this.handleRadioChange}></RadioContainer>
+          <RadioContainer title='支付方式' submitType='payType' data={order.payTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>
         </Col>
 
         <Col span={14}>
-          <RadioContainer title='物流方式' submitType='delivery' data={wuliu} handleRadioChange={this.handleRadioChange}></RadioContainer>
+          <RadioContainer title='物流方式' submitType='shippingMethods' data={order.shippingMethods} handleRadioChange={this.handleChildSubmit}></RadioContainer>
         </Col>
 
         <Col span={24}>
-          <Contact></Contact>
+          <Contact submitType='contact' handleInputChange={this.handleChildSubmit}></Contact>
         </Col>
 
         <Col span={24}>

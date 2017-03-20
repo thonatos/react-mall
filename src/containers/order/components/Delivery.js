@@ -5,7 +5,7 @@ const RadioGroup = Radio.Group
 const FormItem = Form.Item
 
 
-class Distribution extends Component {
+class Delivery extends Component {
 
   constructor(props) {
     super(props)
@@ -145,7 +145,7 @@ class Distribution extends Component {
           <h3>收货地址</h3>
           <a onClick={this.doAction.bind(this, 'create')}>添加新地址</a>
         </div>
-        <RadioGroup onChange={this.onChange} className="distribution-radio-group">
+        <RadioGroup onChange={this.onChange} className="delivery-radio-group">
           {
             address.map((obj, key) =>
               <Radio value={key} key={key}>
@@ -174,7 +174,7 @@ class Distribution extends Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <Form className="distribution-form">
+          <Form className="delivery-form">
 
             {/* id */}
             <div className="id">
@@ -259,4 +259,4 @@ class Distribution extends Component {
   }
 }
 
-export default Form.create()(Distribution)
+export default Form.create()(Delivery)

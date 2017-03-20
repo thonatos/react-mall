@@ -1,6 +1,5 @@
 import {
-  LIST_INVOICE_SUCCESS,
-  LIST_PAYMENT_SUCCESS,
+  GET_ALL_META_SUCCESS,
   CREATE_ORDER_SUCCESS,
   PAY_ORDER_SUCCESS
 } from '../actions/order'
@@ -13,9 +12,7 @@ export default function reducer(state = initialState, action = {}) {
   Object.assign(initialState, data)
 
   switch (action.type) {
-    case LIST_INVOICE_SUCCESS:
-      return Object.assign({}, initialState, data)
-    case LIST_PAYMENT_SUCCESS:
+    case GET_ALL_META_SUCCESS:
       return Object.assign({}, initialState, data)
     case CREATE_ORDER_SUCCESS:
       return Object.assign({}, initialState, data)
