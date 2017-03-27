@@ -7,14 +7,12 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import rootReducer from '../reducers'
 
 import * as authActions from '../actions/auth'
-import * as shareActions from '../actions/share'
 import * as orderActions from '../actions/order'
 import * as productActions from '../actions/product'
 
 
 const actionCreators = {
   authActions,
-  shareActions,
   orderActions,
   productActions,
   push,

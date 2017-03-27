@@ -1,9 +1,9 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import * as orderActions from '../../actions/order'
 import * as productActions from '../../actions/product'
-import * as shareActions from '../../actions/share'
 
-import React, { Component } from 'react'
+import React, { PropTypes, Component } from 'react'
 import { Row, Col, Radio, Button, Carousel, Spin } from 'antd'
 import { Loading } from '../../components/'
 
@@ -14,26 +14,19 @@ const RadioGroup = Radio.Group
 
 class Detail extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      suit: 0,
-      loading: true
-    }
+  static propTypes = {
+    loading: PropTypes.bool,
+    product: PropTypes.object
+  }
+
+  state = {
+    suit: 0
   }
 
   componentDidMount() {
     const { fetchProduct } = this.props
     const { productName } = this.props.params
     fetchProduct(productName)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (Object.keys(nextProps.product).length > 0) {
-      this.setState({
-        loading: false
-      })
-    }
   }
 
   onChange = (e) => {
@@ -54,74 +47,91 @@ class Detail extends Component {
   }
 
   render() {
-    let content    
+    const { product, loading } = this.props
 
-    const { product } = this.props
-    if (this.state.loading) {
-      content = (<Loading />)
-    } else {
-      content = (
-        <Row className="container product-detail" type="flex" align="top">
-          <Col md={12} style={{ textAlign: 'center' }}>
-            <Carousel autoplay effect="fade">
-              {
-                product.displays.map((obj, key) =>
-                  <div key={key}>
-                    <img src={obj.url} alt="" style={{ textAlign: 'center', 'width': '388px', 'margin': '0 auto' }} />
-                  </div>
-                )
-              }
-            </Carousel>
-          </Col>
-
-          <Col md={8} offset={4}>
-            <div className="detail">
-              <h2>{product.info.name}</h2>
-              <p>Price: {product.commodities[this.state.suit].price}</p>
-
-              <div className="suits">
-                <RadioGroup onChange={this.onChange} value={this.state.suit} className="suits-radio-group">
-                  {
-                    product.commodities.map((obj, key) =>
-                      <RadioButton key={key} value={key}>{obj.name}</RadioButton>
-                    )
-                  }
-                </RadioGroup>
-              </div>
-
-              <div className="specs">
-                {/*
-                  product.specs.map((obj, key) =>
-                    <Col md={12} key={key}>
-                      <p>{obj}</p>
-                    </Col>
-                  )                  
-                */}
-              </div>
-
-              <Button type="primary" className="btn-next" onClick={this.onSubmit}>Next</Button>
-            </div>
-          </Col>
-        </Row>
+    if (loading) {
+      return (
+        <Spin spinning={loading}>
+          <Loading />
+        </Spin>
       )
     }
 
+    const settings = {
+      customPaging: function (i) {
+        return <a><img src={product.displays[i].preview} alt='' /></a>
+      },
+      dotsClass: 'slick-dots slick-thumb',
+      infinite: true,
+      speed: 500
+    }
+
     return (
-      <Spin spinning={this.state.loading}>
-        {content}
-      </Spin>
+      <Row className="container product-detail" type="flex" align="top">
+        <Col md={12} style={{ textAlign: 'center' }}>
+          <Carousel autoplay effect="fade" {...settings}>
+            {
+              product.displays.map((obj, key) =>
+                <div key={key}>
+                  <img src={obj.url} alt="" style={{ textAlign: 'center', 'width': '388px', 'margin': '0 auto' }} />
+                </div>
+              )
+            }
+          </Carousel>
+        </Col>
+
+        <Col md={8} offset={4}>
+          <div className="detail">
+            <h2>{product.info.name}</h2>
+            <p>Price: {product.commodities[this.state.suit].price}</p>
+
+            <div className="suits">
+              <RadioGroup onChange={this.onChange} value={this.state.suit} className="suits-radio-group">
+                {
+                  product.commodities.map((obj, key) =>
+                    <RadioButton key={key} value={key}>{obj.name}</RadioButton>
+                  )
+                }
+              </RadioGroup>
+            </div>
+
+            <div className="specs">
+              {
+                product.info.features.map((obj, key) =>
+                  <Col md={12} key={key}>
+                    <p>{obj}</p>
+                  </Col>
+                )
+              }
+            </div>
+
+            <Button type="primary" className="btn-next" onClick={this.onSubmit}>立即购买</Button>
+
+            <div className="notice">
+              <p>预计发货时间：3月3日</p>
+              <p>每人限购一台，3月3日之前预购可享受早鸟价</p>
+            </div>
+
+          </div>
+        </Col>
+      </Row>
     )
+
   }
 }
 
 function mapStateToProps(state) {
   return {
-    product: state.product
+    product: state.product.data,
+    loading: state.product.loading
   }
 }
 
-function mapDispatchToProps(dispatch) {  
-  return bindActionCreators(Object.assign({}, productActions, shareActions), dispatch)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    ...productActions,
+    updateCart: orderActions.updateCart
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Detail)

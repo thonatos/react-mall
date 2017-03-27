@@ -7,13 +7,13 @@ import Cache from '../utils/cache'
 
 const initialState = {}
 
-function getInitialState() {
-  const cache = new Cache()
-  return cache.get('auth') || {
-    isLoggedIn: false,
-    profile: {}
-  }
-}
+// function getInitialState() {
+//   const cache = new Cache()
+//   return cache.get('auth') || {
+//     isLoggedIn: false,
+//     profile: {}
+//   }
+// }
 
 function setInitialState(state) {
   const cache = new Cache()
