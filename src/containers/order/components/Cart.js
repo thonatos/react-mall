@@ -36,6 +36,14 @@ class Cart extends Component {
       }
     ]
 
+      // let _cart = [{
+      //   count: 1,
+      //   name: share.cart.product.info.name,
+      //   key: share.cart.product.info.name,
+      //   thumb: share.cart.product.displays[0].url,
+      //   price: share.cart.commodity.price
+      // }]    
+
     const data = this.props.data
 
     return (

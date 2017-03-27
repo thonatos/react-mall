@@ -9,6 +9,8 @@ class Delivery extends Component {
 
   constructor(props) {
     super(props)
+
+    console.log(this.props)
     this.state = {
       visible: false,
       addr: [...this.props.data.user.address]
@@ -62,9 +64,17 @@ class Delivery extends Component {
     })
   }
 
-  onChange = (e) => {
-    // this.props.handleResult(values)
-    console.log('Address checked', e.target.value, this.state.addr[e.target.value])    
+  onChange = (e) => {    
+    const { submitType, handleRadioChange} = this.props
+    this.setState({
+      value: e.target.value,
+    }, () => {
+      if (handleRadioChange) {
+        handleRadioChange(submitType, this.state.addr[this.state.value].id)
+      }
+    })
+
+    console.log('Address checked', e.target.value, this.state.addr[e.target.value].id)    
   }
 
   // db

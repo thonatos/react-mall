@@ -22,13 +22,6 @@ class Contact extends Component {
   onBlur = (e) => {
     const { submitType, handleInputChange } = this.props
     const value = e.target.value
-    const regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-
-    if (!regEmail.test()) {
-      alert('not ')
-      return
-    }
-
     this.setState({
       email: value
     }, () => {
