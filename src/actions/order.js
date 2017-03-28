@@ -1,16 +1,10 @@
 import axios from 'axios'
 import { API_SERVER_SHOP } from '../config/'
 
-export const GET_ALL_META_SUCCESS = 'GET_ALL_META_SUCCESS'
-export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS'
-export const PAY_ORDER_SUCCESS = 'PAY_ORDER_SUCCESS'
-export const UPDATE_CART = 'UPDATE_CART'
-
-const GET_ALL_META = API_SERVER_SHOP + '/meta/getAll'
-const CREATE_ORDER = API_SERVER_SHOP + '/order/createOrder'
-const PAY_ORDER = API_SERVER_SHOP + '/payment/payOrder'
-
 function request(options, success, error) {
+
+  // console.log(options)
+
   return axios({
     url: options.url,
     timeout: 20000,
@@ -29,13 +23,18 @@ function request(options, success, error) {
   })
 }
 
+// META
+export const META_GET_ALL_SUCCESS = 'META_GET_ALL_SUCCESS'
+
+const API_META_GET_ALL = API_SERVER_SHOP + '/meta/getAll'
+
 export function getAllMeta() {
   return (dispatch) => {
     return request({
-      url: GET_ALL_META
+      url: API_META_GET_ALL
     }, (data) => {
       if (data.code === 0) {
-        dispatch({ type: GET_ALL_META_SUCCESS, data: data.data })
+        dispatch({ type: META_GET_ALL_SUCCESS, data: data.data })
       }
     }, (response) => {
       console.log('#server', response)
@@ -43,16 +42,23 @@ export function getAllMeta() {
   }
 }
 
+// ORDER
+export const ORDER_CREATE_SUCCESS = 'ORDER_CREATE_SUCCESS'
+export const ORDER_PAY_SUCCESS = 'ORDER_PAY_SUCCESS'
+
+const API_ORDER_CREATE = API_SERVER_SHOP + '/order/createOrder'
+const API_ORDER_PAY = API_SERVER_SHOP + '/payment/payOrder'
+
 export function createOrder(order) {
   console.log(order)
   return (dispatch) => {
     return request({
-      url: CREATE_ORDER,
+      url: API_ORDER_CREATE,
       method: 'post',
       data: order
     }, (data) => {
       if (data.code === 0) {
-        dispatch({ type: CREATE_ORDER_SUCCESS, data: data.data })
+        dispatch({ type: ORDER_CREATE_SUCCESS, data: data.data })
       }
     }, (response) => {
       console.log('#server', response)
@@ -64,18 +70,21 @@ export function payOrder(order) {
   console.log(order)
   return (dispatch) => {
     return request({
-      url: PAY_ORDER,
+      url: API_ORDER_PAY,
       method: 'post',
       data: order
     }, (data) => {
       if (data.code === 0) {
-        dispatch({ type: PAY_ORDER_SUCCESS, data: data.data })
+        dispatch({ type: ORDER_PAY_SUCCESS, data: data.data })
       }
     }, (response) => {
       console.log('#server', response)
     })
   }
 }
+
+// CART
+export const CART_UPDATE = 'CART_UPDATE'
 
 export function updateCart(data) {
   const order = {
@@ -90,8 +99,95 @@ export function updateCart(data) {
 
   return (dispatch) => {
     dispatch({
-      type: UPDATE_CART,
+      type: CART_UPDATE,
       data: order
+    })
+  }
+}
+
+// DELIVERY
+export const DELIVERY_ADD_SUCCESS = 'DELIVERY_ADD_SUCCESS'
+export const DELIVERY_DEL_SUCCESS = 'DELIVERY_DEL_SUCCESS'
+export const DELIVERY_LIST_SUCCESS = 'DELIVERY_LIST_SUCCESS'
+export const DELIVERY_UPDATE_SUCCESS = 'DELIVERY_UPDATE_SUCCESS'
+
+const API_DELIVERY_ADD = API_SERVER_SHOP + '/account/addDelivery'
+const API_DELIVERY_DEL = API_SERVER_SHOP + '/account/deleteDelivery'
+const API_DELIVERY_LIST = API_SERVER_SHOP + '/account/listDelivery'
+const API_DELIVERY_UPDATE = API_SERVER_SHOP + '/account/updateDelivery'
+
+function serilizerData(formData) {
+  if (formData.city) {
+    const tmp = formData.city.map((v, k) => {
+      return v.replace('_', ' ')
+    })
+    formData.city = tmp.join('/')
+  }
+  return formData
+}
+
+export function listDelivery() {
+  return (dispatch) => {
+    return request({
+      url: API_DELIVERY_LIST,
+      method: 'post'
+    }, (data) => {
+      if (data.code === 0) {
+        console.log(data)
+        dispatch({ type: DELIVERY_LIST_SUCCESS, data: data.data })
+      }
+    }, (response) => {
+      console.log('#server', response)
+    })
+  }
+}
+
+export function addDelivery(delivery) {
+  serilizerData(delivery)
+  return (dispatch) => {
+    return request({
+      url: API_DELIVERY_ADD,
+      method: 'post',
+      data: delivery
+    }, (data) => {
+      if (data.code === 0) {
+        dispatch({ type: DELIVERY_ADD_SUCCESS, data: data.data })
+      }
+    }, (response) => {
+      console.log('#server', response)
+    })
+  }
+}
+
+export function updateDelivery(delivery) {
+  serilizerData(delivery)
+  return (dispatch) => {
+    return request({
+      url: API_DELIVERY_UPDATE,
+      method: 'post',
+      data: delivery
+    }, (data) => {
+      if (data.code === 0) {
+        dispatch({ type: DELIVERY_UPDATE_SUCCESS, data: data.data })
+      }
+    }, (response) => {
+      console.log('#server', response)
+    })
+  }
+}
+
+export function delDelivery(delivery) {
+  return (dispatch) => {
+    return request({
+      url: API_DELIVERY_DEL,
+      method: 'post',
+      data: delivery
+    }, (data) => {
+      if (data.code === 0) {
+        dispatch({ type: DELIVERY_DEL_SUCCESS, data: { delivery } })
+      }
+    }, (response) => {
+      console.log('#server', response)
     })
   }
 }

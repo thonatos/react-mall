@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Modal, Button } from 'antd'
+import { Modal } from 'antd'
+// import { Modal, Button } from 'antd'
 
 
 class PayModal extends Component {
@@ -13,9 +14,9 @@ class PayModal extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps)
-    const { visible } = nextProps
+    // const { visible } = nextProps
     this.setState({
-      visible: visible
+      visible: false
     })
   }
 
@@ -45,7 +46,7 @@ class PayModal extends Component {
   }
 
   render() {
-    const { data, visible } = this.props
+    const { data } = this.props
     return (
       <Modal
         title="支付订单"

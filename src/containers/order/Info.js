@@ -13,14 +13,16 @@ import PayModal from './components/PayModal'
 import RadioContainer from './components/RadioContainer'
 
 import './Info.less'
+import overseaAddr from '../../assets/address/china.json'
 
-import { user } from '../data'
+// import { user } from '../data'
 
 class Info extends Component {
 
   componentDidMount() {
-    const { getAllMeta, cart } = this.props
+    const { getAllMeta, cart, listDelivery } = this.props
     getAllMeta()
+    listDelivery()
 
     if (cart.length < 1) {
       message.warn('你当前购物车为空.')
@@ -81,14 +83,17 @@ class Info extends Component {
   }
 
   render() {
-    const { order, cart, showPayModal, submitStatus } = this.props
+    const { order, cart, showPayModal, submitStatus, deliveries } = this.props
+
+    const { addDelivery, delDelivery, updateDelivery } = this.props
+
     return (
       <Row className="container order">
 
         <PayModal visible={showPayModal}></PayModal>
 
         <Col span={24}>
-          <Delivery submitType='delivery' data={{ order, user }} handleRadioChange={this.handleChildSubmit}></Delivery>
+          <Delivery submitType='delivery' data={{ deliveries, overseaAddr }} {...{ addDelivery, updateDelivery, delDelivery }} handleRadioChange={this.handleChildSubmit}></Delivery>
         </Col>
 
         <Col span={14}>
@@ -117,7 +122,7 @@ class Info extends Component {
           <p className="tips">点击提交订单表示您同意 <a href="#">Insta360 商城的销售政策</a></p>
         </Col>
 
-      </Row>
+      </Row >
     )
   }
 }
@@ -126,6 +131,7 @@ function mapStateToProps(state) {
   return {
     order: state.order,
     cart: state.order.cart,
+    deliveries: state.order.deliveries,
     showPayModal: false,
     submitStatus: state.order.submitStatus
   }

@@ -7,14 +7,8 @@ const FormItem = Form.Item
 
 class Delivery extends Component {
 
-  constructor(props) {
-    super(props)
-
-    console.log(this.props)
-    this.state = {
-      visible: false,
-      addr: [...this.props.data.user.address]
-    }
+  state = {
+    visible: false
   }
 
   componentDidMount() {
@@ -24,17 +18,16 @@ class Delivery extends Component {
   // Form
   handleSubmit = (e) => {
     e.preventDefault()
-    this.props.form.validateFields((err, values) => {
+    const { addDelivery, updateDelivery } = this.props
+    this.props.form.validateFields((err, delivery) => {
       if (!err) {
-        console.log('Received values of form: ', values)
-        if (values.id) {
+        if (delivery.id) {
           console.log('update')
-          this.db('update', values)
+          updateDelivery(delivery)
         } else {
           console.log('create')
-          this.db('create', values)
+          addDelivery(delivery)
         }
-        this.props.handleResult(values)
       }
     })
   }
@@ -51,7 +44,6 @@ class Delivery extends Component {
   }
 
   handleOk = (e) => {
-    console.log(e)
     this.handleSubmit(e)
     this.setState({
       visible: false,
@@ -64,59 +56,46 @@ class Delivery extends Component {
     })
   }
 
-  onChange = (e) => {    
-    const { submitType, handleRadioChange} = this.props
+  onChange = (e) => {
+    const { submitType, handleRadioChange } = this.props
     this.setState({
       value: e.target.value,
     }, () => {
       if (handleRadioChange) {
-        handleRadioChange(submitType, this.state.addr[this.state.value].id)
+        handleRadioChange(submitType, 'x')
       }
-    })
-
-    console.log('Address checked', e.target.value, this.state.addr[e.target.value].id)    
-  }
-
-  // db
-  db = (action, addr) => {
-    let t = [...this.state.addr]
-
-    switch (action) {
-      case 'update':
-        for (let index in t) {
-          if (addr.id === t[index].id) {
-            t[index] = addr
-          }
-        }
-        break;
-
-      case 'create':
-        t.push(addr)
-        break;
-
-      default:
-        break;
-    }
-
-    this.setState({
-      addr: [...t]
     })
   }
 
   // doAction 
   doAction = (action, index, event) => {
-    console.log(action)
-    function mapValues(object) {
+    const { deliveries } = this.props.data
+    const { delDelivery } = this.props
+
+    function mapValues(delivery) {
       let newObj = {}
-      for (let key in object) {
+      for (let key in delivery) {
         if (key) {
-          newObj[key] = {
-            value: object[key]
+
+          if (key === 'city') {
+            let cityArray = delivery[key].split('/')
+            let tmp = cityArray.map((v, k) => {
+              return v.replace(' ', '_')
+            })
+            newObj[key] = {
+              value: tmp
+            }
+          } else {
+            newObj[key] = {
+              value: delivery[key]
+            }
           }
         }
       }
       return newObj
     }
+
+    console.log(action)
 
     switch (action) {
       case 'create':
@@ -125,16 +104,12 @@ class Delivery extends Component {
         break;
 
       case 'edit':
-        this.props.form.setFields(mapValues(this.state.addr[index]))
+        this.props.form.setFields(mapValues(deliveries[index]))
         this.showModal()
         break;
 
       case 'delete':
-        let t = [...this.state.addr]
-        t.splice(index, 1)
-        this.setState({
-          addr: [...t]
-        })
+        delDelivery(deliveries[index])
         break;
 
       default:
@@ -146,9 +121,8 @@ class Delivery extends Component {
   render() {
 
     const { getFieldDecorator } = this.props.form
-    const { cities } = this.props.data.order
-    const address = this.state.addr
-
+    const { overseaAddr, deliveries } = this.props.data
+    
     return (
       <div className="section">
         <div className="header">
@@ -157,7 +131,7 @@ class Delivery extends Component {
         </div>
         <RadioGroup onChange={this.onChange} className="delivery-radio-group">
           {
-            address.map((obj, key) =>
+            deliveries.map((obj, key) =>
               <Radio value={key} key={key}>
                 <Card title={obj.name} extra={
                   <div>
@@ -230,7 +204,7 @@ class Delivery extends Component {
                   initialValue: ['zhejiang', 'hangzhou', 'xihu'],
                   rules: [{ type: 'array', required: true, message: 'Please select your habitual residence!' }],
                 })(
-                  <Cascader options={cities} />
+                  <Cascader options={overseaAddr} />
                   )}
               </FormItem>
             </div>
@@ -252,7 +226,7 @@ class Delivery extends Component {
             <div className="zip">
               <FormItem>
                 {
-                  getFieldDecorator('zip', {
+                  getFieldDecorator('zip_code', {
                     rules: [{ required: true, message: 'Please input your zip code!' }],
                   })(
                     <Input placeholder="Zip Code" />

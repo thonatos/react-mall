@@ -44,7 +44,7 @@ export function fetchProduct(name) {
         'X-Language': 'zh_cn'
       }
     }).then(function (response) {
-      console.log(response.data)
+      // console.log(response.data)
       dispatch(fetchSuccess(response.data))
     }).catch(function (response) {
       console.log('#server', response)
