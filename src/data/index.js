@@ -115,92 +115,92 @@ export const assets = {
 //   }
 // }
 
-export const user = {
-  profile: {
-    avatar: require('../assets/product/pro/pro-large@2x.png'),
-    mail: 'thonatos@sina.com'
-  },
-  address: [
-    {
-      id: '1',
-      address: "jiangsu nanjing xinsisis",
-      city: [
-        'jiangsu', 'nanjing', 'zhonghuamen'
-      ],
-      name: "thonatos 0",
-      phone: "18013140312",
-      zip: "000000"
-    },
-    {
-      id: '2',
-      address: "jiangsu nanjing xinsisis",
-      city: [
-        'jiangsu', 'nanjing', 'zhonghuamen'
-      ],
-      name: "thonatos 1",
-      phone: "18013140312",
-      zip: "000000"
-    },
-    {
-      id: '3',
-      address: "jiangsu nanjing xinsisis",
-      city: [
-        'jiangsu', 'nanjing', 'zhonghuamen'
-      ],
-      name: "thonatos 2",
-      phone: "18013140312",
-      zip: "000000"
-    },
-    {
-      id: '4',
-      address: "jiangsu nanjing xinsisis",
-      city: [
-        'jiangsu', 'nanjing', 'zhonghuamen'
-      ],
-      name: "thonatos 3",
-      phone: "18013140312",
-      zip: "000000"
-    }
-  ],
-  orders: {
-    closed: [
-      {
-        key: 'xxx',
-        thumb: require('../assets/product/pro/pro-large@2x.png'),
-        sn: 'Insta360 Pro',
-        datetime: '2014-12-24 23:12:00',
-        price: 2000
-      }
-    ],
-    paying: [
-      {
-        key: 'xxx',
-        thumb: require('../assets/product/pro/pro-large@2x.png'),
-        sn: 'Insta360 Nano',
-        datetime: '2014-12-24 23:12:00',
-        price: 100000
-      }
-    ],
-    receiving: [
-      {
-        key: 'xxx',
-        thumb: require('../assets/product/pro/pro-large@2x.png'),
-        sn: 'Insta360 Nano',
-        datetime: '2014-12-24 23:12:00',
-        price: 100000
-      }
-    ]
-  },
-  cart: [
-    {
-      key: 'pro',
-      thumb: require('../assets/product/pro/pro-large@2x.png'),
-      name: 'Insta360 Pro',
-      count: 1,
-      price: 2000
-    }
-  ]
-}
+// export const user = {
+//   profile: {
+//     avatar: require('../assets/product/pro/pro-large@2x.png'),
+//     mail: 'thonatos@sina.com'
+//   },
+//   address: [
+//     {
+//       id: '1',
+//       address: "jiangsu nanjing xinsisis",
+//       city: [
+//         'jiangsu', 'nanjing', 'zhonghuamen'
+//       ],
+//       name: "thonatos 0",
+//       phone: "18013140312",
+//       zip: "000000"
+//     },
+//     {
+//       id: '2',
+//       address: "jiangsu nanjing xinsisis",
+//       city: [
+//         'jiangsu', 'nanjing', 'zhonghuamen'
+//       ],
+//       name: "thonatos 1",
+//       phone: "18013140312",
+//       zip: "000000"
+//     },
+//     {
+//       id: '3',
+//       address: "jiangsu nanjing xinsisis",
+//       city: [
+//         'jiangsu', 'nanjing', 'zhonghuamen'
+//       ],
+//       name: "thonatos 2",
+//       phone: "18013140312",
+//       zip: "000000"
+//     },
+//     {
+//       id: '4',
+//       address: "jiangsu nanjing xinsisis",
+//       city: [
+//         'jiangsu', 'nanjing', 'zhonghuamen'
+//       ],
+//       name: "thonatos 3",
+//       phone: "18013140312",
+//       zip: "000000"
+//     }
+//   ],
+//   orders: {
+//     closed: [
+//       {
+//         key: 'xxx',
+//         thumb: require('../assets/product/pro/pro-large@2x.png'),
+//         sn: 'Insta360 Pro',
+//         datetime: '2014-12-24 23:12:00',
+//         price: 2000
+//       }
+//     ],
+//     paying: [
+//       {
+//         key: 'xxx',
+//         thumb: require('../assets/product/pro/pro-large@2x.png'),
+//         sn: 'Insta360 Nano',
+//         datetime: '2014-12-24 23:12:00',
+//         price: 100000
+//       }
+//     ],
+//     receiving: [
+//       {
+//         key: 'xxx',
+//         thumb: require('../assets/product/pro/pro-large@2x.png'),
+//         sn: 'Insta360 Nano',
+//         datetime: '2014-12-24 23:12:00',
+//         price: 100000
+//       }
+//     ]
+//   },
+//   cart: [
+//     {
+//       key: 'pro',
+//       thumb: require('../assets/product/pro/pro-large@2x.png'),
+//       name: 'Insta360 Pro',
+//       count: 1,
+//       price: 2000
+//     }
+//   ]
+// }
 
 
 

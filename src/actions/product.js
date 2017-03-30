@@ -1,11 +1,11 @@
-import axios from 'axios'
-import { API_SERVER_SHOP } from '../config/'
+import { API_SERVER_MALL } from '../config/'
+import request from '../utils/request'
 
 export const FETCH_PRODUCT = 'FETCH_PRODUCT'
 export const FETCH_PRODUCT_ERROR = 'FETCH_PRODUCT_ERROR'
 export const FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS'
 
-const FETCH_URL = API_SERVER_SHOP + '/product/getInfo'
+const FETCH_URL = API_SERVER_MALL + '/product/getInfo'
 const PRODUCTS = {
   'pro': 1,
   'nano': 2
@@ -32,22 +32,17 @@ function fetchError(data) {
 
 export function fetchProduct(name) {  
   return (dispatch) => {    
-    return axios({
-      url: FETCH_URL,
-      timeout: 20000,
+    return request({
+      url: FETCH_URL,      
       data: {
         id: PRODUCTS[name]
       },
-      method: 'post',
-      responseType: 'json',
-      headers: {
-        'X-Language': 'zh_cn'
-      }
-    }).then(function (response) {
-      // console.log(response.data)
-      dispatch(fetchSuccess(response.data))
-    }).catch(function (response) {
-      console.log('#server', response)
+      method: 'post',      
+      language: true
+    },(response) =>{      
+      dispatch(fetchSuccess(response))
+    }, (err)=> {
+      console.log('#server', err)
       dispatch(fetchError())
     })
   }

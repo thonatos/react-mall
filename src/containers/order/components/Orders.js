@@ -4,6 +4,8 @@ import { Row, Col, Table } from 'antd'
 
 class Orders extends Component {
 
+
+
   render() {
 
     const columns = [
@@ -20,6 +22,11 @@ class Orders extends Component {
         }
       },
       {
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email'
+      },
+      {
         title: 'SN',
         dataIndex: 'sn',
         key: 'sn'
@@ -28,22 +35,31 @@ class Orders extends Component {
         title: 'Datetime',
         dataIndex: 'datetime',
         key: 'datetime'
-      },
-      {
-        title: 'Price',
-        dataIndex: 'price',
-        key: 'price'
       }
     ]
 
-    const data = this.props.data 
+    const { data } = this.props
+    let dataSource = []
+    if (Array.isArray(data) && data.length > 0) {
+      dataSource = data.map((item, key) => {
+        return {
+          thumb: 'https://www.insta360.com/public/images/v6/download/air@1x.png',
+          key: item.id,
+          account: item.account,
+          email: item.contact_email || 'none',
+          sn: item.order_number,
+          datetime: new Date(item.create_time).toISOString()
+        }
+      })
+    }
+
 
     return (
       <Row className="cart" type="flex" align="top">
         <Col span={24}>
           <Table pagination={false}
             columns={columns}
-            dataSource={data}
+            dataSource={dataSource}
             style={{
               margin: '1em 0'
             }}

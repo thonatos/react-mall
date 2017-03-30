@@ -57,12 +57,14 @@ class Delivery extends Component {
   }
 
   onChange = (e) => {
-    const { submitType, handleRadioChange } = this.props
+    const { submitType, handleRadioChange } = this.props    
+    const {deliveries} = this.props.data        
     this.setState({
       value: e.target.value,
     }, () => {
       if (handleRadioChange) {
-        handleRadioChange(submitType, 'x')
+        const id = deliveries[e.target.value].id
+        handleRadioChange(submitType, id)
       }
     })
   }

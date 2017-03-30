@@ -1,5 +1,31 @@
 .product-detail {
     margin: 2em auto !important;
+    .carousel {
+        text-align: center;
+        .carousel-item {
+            img {
+                width: 100%;
+                margin: 0 auto;
+                max-width: 100%;
+                max-height: 400px;
+                overflow: hidden;
+            }
+            text-align: center;
+        }
+        .slick-thumb {
+            margin-top: 2em;
+            li {
+                padding: 0 1em;
+                display: inline-block;
+                &.slick-active {}
+                img {
+                    width: 96px;
+                    height: 96px;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
     .detail {
         p {
             margin: 1em 0;

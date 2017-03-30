@@ -3,31 +3,19 @@ import {
   LOGIN_ERROR
 } from '../actions/auth'
 
-import Cache from '../utils/cache'
-
-const initialState = {}
-
-// function getInitialState() {
-//   const cache = new Cache()
-//   return cache.get('auth') || {
-//     isLoggedIn: false,
-//     profile: {}
-//   }
-// }
-
-function setInitialState(state) {
-  const cache = new Cache()
-  cache.set('auth', JSON.stringify(state))
+const initialState = {
+    isLoggedIn: false,
+    expiration: 0,
+    token: ''
 }
 
 export default function reducer(state = initialState, action = {}) {
   const { data } = action
   switch (action.type) {
-    case LOGIN_SUCCESS:
-      setInitialState(data)
-      return Object.assign({}, data)
+    case LOGIN_SUCCESS:          
+      return {...state, ...data}
     case LOGIN_ERROR:
-      return Object.assign({}, data)
+      return {...data}
     default:
       return state
   }

@@ -29,8 +29,7 @@ class Detail extends Component {
     fetchProduct(productName)
   }
 
-  onChange = (e) => {
-    console.log('radio checked', e.target.value)
+  onChange = (e) => {    
     this.setState({
       suit: e.target.value,
     })
@@ -59,21 +58,21 @@ class Detail extends Component {
 
     const settings = {
       customPaging: function (i) {
-        return <a><img src={product.displays[i].preview} alt='' /></a>
+        return <img src={product.displays[i].preview} alt={i} />
       },
-      dotsClass: 'slick-dots slick-thumb',
+      dotsClass: 'slick-thumb',
       infinite: true,
       speed: 500
     }
 
     return (
       <Row className="container product-detail" type="flex" align="top">
-        <Col md={12} style={{ textAlign: 'center' }}>
-          <Carousel autoplay effect="fade" {...settings}>
+        <Col md={12} className="carousel">
+          <Carousel  effect="fade" {...settings}>
             {
               product.displays.map((obj, key) =>
-                <div key={key}>
-                  <img src={obj.url} alt="" style={{ textAlign: 'center', 'width': '388px', 'margin': '0 auto' }} />
+                <div key={key} className="carousel-item">
+                  <img src={obj.url} alt={key} />
                 </div>
               )
             }

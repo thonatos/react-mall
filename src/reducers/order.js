@@ -2,7 +2,7 @@ import {
   META_GET_ALL_SUCCESS,
 
   ORDER_CREATE_SUCCESS,
-  ORDER_PAY_SUCCESS,
+  ORDER_GET_USER_ORDERS_SUCCESS,
 
   CART_UPDATE,
 
@@ -13,10 +13,36 @@ import {
 } from '../actions/order'
 
 const initialState = {
+  pagePayments: '',
   submitStatus: 'disabled',
   showPayModal: false,
+  order: {
+    id: ''
+  },
+  orders: {
+    init: [],
+    payed: [],
+    prepared: [],
+    onDelivery: [],
+    success: [],
+    canceled: []
+  },
+  cart: [],
   deliveries: [],
-  cart: []
+  payTypes: [],
+  payChannels: [],
+  invoiceTypes: [],
+  shippingMethods: [],
+
+}
+
+const ORDER_STATE_ENUM = {
+  '0': 'init',
+  '1': 'payed',
+  '2': 'prepared',
+  '3': 'onDelivery',
+  '9': 'success',
+  '-1': 'canceled'
 }
 
 export default function reducer(state = initialState, action = {}) {
@@ -27,21 +53,26 @@ export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
 
     case META_GET_ALL_SUCCESS:
-      Object.assign(initialState, data)
-      return {
-        ...state
-      }
+      // return Object.assign(state, data)
+      return { ...state, ...data }
 
     case ORDER_CREATE_SUCCESS:
-      Object.assign(initialState, data)
       return {
-        ...state
+        ...state,
+        order: data.order,
+        showPayModal: true
       }
 
-    case ORDER_PAY_SUCCESS:
-      Object.assign(initialState, data)
+    case ORDER_GET_USER_ORDERS_SUCCESS:
+      const { orderState } = action      
+      const orderStateKey = ORDER_STATE_ENUM[orderState] 
+
+      let ordersObject = {}
+      ordersObject[orderStateKey] = [...data.orders]
+      
       return {
-        ...state
+        ...state,
+        orders: ordersObject
       }
 
     case CART_UPDATE:
@@ -77,7 +108,7 @@ export default function reducer(state = initialState, action = {}) {
       let newDeliveries = deliveries.map((delivery) => {
         if (delivery.id === data.delivery.id) {
           return data.delivery
-        }else{
+        } else {
           return delivery
         }
       })

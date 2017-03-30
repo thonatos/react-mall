@@ -5,6 +5,7 @@ import * as authActions from '../../actions/auth'
 import md5 from 'crypto-js/md5'
 
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 import { Row, Col, message } from 'antd'
 
 import LoginForm from './components/Login'
@@ -17,8 +18,8 @@ class Login extends Component {
     const { auth, router } = nextProps
     if (auth.isLoggedIn) {
       router.push('/product/pro')
-    } else {      
-      if(auth.errorMsg) message.error(auth.errorMsg)
+    } else {
+      if (auth.errorMsg) message.error(auth.errorMsg)
     }
   }
 
@@ -48,10 +49,10 @@ class Login extends Component {
 
             <Row type="flex" align="top" justify="space-between">
               <Col span={4}>
-                <a href="#">忘记密码</a>
+                <Link to='/user/forgetPassword'>忘记密码</Link>
               </Col>
-              <Col span={4}>
-                <a href="#">注册</a>
+              <Col span={4}>                
+                <Link to='/user/register'>注册</Link>
               </Col>
             </Row>
 

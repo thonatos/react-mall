@@ -15,17 +15,26 @@ import RadioContainer from './components/RadioContainer'
 import './Info.less'
 import overseaAddr from '../../assets/address/china.json'
 
-// import { user } from '../data'
-
 class Info extends Component {
 
   componentDidMount() {
-    const { getAllMeta, cart, listDelivery } = this.props
+    const { getAllMeta, listDelivery } = this.props.actions
+    const { cart } = this.props.reducer
+
     getAllMeta()
     listDelivery()
 
     if (cart.length < 1) {
       message.warn('你当前购物车为空.')
+    } else {
+      this.setState({
+        items: [
+          {
+            id: cart[0]._commodityId,
+            number: cart[0].count
+          }
+        ]
+      })
     }
   }
 
@@ -43,7 +52,6 @@ class Info extends Component {
         state[type] = values
         break;
       case 'delivery':
-        console.log(values)
         state[type] = values
         break;
       default:
@@ -52,13 +60,12 @@ class Info extends Component {
     }
 
     this.setState(state, () => {
-      console.log(this.state)
+      // console.log(this.state)
     })
   }
 
-
   handleSubmit = (e) => {
-    const { createOrder } = this.props
+    const { createOrder } = this.props.actions
     if (!this.state.delivery) {
       console.log('delivery')
       return false
@@ -74,53 +81,48 @@ class Info extends Component {
     createOrder(this.state)
   }
 
-  handlePay = (e) => {
-    const { order, payOrder } = this.props
-    payOrder({
-      id: order.order.id,
-      channel: 'alipay'
-    })
-  }
-
   render() {
-    const { order, cart, showPayModal, submitStatus, deliveries } = this.props
-
-    const { addDelivery, delDelivery, updateDelivery } = this.props
+    const { router } = this.props
+    const { addDelivery, delDelivery, updateDelivery } = this.props.actions
+    const {
+      order, cart, deliveries,
+      showPayModal, submitStatus, pagePayments,
+      payTypes, payChannels, invoiceTypes, shippingMethods } = this.props.reducer
 
     return (
       <Row className="container order">
 
-        <PayModal visible={showPayModal}></PayModal>
+        <PayModal visible={showPayModal} router={router} payChannels={payChannels} order={{...order, pagePayments}} ></PayModal>
 
-        <Col span={24}>
-          <Delivery submitType='delivery' data={{ deliveries, overseaAddr }} {...{ addDelivery, updateDelivery, delDelivery }} handleRadioChange={this.handleChildSubmit}></Delivery>
-        </Col>
+      <Col span={24}>
+        <Delivery submitType='delivery' data={{ deliveries, overseaAddr }} {...{ addDelivery, updateDelivery, delDelivery }} handleRadioChange={this.handleChildSubmit}></Delivery>
+      </Col>
 
-        <Col span={14}>
-          <RadioContainer title='发票信息' submitType='invoice' data={order.invoiceTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>
-          <div>发票抬头</div>
-        </Col>
+      <Col span={14}>
+        <RadioContainer title='发票信息' submitType='invoice' data={invoiceTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>
+        <div>发票抬头</div>
+      </Col>
 
-        <Col span={14}>
-          <RadioContainer title='支付方式' submitType='payType' data={order.payTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>
-        </Col>
+      <Col span={14}>
+        <RadioContainer title='支付方式' submitType='payType' data={payTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>
+      </Col>
 
-        <Col span={14}>
-          <RadioContainer title='物流方式' submitType='shippingMethods' data={order.shippingMethods} handleRadioChange={this.handleChildSubmit}></RadioContainer>
-        </Col>
+      <Col span={14}>
+        <RadioContainer title='物流方式' submitType='shippingMethods' data={shippingMethods} handleRadioChange={this.handleChildSubmit}></RadioContainer>
+      </Col>
 
-        <Col span={24}>
-          <Contact submitType='contact' handleInputChange={this.handleChildSubmit}></Contact>
-        </Col>
+      <Col span={24}>
+        <Contact submitType='contact' handleInputChange={this.handleChildSubmit}></Contact>
+      </Col>
 
-        <Col span={24}>
-          <Cart data={cart}></Cart>
-        </Col>
+      <Col span={24}>
+        <Cart data={cart}></Cart>
+      </Col>
 
-        <Col span={24} className="action-block">
-          <Button type="primary" disabled={submitStatus} onClick={this.handleSubmit}>提交订单</Button>
-          <p className="tips">点击提交订单表示您同意 <a href="#">Insta360 商城的销售政策</a></p>
-        </Col>
+      <Col span={24} className="action-block">
+        <Button type="primary" disabled={submitStatus} onClick={this.handleSubmit}>提交订单</Button>
+        <p className="tips">点击提交订单表示您同意 <a href="#">Insta360 商城的销售政策</a></p>
+      </Col>
 
       </Row >
     )
@@ -129,16 +131,12 @@ class Info extends Component {
 
 function mapStateToProps(state) {
   return {
-    order: state.order,
-    cart: state.order.cart,
-    deliveries: state.order.deliveries,
-    showPayModal: false,
-    submitStatus: state.order.submitStatus
+    reducer: state.order
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(orderActions, dispatch)
+  return { actions: bindActionCreators(orderActions, dispatch) }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Info)

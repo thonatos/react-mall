@@ -1,6 +1,8 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import * as orderActions from '../../actions/order'
+
 import React, { Component } from 'react'
 import { Row, Col, Tabs, Menu } from 'antd'
 
@@ -9,39 +11,37 @@ const TabPane = Tabs.TabPane
 import Orders from './components/Orders'
 import './List.less'
 
-import { user } from '../data'
-
-function mapStateToProps(state) {
-  return {}
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch)
-}
+// import { user } from '../data'
 
 class List extends Component {
 
   state = {
-    current: '1',
+    current: '0',
+  }
+
+  componentDidMount() {
+    const { getUserOrders } = this.props.actions
+    getUserOrders('0')
   }
 
   handleClick = (e) => {
-    console.log('click ', e);
     this.setState({
       current: e.key,
     });
   }
 
-  callback(key) {
-    console.log(key);
+  callback = (key) => {
+    const { getUserOrders } = this.props.actions
+    getUserOrders(key)
   }
 
   render() {
 
-    const profile = user.profile
-    const orders = user.orders
-
-    console.log(orders)
+    const { orders } = this.props.reducer
+    const profile = {
+      avatar: require('../../assets/product/pro/pro-large@2x.png'),
+      mail: 'YOUR_EMAIL_ADDRESS@DOMAIN.COM'
+    }
 
     return (
       <Row className="container order-list" type="flex" align="top">
@@ -75,18 +75,24 @@ class List extends Component {
 
           {/* Detail */}
           <Col span={24} className="orders">
-            <Tabs defaultActiveKey="1" onChange={this.callback}>
-              <TabPane tab="全部有效订单" key="1">
-                <Orders data={orders.receiving}></Orders>
+            <Tabs defaultActiveKey={this.state.current} onChange={this.callback}>
+              <TabPane tab="全部订单" key="0">
+                <Orders data={orders.init}></Orders>
+              </TabPane>
+              <TabPane tab="已支付" key="1">
+                <Orders data={orders.payed}></Orders>
               </TabPane>
               <TabPane tab="待支付" key="2">
-                <Orders data={orders.paying}></Orders>
+                <Orders data={orders.prepared}></Orders>
               </TabPane>
               <TabPane tab="待收货" key="3">
-                <Orders data={orders.receiving}></Orders>
+                <Orders data={orders.onDelivery}></Orders>
               </TabPane>
-              <TabPane tab="已关闭" key="4">
-                <Orders data={orders.closed}></Orders>
+              <TabPane tab="待收货" key="9">
+                <Orders data={orders.success}></Orders>
+              </TabPane>
+              <TabPane tab="已关闭" key="-1">
+                <Orders data={orders.canceled}></Orders>
               </TabPane>
             </Tabs>
           </Col>
@@ -94,6 +100,18 @@ class List extends Component {
       </Row >
     )
   }
+}
+
+function mapStateToProps(state) {
+  return {
+    reducer: {
+      orders: state.order.orders
+    }
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators(orderActions, dispatch) }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(List)
