@@ -11,10 +11,6 @@ class Delivery extends Component {
     visible: false
   }
 
-  componentDidMount() {
-    this.props.form.validateFields()
-  }
-
   // Form
   handleSubmit = (e) => {
     e.preventDefault()
@@ -57,8 +53,8 @@ class Delivery extends Component {
   }
 
   onChange = (e) => {
-    const { submitType, handleRadioChange } = this.props    
-    const {deliveries} = this.props.data        
+    const { submitType, handleRadioChange } = this.props
+    const { deliveries } = this.props.data
     this.setState({
       value: e.target.value,
     }, () => {
@@ -123,13 +119,14 @@ class Delivery extends Component {
   render() {
 
     const { getFieldDecorator } = this.props.form
+    const { title } = this.props
     const { overseaAddr, deliveries } = this.props.data
-    
+
     return (
       <div className="section">
         <div className="header">
-          <h3>收货地址</h3>
-          <a onClick={this.doAction.bind(this, 'create')}>添加新地址</a>
+          <h3>{title}</h3>
+          <a onClick={this.doAction.bind(this, 'create')}>Add new Address</a>
         </div>
         <RadioGroup onChange={this.onChange} className="delivery-radio-group">
           {
@@ -137,10 +134,10 @@ class Delivery extends Component {
               <Radio value={key} key={key}>
                 <Card title={obj.name} extra={
                   <div>
-                    <a onClick={this.doAction.bind(this, 'edit', key)}>编辑</a>
+                    <a onClick={this.doAction.bind(this, 'edit', key)}>Edit</a>
                     &nbsp;
                     &nbsp;
-                    <a onClick={this.doAction.bind(this, 'delete', key)}>删除</a>
+                    <a onClick={this.doAction.bind(this, 'delete', key)}>Delete</a>
                   </div>
                 } style={{
                   marginTop: '1em'
@@ -153,10 +150,10 @@ class Delivery extends Component {
           }
         </RadioGroup>
 
-        <Modal title="添加新地址"
+        <Modal title="Add new Address"
           visible={this.state.visible}
-          okText="保存"
-          cancelText="取消"
+          okText="Save"
+          cancelText="Cancel"
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >

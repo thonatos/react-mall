@@ -8,7 +8,7 @@ class Home extends Component {
     const links = [
       ['/user/login', '登录'],
       ['/user/register', '注册'],
-      ['/product/pro', '产品页'],
+      ['/product/1', '产品页'],
       ['/order/list', '订单列表']
     ]
 

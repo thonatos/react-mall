@@ -6,6 +6,7 @@ class Cart extends Component {
 
   render() {
 
+    const { title } = this.props
     const columns = [
       {
         title: 'Thumb',
@@ -36,20 +37,12 @@ class Cart extends Component {
       }
     ]
 
-      // let _cart = [{
-      //   count: 1,
-      //   name: share.cart.product.info.name,
-      //   key: share.cart.product.info.name,
-      //   thumb: share.cart.product.displays[0].url,
-      //   price: share.cart.commodity.price
-      // }]    
-
     const data = this.props.data
 
     return (
       <div className="section">
         <div className="header">
-          <h3>订单概览</h3>
+          <h3>{title}</h3>
         </div>
         <Row className="cart" type="flex" align="top">
           <Col span={24}>

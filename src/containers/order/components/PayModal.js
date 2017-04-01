@@ -6,13 +6,13 @@ const Panel = Collapse.Panel
 class PayModal extends Component {
 
   handleOk = (e) => {
-    const { router } = this.props
-    router.push('/order/list')
+    const { handlePayModalCallback } = this.props    
+    handlePayModalCallback('ok')
   }
 
   handleCancel = (e) => {
-    const { router } = this.props
-    router.push('/order/list')
+    const { handlePayModalCallback } = this.props
+    handlePayModalCallback('cancel')
   }
 
   render() {

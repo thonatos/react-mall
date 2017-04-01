@@ -1,18 +1,31 @@
-.order-list {
-    >div {
-        margin: 1em 0;
-    }
-
-    .info{
-        .account,
-        .orders {
-            margin: 1em 0;
+.list {
+    .breadcrumb {
+        background: #F8F8F8;
+        .links {
+            height: 4em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            a {
+                padding-left: 1em;
+                font-family: PingFangSC-Regular;
+                font-size: 14px;
+                color: rgba(0, 0, 0, 0.50);
+                line-height: 24px;
+            }
         }
-
-        .account{
-            padding-bottom: 1.8em;
-            border-bottom: 1px solid #d9d9d9;
+    }
+    .content {
+        padding: 1em 0;
+        .info {
+            .account,
+            .orders {
+                margin: 1em 0;
+            }
+            .account {
+                padding-bottom: 1.8em;
+                border-bottom: 1px solid #d9d9d9;
+            }
         }
     }
-    padding-bottom: 2em !important;
 }

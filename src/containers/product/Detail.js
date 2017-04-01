@@ -4,6 +4,7 @@ import * as orderActions from '../../actions/order'
 import * as productActions from '../../actions/product'
 
 import React, { PropTypes, Component } from 'react'
+import { Link } from 'react-router'
 import { Row, Col, Radio, Button, Carousel, Spin } from 'antd'
 import { Loading } from '../../components/'
 
@@ -11,6 +12,11 @@ import './Detail.less'
 
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
+
+import IC_CAR from '../../assets/icons/ic_car@2x.png'
+import IC_XIANGOU from '../../assets/icons/ic_xiangou@2x.png'
+
+import LANGUAGE from '../../language/'
 
 class Detail extends Component {
 
@@ -29,7 +35,7 @@ class Detail extends Component {
     fetchProduct(productName)
   }
 
-  onChange = (e) => {    
+  onChange = (e) => {
     this.setState({
       suit: e.target.value,
     })
@@ -42,12 +48,28 @@ class Detail extends Component {
       commodity: product.commodities[this.state.suit]
     })
     updateCart(cart)
-    router.push('/order/info')
+    router.push('/order/confirm')
+  }
+
+  getLinks = (auth) => {
+    if (auth.isLoggedIn) {
+      return (
+        <div className="container links">
+          <Link to="/order/list">My Account</Link>
+        </div>
+      )
+    } else {
+      return (
+        <div className="container links">
+          <Link to="/user/register">Register</Link>
+          <Link to="/user/login">Log in</Link>
+        </div>
+      )
+    }
   }
 
   render() {
-    const { product, loading } = this.props
-
+    const { product, loading, auth } = this.props    
     if (loading) {
       return (
         <Spin spinning={loading}>
@@ -65,54 +87,63 @@ class Detail extends Component {
       speed: 500
     }
 
+    const links = this.getLinks(auth)
+
     return (
-      <Row className="container product-detail" type="flex" align="top">
-        <Col md={12} className="carousel">
-          <Carousel  effect="fade" {...settings}>
-            {
-              product.displays.map((obj, key) =>
-                <div key={key} className="carousel-item">
-                  <img src={obj.url} alt={key} />
-                </div>
-              )
-            }
-          </Carousel>
+      <Row className="product" type="flex" align="top">
+
+        <Col md={24} className="breadcrumb">
+          {links}
         </Col>
 
-        <Col md={8} offset={4}>
-          <div className="detail">
-            <h2>{product.info.name}</h2>
-            <p>Price: {product.commodities[this.state.suit].price}</p>
-
-            <div className="suits">
-              <RadioGroup onChange={this.onChange} value={this.state.suit} className="suits-radio-group">
-                {
-                  product.commodities.map((obj, key) =>
-                    <RadioButton key={key} value={key}>{obj.name}</RadioButton>
-                  )
-                }
-              </RadioGroup>
-            </div>
-
-            <div className="specs">
+        <Col md={24} className="container detail">
+          <Col md={12} className="carousel">
+            <Carousel autoplay effect="fade" {...settings}>
               {
-                product.info.features.map((obj, key) =>
-                  <Col md={12} key={key}>
-                    <p>{obj}</p>
-                  </Col>
+                product.displays.map((obj, key) =>
+                  <div key={key} className="carousel-item">
+                    <img src={obj.url} alt={key} />
+                  </div>
                 )
               }
+            </Carousel>
+          </Col>
+
+          <Col md={8} offset={4} className="info">
+            <div className="">
+              <h2 className="title">{product.info.name}</h2>
+              <p className="desc">{LANGUAGE.PRODUCT_PRO_DESC}</p>
+
+              <div className="suits">
+                <RadioGroup onChange={this.onChange} value={this.state.suit} className="suits-radio-group">
+                  {
+                    product.commodities.map((obj, key) =>
+                      <RadioButton key={key} value={key}>{obj.name}</RadioButton>
+                    )
+                  }
+                </RadioGroup>
+              </div>
+
+              <div className="specs">
+                {
+                  product.info.features.map((obj, key) =>
+                    <Col md={12} key={key}>
+                      <p>{obj}</p>
+                    </Col>
+                  )
+                }
+              </div>
+
+              <Button type="primary" className="btn-next" onClick={this.onSubmit}>{LANGUAGE.INFO_BTN_BUY_NOW}</Button>
+
+              <div className="notice">
+                <p><img className="car" src={IC_CAR} alt="" />{LANGUAGE.INFO_TIPS_DELIVERY_TIME}</p>
+                <p><img className="xiangou" src={IC_XIANGOU} alt="" />{LANGUAGE.INFO_TIPS_ORDER_LIMITION}</p>
+              </div>
             </div>
-
-            <Button type="primary" className="btn-next" onClick={this.onSubmit}>立即购买</Button>
-
-            <div className="notice">
-              <p>预计发货时间：3月3日</p>
-              <p>每人限购一台，3月3日之前预购可享受早鸟价</p>
-            </div>
-
-          </div>
+          </Col>
         </Col>
+
       </Row>
     )
 
@@ -121,6 +152,7 @@ class Detail extends Component {
 
 function mapStateToProps(state) {
   return {
+    auth: state.auth,
     product: state.product.data,
     loading: state.product.loading
   }

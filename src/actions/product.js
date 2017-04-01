@@ -6,10 +6,6 @@ export const FETCH_PRODUCT_ERROR = 'FETCH_PRODUCT_ERROR'
 export const FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS'
 
 const FETCH_URL = API_SERVER_MALL + '/product/getInfo'
-const PRODUCTS = {
-  'pro': 1,
-  'nano': 2
-}
 
 function fetchSuccess(data) {
   if(data.code === 0){
@@ -30,12 +26,12 @@ function fetchError(data) {
   }
 }
 
-export function fetchProduct(name) {  
+export function fetchProduct(id) {  
   return (dispatch) => {    
     return request({
       url: FETCH_URL,      
       data: {
-        id: PRODUCTS[name]
+        id: id
       },
       method: 'post',      
       language: true

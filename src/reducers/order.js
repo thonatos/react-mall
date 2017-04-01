@@ -5,6 +5,7 @@ import {
   ORDER_GET_USER_ORDERS_SUCCESS,
 
   CART_UPDATE,
+  ORDER_UPDATE,
 
   DELIVERY_ADD_SUCCESS,
   DELIVERY_LIST_SUCCESS,
@@ -17,7 +18,8 @@ const initialState = {
   submitStatus: 'disabled',
   showPayModal: false,
   order: {
-    id: ''
+    id: '',
+    enabled: true
   },
   orders: {
     init: [],
@@ -64,21 +66,31 @@ export default function reducer(state = initialState, action = {}) {
       }
 
     case ORDER_GET_USER_ORDERS_SUCCESS:
-      const { orderState } = action      
-      const orderStateKey = ORDER_STATE_ENUM[orderState] 
+      const { orderState } = action
+      const orderStateKey = ORDER_STATE_ENUM[orderState]
 
       let ordersObject = {}
       ordersObject[orderStateKey] = [...data.orders]
-      
+
       return {
         ...state,
         orders: ordersObject
       }
 
+    case ORDER_UPDATE:
+      return {
+        ...state,
+        showPayModal: data.showPayModal,
+        order: {
+          ...state.order, 
+          enabled: data.order.enabled
+        }
+      }
+
     case CART_UPDATE:
       let cart = Array.of(data)
       return {
-        ...state,
+        ...state, 
         cart: cart,
         submitStatus: cart.length > 0 ? null : 'disabled'
       }

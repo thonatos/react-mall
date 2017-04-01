@@ -69,8 +69,34 @@ export function getUserOrders(state) {
   }
 }
 
+// INFO
+
+export const ORDER_UPDATE = 'ORDER_UPDATE'
+
+export function updateOrder(data) {  
+  return (dispatch) => {
+    dispatch({
+      type: ORDER_UPDATE,
+      data: data
+    })
+  }
+}
+
 // CART
 export const CART_UPDATE = 'CART_UPDATE'
+
+export function restoreCart(data) {
+  const raw = cache.get('cart')
+  const order = raw ? JSON.parse(raw) : false
+  if(order){    
+    return (dispatch) => {
+      dispatch({
+        type: CART_UPDATE,
+        data: order
+      })
+    }
+  } 
+}
 
 export function updateCart(data) {
   const order = {
@@ -83,6 +109,7 @@ export function updateCart(data) {
     _commodityId: data.commodity.id
   }
 
+  cache.set('cart', JSON.stringify(order))
   return (dispatch) => {
     dispatch({
       type: CART_UPDATE,
