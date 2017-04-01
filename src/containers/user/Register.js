@@ -1,88 +1,66 @@
-import axios from 'axios'
-import md5 from 'crypto-js/md5'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as authActions from '../../actions/auth'
 
 import React, { Component } from 'react'
-import { Row, Col, message } from 'antd'
+import { Row, Col } from 'antd'
 import './Register.less'
 
 import RegisterForm from './components/Register'
-import { assets } from '../data'
 
-const USER_REGISTER = 'https://api.insta360.com/user/v1/account/signup'
-const CAPTCHA_SEND = 'https://api.insta360.com/user/v1/captcha/send'
+const language = {
+  "USER_REGISTER_TITLE": "Register Insta360 Account",
+  "USER_REGISTER_DESC": "If you have already registered an Insta360 account, you can use it to log in.",
+  "USER_REGISTER_TIPS": "Click ‘Register’ and you’ll receive an email with a confirmation link from Insta360. Please click the link in the email to complete the process.",
+  "USER_REGISTER_BTN": "REGISTER",
+  "USER_REGISTER_CAPTCHA": "verification code",
+  "USER_REGISTER_EMAIL": "email",
+  "USER_REGISTER_PASSWORD": "password",
+  "USER_REGISTER_PASSWORD_CONFIRM": "password confirm"
+}
+
+const PRO_SKETCH = 'https://static.insta360.cn/assets/mall/pro_sketch@1x.png'
 
 class Register extends Component {
 
-  handleGetCaptcha = (user) => {
-    user['type'] = 'signup'
-    axios({
-      url: CAPTCHA_SEND,
-      timeout: 10000,
-      method: 'post',
-      data: user,
-      responseType: 'json'
-    }).then(function (response) {
-      const data = response.data
-      if (data.code === 0) {
-        console.log('#captcha:send')
-      } else {
-        message.error(data.errorMsg)
-      }
-    }).catch(function (response) {
-      message.error('发送失败，请重试')
-    })
+  componentWillReceiveProps(nextProps) {
+    const { auth, router } = nextProps
+    if (auth.register) {      
+      router.push('/user/login')
+    }
   }
 
-  handleRedict() {
-    const { router } = this.props
-    router.push('/product/nano')
+  handleGetCaptcha = (user) => {
+    const { sendCaptcha } = this.props.actions
+    user['type'] = 'signup'
+    sendCaptcha(user)
   }
 
   handleRegister = (user) => {
-    user['source'] = 'shop'
-    user['password'] = md5(user.password).toString()
-    delete user['confirm']
-
-    axios({
-      url: USER_REGISTER,
-      timeout: 10000,
-      method: 'post',
-      data: user,
-      responseType: 'json'
-    }).then(function (response) {
-      const data = response.data
-      if (data.code === 0) {
-        console.log('#register:success')
-        message.success('注册成功，请使用该账号登录', 5, this.handleRedict)
-      } else {
-        message.error(data.errorMsg)
-      }
-    }).catch(function (response) {
-      message.error('发送失败，请重试')
-    })
+    const { register } = this.props.actions
+    register(user)
   }
 
   render() {
 
     return (
       <Row className="container register" type="flex" align="top">
-
         <Col md={12} className="display-block">
-          <img className="thumb" src={assets.sketch} alt="pro-sketch" />
+          <img className="thumb" src={PRO_SKETCH} alt="pro-sketch" />
         </Col>
 
         <Col md={12} className="interaction-block">
+
           <div className="inner">
 
-            <h2 className="title">注册 Insta360 帐号</h2>
-            <p className="tips">如果您已在Insta360其他产品上注册过Insta360账号，可用原有账号直接登录。</p>
+            <h2 className="title">{language.USER_REGISTER_TITLE}</h2>
+            <p className="tips">{language.USER_REGISTER_DESC}</p>
 
-            {/* register form */}
             <RegisterForm
               register={this.handleRegister}
               getCaptcha={this.handleGetCaptcha}
             />
-            <p className="instruction">* 点击注册后，你将收到一个来自 Insta360 的验证邮件，请点击邮件中的链接完成邮箱认证</p>
+            <p className="instruction">{language.USER_REGISTER_TIPS}</p>
           </div>
         </Col>
 
@@ -91,4 +69,14 @@ class Register extends Component {
   }
 }
 
-export default Register
+function mapStateToProps(state) {
+  return {
+    reducer: state.auth
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators(authActions, dispatch) }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

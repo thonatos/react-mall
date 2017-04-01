@@ -5,11 +5,8 @@ const FormItem = Form.Item
 
 class Register extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      confirmDirty: false
-    }
+  state = {
+    confirmDirty: false
   }
 
   handleConfirmBlur = (e) => {
@@ -44,17 +41,13 @@ class Register extends Component {
   }
 
   handleGetCaptcha = (e) => {
-    this.props.form.validateFields((err, values) => {
-      console.log(values)
+    e.preventDefault()
+    this.props.form.validateFields(['email'], (err, values) => {
       if (values.email) {
         this.props.getCaptcha(values)
       }
     })
   }
-
-  // handleReset = () => {
-  //   this.props.form.resetFields()
-  // }
 
   render() {
 
@@ -70,9 +63,9 @@ class Register extends Component {
             <FormItem>
               {getFieldDecorator('email', {
                 rules: [{
-                  type: 'email', message: '邮箱不合法!',
+                  type: 'email', message: 'Invalid Email Address!',
                 }, {
-                  required: true, message: '请输入您的邮箱!',
+                  required: true, message: 'Please input your email address!',
                 }],
               })(
                 <Input prefix={<Icon type="mail" />} placeholder="email" />
@@ -85,7 +78,7 @@ class Register extends Component {
             <FormItem>
               {getFieldDecorator('password', {
                 rules: [{
-                  required: true, message: '请输入密码!',
+                  required: true, message: 'Please input your password!',
                 }, {
                   validator: this.checkConfirm,
                 }],
@@ -100,7 +93,7 @@ class Register extends Component {
             <FormItem>
               {getFieldDecorator('confirm', {
                 rules: [{
-                  required: true, message: '请确认您的密码!',
+                  required: true, message: 'Please confirm your password!',
                 }, {
                   validator: this.checkPassword,
                 }],
@@ -117,14 +110,14 @@ class Register extends Component {
                 <Col span={12}>
                   {
                     getFieldDecorator('code', {
-                      rules: [{ required: true, message: '请输入验证码' }],
+                      rules: [{ required: true, message: 'Please input your captcha' }],
                     })(
-                      <Input placeholder="验证码" prefix={<Icon type="message" />} />
+                      <Input placeholder="captcha" prefix={<Icon type="message" />} />
                       )
                   }
                 </Col>
                 <Col span={10} offset={2}>
-                  <Button size="large" style={{ width: '100%' }} onClick={this.handleGetCaptcha}>获取验证码</Button>
+                  <Button style={{ width: '100%' }} onClick={this.handleGetCaptcha}>GET CAPTCHA</Button>
                 </Col>
               </Row>
             </FormItem>
@@ -133,7 +126,7 @@ class Register extends Component {
           {/* Submit */}
           <Col span={24}>
             <FormItem >
-              <Button type="primary" htmlType="submit" size="large" style={{ width: '100%', height: '48px' }}>注册</Button>
+              <Button type="primary" htmlType="submit" size="large" style={{ width: '100%', height: '48px' }}>REGISTER</Button>
             </FormItem>
           </Col>
 

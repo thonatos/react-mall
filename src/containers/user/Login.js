@@ -2,30 +2,42 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as authActions from '../../actions/auth'
 
-import md5 from 'crypto-js/md5'
-
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import { Row, Col, message } from 'antd'
+import { Row, Col } from 'antd'
 
 import LoginForm from './components/Login'
-import { assets } from '../../data/'
 import './Register.less'
 
+const language = {
+  "USER_LOGIN_TITLE": "Log in Insta360",
+  "USER_LOGIN_DESC": "If you have already registered an Insta360 account, you can use it to log in.",
+  "USER_LOGIN_BTN": "LOG IN",
+  "USER_LOGIN_TIPS_FORGET_PASSWORD": "Forget your password？",
+  "USER_LOGIN_TIPS_REGISTER": "Register"
+}
+
+const PRO_SKETCH = 'https://static.insta360.cn/assets/mall/pro_sketch@1x.png'
+
 class Login extends Component {
+
+  componentDidMount() {
+    const { auth, router } = this.props
+    if (auth.isLoggedIn) {
+      router.push('/product/1')
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     const { auth, router } = nextProps
     if (auth.isLoggedIn) {
-      router.push('/product/pro')
-    } else {
-      if (auth.errorMsg) message.error(auth.errorMsg)
+      router.push('/product/1')
     }
   }
 
-  handleLogin = (user) => {
-    user['password'] = md5(user.password).toString()
-    this.props.login(user)
+  handleLogin = (user) => {    
+    const { login } = this.props
+    login(user)
   }
 
   render() {
@@ -34,25 +46,24 @@ class Login extends Component {
       <Row className="container register" type="flex" align="top">
 
         <Col md={12} className="display-block">
-          <img className="thumb" src={assets.sketch} alt="pro-sketch" />
+          <img className="thumb" src={PRO_SKETCH} alt="pro-sketch" />
         </Col>
 
         <Col md={12} className="interaction-block">
 
           <div className="inner">
 
-            <h2 className="title">登录 Insta360</h2>
-            <p className="tips">如果您已在Insta360其他产品上注册过Insta360账号，可用原有账号直接登录。</p>
-
-            {/* register form */}
+            <h2 className="title">{language.USER_LOGIN_TITLE}</h2>
+            <p className="tips">{language.USER_LOGIN_DESC}</p>
+            
             <LoginForm handleLogin={this.handleLogin} />
 
             <Row type="flex" align="top" justify="space-between">
-              <Col span={4}>
-                <Link to='/user/forgetPassword'>忘记密码</Link>
+              <Col span={12}>
+                <Link to='/user/retrieve'>{language.USER_LOGIN_TIPS_FORGET_PASSWORD}</Link>
               </Col>
-              <Col span={4}>                
-                <Link to='/user/register'>注册</Link>
+              <Col span={4}>
+                <Link to='/user/register'>{language.USER_LOGIN_TIPS_REGISTER}</Link>
               </Col>
             </Row>
 

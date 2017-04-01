@@ -5,11 +5,8 @@ const FormItem = Form.Item
 
 class Login extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      confirmDirty: false
-    }
+  state = {
+    confirmDirty: false
   }
 
   handleSubmit = (e) => {
@@ -22,21 +19,19 @@ class Login extends Component {
   }
 
   render() {
-
     const { getFieldDecorator } = this.props.form
-
     return (
       <Form onSubmit={this.handleSubmit} style={{ marginTop: '2em' }}>
         <Row type="flex" align="top">
-        
+
           {/* Email */}
           <Col span={24}>
             <FormItem>
               {getFieldDecorator('email', {
                 rules: [{
-                  type: 'email', message: '邮箱不合法!',
+                  type: 'email', message: 'Invalid Email Address!',
                 }, {
-                  required: true, message: '请输入您的邮箱!',
+                  required: true, message: 'Please input your email address!',
                 }],
               })(
                 <Input prefix={<Icon type="mail" />} placeholder="email" />
@@ -49,7 +44,7 @@ class Login extends Component {
             <FormItem>
               {getFieldDecorator('password', {
                 rules: [{
-                  required: true, message: '请输入密码!',
+                  required: true, message: 'Please input your password!',
                 }, {
                   validator: this.checkConfirm,
                 }],
@@ -62,7 +57,7 @@ class Login extends Component {
           {/* Submit */}
           <Col span={24}>
             <FormItem >
-              <Button type="primary" htmlType="submit" size="large" style={{ width: '100%', height: '48px' }}>登录</Button>
+              <Button type="primary" htmlType="submit" size="large" style={{ width: '100%', height: '48px' }}>LOG IN</Button>
             </FormItem>
           </Col>
 
