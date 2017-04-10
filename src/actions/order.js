@@ -50,18 +50,16 @@ export function createOrder(order) {
   }
 }
 
-export function getUserOrders(state) {  
+export function getUserOrders() {  
   return (dispatch) => {
     return request({
       url: API_ORDER_GET_USER_ORDERS,
       method: 'post',
-      data: {
-        state: state
-      },
+      data: {},
       token: token
     }, (data) => {
       if (data.code === 0) {
-        dispatch({ type: ORDER_GET_USER_ORDERS_SUCCESS, data: data.data , orderState: state})
+        dispatch({ type: ORDER_GET_USER_ORDERS_SUCCESS, data: data.data})
       }
     }, (response) => {
       console.log('#server', response)
@@ -98,14 +96,14 @@ export function restoreCart(data) {
   } 
 }
 
-export function updateCart(data) {
+export function updateCart(data) {  
   const order = {
     name: data.product.info.name,
     key: data.product.info.name,
     thumb: data.product.displays[0].url,
     price: data.commodity.price,
-    count: 1,
-    _productId: data.product.product.id,
+    count: data.count,
+    _productId: data.product.id,
     _commodityId: data.commodity.id
   }
 
