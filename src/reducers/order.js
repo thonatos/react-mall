@@ -38,15 +38,6 @@ const initialState = {
 
 }
 
-const ORDER_STATE_ENUM = {
-  '0': 'init',
-  '1': 'payed',
-  '2': 'prepared',
-  '3': 'onDelivery',
-  '9': 'success',
-  '-1': 'canceled'
-}
-
 export default function reducer(state = initialState, action = {}) {
 
   const { data } = action
@@ -66,15 +57,10 @@ export default function reducer(state = initialState, action = {}) {
       }
 
     case ORDER_GET_USER_ORDERS_SUCCESS:
-      const { orderState } = action
-      const orderStateKey = ORDER_STATE_ENUM[orderState]
-
-      let ordersObject = {}
-      ordersObject[orderStateKey] = [...data.orders]
 
       return {
         ...state,
-        orders: ordersObject
+        orders: data.orders
       }
 
     case ORDER_UPDATE:

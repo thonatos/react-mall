@@ -11,7 +11,7 @@ export default function reducer(state = initialState, action = {}) {
     case FETCH_PRODUCT_SUCCESS:
       return {
         ...state,
-        data: data,
+        data: data.product,
         loading: false
       }
     default:
