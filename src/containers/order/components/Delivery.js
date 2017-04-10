@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Modal, Form, Input, Cascader, Radio } from 'antd'
+import { Card, Modal, Form, Input, Cascader, Radio, Button, Row, Col } from 'antd'
 
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
@@ -122,12 +122,11 @@ class Delivery extends Component {
     const { title } = this.props
     const { overseaAddr, deliveries } = this.props.data
 
-    return (
-      <div className="section">
-        <div className="header">
-          <h3>{title}</h3>
-          <a onClick={this.doAction.bind(this, 'create')}>Add new Address</a>
-        </div>
+    let radioComponent = (<div></div>)
+    const hasDeliveries = deliveries && deliveries.length > 0
+    
+    if (hasDeliveries) {
+      radioComponent = (
         <RadioGroup onChange={this.onChange} className="delivery-radio-group">
           {
             deliveries.map((obj, key) =>
@@ -149,6 +148,32 @@ class Delivery extends Component {
             )
           }
         </RadioGroup>
+      )
+    } else {
+      radioComponent = (
+        <Row>
+          <Col span={7} style={{ paddingRight: '1em' }}>
+            <Button size="large" onClick={this.doAction.bind(this, 'create')} style={{
+              height: '48px',
+              margin: '14px 0',
+              width: '100%',
+              fontSize: '14px',
+              fontWeight: 'normal'
+            }}>Add new Address</Button>
+          </Col>
+        </Row>)
+    }
+
+    return (
+      <div className="section">
+        <div className="header">
+          <h3>{title}</h3>
+          {
+            hasDeliveries ? <a onClick={this.doAction.bind(this, 'create')} >Add new Address</a> : <div></div>
+          }
+        </div>
+
+        {radioComponent}
 
         <Modal title="Add new Address"
           visible={this.state.visible}

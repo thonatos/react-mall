@@ -5,7 +5,7 @@ class NoMatch extends Component {
     return (
       <div className="container">
         <div style={{
-          padding: '8em 0'
+          padding: '16em 0'
         }}>
           <h3>404</h3>
           <p>Not Found.</p>
