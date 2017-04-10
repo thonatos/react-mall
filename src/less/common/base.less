@@ -39,122 +39,113 @@ a {
     .wrap {
         width: 100%;
         .content {
-            // padding: 0 2em;
-            // // 设置内部宽度最大值为1366px
-            // > div {
-            //     max-width: 1366px;
-            //     max-width: 1240px;
-            //     padding: 0 16px;             
-            //     margin: 0 auto;
-            //     这里统一体验，为col设置了12px的padding
-            //     > div {
-            //         padding: 12px;
-            //     }
-            // }
+            min-height: 500px;
         }
         .footer {
-            background: #F8F8F8;
-            .top {
-                .container {
-                    border-bottom: 1px solid rgba(25, 25, 25, 0.06);
-                    .brand {
-                        a {
-                            display: block;
-                            width: 123px;
-                            opacity: .6;
-                            >img {
-                                width: 100%;
-                                max-width: 100%;
-                                margin-top: 24px;
+            .component-footer {
+                background: #F8F8F8;
+                .top {
+                    .container {
+                        border-bottom: 1px solid rgba(25, 25, 25, 0.06);
+                        .brand {
+                            a {
+                                display: block;
+                                width: 123px;
+                                opacity: .6;
+                                >img {
+                                    width: 100%;
+                                    max-width: 100%;
+                                    margin-top: 24px;
+                                }
                             }
                         }
-                    }
-                    .social {
-                        text-align: right;
-                        a {
-                            display: inline-block;
-                            padding: 10px;
-                            width: 56px;
-                            height: 56px;
-                            margin: 8px 0;
-                            -webkit-transition: all ease-in-out .25s;
-                            transition: all ease-in-out .25s;
-                            opacity: .4;
-                            cursor: pointer;
-                            position: relative;
-                            >img {
-                                width: 100%;
-                                max-width: 100%;
+                        .social {
+                            text-align: right;
+                            a {
+                                display: inline-block;
+                                padding: 10px;
+                                width: 56px;
+                                height: 56px;
+                                margin: 8px 0;
+                                -webkit-transition: all ease-in-out .25s;
+                                transition: all ease-in-out .25s;
+                                opacity: .4;
+                                cursor: pointer;
+                                position: relative;
+                                >img {
+                                    width: 100%;
+                                    max-width: 100%;
+                                }
                             }
                         }
                     }
                 }
-            }
-            .middle {
-                .container {
-                    .blocks {
-                        padding: 32px 0 0;
-                        .block {
-                            .title {
-                                padding: 0;
-                                margin: 0 0 20px 0;
-                                font-size: 12px;
-                                font-weight: bold;
-                                color: #666666;
-                                span {
-                                    font-weight: normal;
-                                    color: #F7F7F7;
+                .middle {
+                    .container {
+                        .blocks {
+                            padding: 32px 0 0;
+                            .block {
+                                .title {
+                                    padding: 0;
+                                    margin: 0 0 20px 0;
+                                    font-size: 12px;
+                                    font-weight: bold;
+                                    color: #666666;
+                                    span {
+                                        font-weight: normal;
+                                        color: #F7F7F7;
+                                    }
                                 }
-                            }
-                            ul.link-list {
-                                list-style: none;
-                                padding-left: 0;
-                                margin: 1em 0;
-                                li {
-                                    a {
-                                        font-size: 12px;
-                                        line-height: 28px;
-                                        color: #737373;
-                                        text-decoration: none;
-                                        -webkit-transition: all ease-in-out 0.3s;
-                                        -moz-transition: all ease-in-out 0.3s;
-                                        transition: all ease-in-out 0.3s;
-                                        &:hover {
-                                            color: #333333;
-                                        }
-                                        &:active {
-                                            color: #595959;
+                                ul.link-list {
+                                    list-style: none;
+                                    padding-left: 0;
+                                    margin: 1em 0;
+                                    li {
+                                        a {
+                                            font-size: 12px;
+                                            line-height: 28px;
+                                            color: #737373;
+                                            text-decoration: none;
+                                            -webkit-transition: all ease-in-out 0.3s;
+                                            -moz-transition: all ease-in-out 0.3s;
+                                            transition: all ease-in-out 0.3s;
+                                            &:hover {
+                                                color: #333333;
+                                            }
+                                            &:active {
+                                                color: #595959;
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    .contact {
-                        margin: 0;
-                        margin-bottom: 80px;
-                        font-size: 12px;
-                        line-height: 28px;
-                        color: #737373;
-                        span {
-                            display: inline-block;
-                            width: 20px;
+                        .contact {
+                            margin: 0;
+                            margin-bottom: 80px;
+                            font-size: 12px;
+                            line-height: 28px;
+                            color: #737373;
+                            span {
+                                display: inline-block;
+                                width: 20px;
+                            }
                         }
                     }
                 }
-            }
-            .bottom {
-                background: #f5f5f5;
-                .container {
-                    .text-right {
-                        text-align: right;
-                    }
-                    p {
-                        margin: 0;
-                        padding: 0;
-                        font-size: 12px;
-                        line-height: 64px;
-                        color: #8c8c8c;
+                .bottom {
+                    background: #f5f5f5;
+                    .container {
+                        .text-right {
+                            text-align: right;
+                        }
+                        p {
+                            margin: 0;
+                            padding: 0;
+                            font-size: 12px;
+                            line-height: 64px;
+                            color: #8c8c8c;
+                        }
                     }
                 }
             }

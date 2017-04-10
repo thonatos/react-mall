@@ -11,15 +11,15 @@ export default class App extends Component {
   }
 
   render() {
-    // console.log('#app:path', this.props.router.location.pathname)    
     return (
       <Row className="wrap">
         <Col span={24} className="content">
           {this.props.children}
         </Col>
-        <Footer />
+        <Col span={24} className="footer">
+          <Footer />
+        </Col>
       </Row>
     )
   }
-
 }

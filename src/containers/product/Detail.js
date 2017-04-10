@@ -5,7 +5,7 @@ import * as productActions from '../../actions/product'
 
 import React, { PropTypes, Component } from 'react'
 import { Link } from 'react-router'
-import { Row, Col, Radio, Button, Carousel, Spin } from 'antd'
+import { Row, Col, Radio, Button, Carousel, Spin, InputNumber } from 'antd'
 import { Loading } from '../../components/'
 
 import './Detail.less'
@@ -26,7 +26,8 @@ class Detail extends Component {
   }
 
   state = {
-    suit: 0
+    suit: 0,
+    count: 1
   }
 
   componentDidMount() {
@@ -35,9 +36,15 @@ class Detail extends Component {
     fetchProduct(productName)
   }
 
+  onCountChange = (v) => {
+    this.setState({
+      count: v
+    })
+  }
+
   onChange = (e) => {
     this.setState({
-      suit: e.target.value,
+      suit: e.target.value
     })
   }
 
@@ -45,6 +52,7 @@ class Detail extends Component {
     const { router, product, updateCart } = this.props
     let cart = Object.assign({}, {
       product: product,
+      count: this.state.count,
       commodity: product.commodities[this.state.suit]
     })
     updateCart(cart)
@@ -69,7 +77,7 @@ class Detail extends Component {
   }
 
   render() {
-    const { product, loading, auth } = this.props    
+    const { product, loading, auth } = this.props
     if (loading) {
       return (
         <Spin spinning={loading}>
@@ -89,28 +97,31 @@ class Detail extends Component {
 
     const links = this.getLinks(auth)
 
+    const currency = product.commodities[this.state.suit].price.currency
+    const amount = product.commodities[this.state.suit].price.amount
+
     return (
-      <Row className="product" type="flex" align="top">
+      <Row className="product">
 
         <Col md={24} className="breadcrumb">
           {links}
         </Col>
 
-        <Col md={24} className="container detail">
-          <Col md={12} className="carousel">
-            <Carousel autoplay effect="fade" {...settings}>
-              {
-                product.displays.map((obj, key) =>
-                  <div key={key} className="carousel-item">
-                    <img src={obj.url} alt={key} />
-                  </div>
-                )
-              }
-            </Carousel>
-          </Col>
+        <Col md={24} className="detail">
+          <Row className="container">
+            <Col md={12} className="carousel">
+              <Carousel autoplay effect="fade" {...settings}>
+                {
+                  product.displays.map((obj, key) =>
+                    <div key={key} className="carousel-item">
+                      <img src={obj.url} alt={key} />
+                    </div>
+                  )
+                }
+              </Carousel>
+            </Col>
 
-          <Col md={8} offset={4} className="info">
-            <div className="">
+            <Col md={8} offset={4} className="info">
               <h2 className="title">{product.info.name}</h2>
               <p className="desc">{LANGUAGE.PRODUCT_PRO_DESC}</p>
 
@@ -118,13 +129,31 @@ class Detail extends Component {
                 <RadioGroup onChange={this.onChange} value={this.state.suit} className="suits-radio-group">
                   {
                     product.commodities.map((obj, key) =>
-                      <RadioButton key={key} value={key}>{obj.name}</RadioButton>
+                      <RadioButton key={key} value={key}>{obj.info.name}</RadioButton>
                     )
                   }
                 </RadioGroup>
               </div>
 
-              <div className="specs">
+              <Row className="price">
+                <Col span={12}>
+                  Price:
+                    </Col>
+                <Col span={12}>
+                  {currency} {amount}*{this.state.count}
+                </Col>
+              </Row>
+
+              <Row className="count">
+                <Col span={12}>
+                  Count:
+                    </Col>
+                <Col span={12}>
+                  <InputNumber size="large" min={1} max={5} defaultValue={this.state.count} onChange={this.onCountChange} />
+                </Col>
+              </Row>
+
+              <Row className="specs">
                 {
                   product.info.features.map((obj, key) =>
                     <Col md={12} key={key}>
@@ -132,7 +161,7 @@ class Detail extends Component {
                     </Col>
                   )
                 }
-              </div>
+              </Row>
 
               <Button type="primary" className="btn-next" onClick={this.onSubmit}>{LANGUAGE.INFO_BTN_BUY_NOW}</Button>
 
@@ -140,8 +169,10 @@ class Detail extends Component {
                 <p><img className="car" src={IC_CAR} alt="" />{LANGUAGE.INFO_TIPS_DELIVERY_TIME}</p>
                 <p><img className="xiangou" src={IC_XIANGOU} alt="" />{LANGUAGE.INFO_TIPS_ORDER_LIMITION}</p>
               </div>
-            </div>
-          </Col>
+
+            </Col>
+          </Row>
+
         </Col>
 
       </Row>
@@ -152,9 +183,9 @@ class Detail extends Component {
 
 function mapStateToProps(state) {
   return {
+    loading: state.product.loading,
     auth: state.auth,
-    product: state.product.data,
-    loading: state.product.loading
+    product: state.product.data
   }
 }
 

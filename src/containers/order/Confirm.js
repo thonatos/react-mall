@@ -9,6 +9,7 @@ import { Row, Col, Button, message } from 'antd'
 
 import Cart from './components/Cart'
 import Contact from './components/Contact'
+import Note from './components/Note'
 import Delivery from './components/Delivery'
 import PayModal from './components/PayModal'
 import RadioContainer from './components/RadioContainer'
@@ -22,6 +23,7 @@ const language = {
   "ORDER_TITLE_SHIPPING_METHOD": "Shipping method",
   "ORDER_TITLE_CONTACT": "Contact",
   "ORDER_TITLE_INVOICE": "Invoice",
+  "ORDER_TITLE_NOTE": "Note",
   "ORDER_TITLE_ORDER_SUMMAGE": "Order summary",
   "ORDER_TIPS": "Hitting \"SUBMIT ORDER\" means you agree to the",
   "ORDER_TIPS_POLICY": " Insta360 Store’sales policy  ",
@@ -131,7 +133,8 @@ class Confirm extends Component {
     const {
       order, cart, deliveries,
       showPayModal, submitStatus, pagePayments,
-      payTypes, payChannels, invoiceTypes, shippingMethods } = this.props.reducer
+      // invoiceTypes
+      payTypes, payChannels, shippingMethods } = this.props.reducer
 
     return (
       <div className="order">
@@ -151,9 +154,11 @@ class Confirm extends Component {
             <Delivery title={language.ORDER_TITLE_SHIPPING_ADDRESS} submitType='delivery' data={{ deliveries, overseaAddr }} {...{ addDelivery, updateDelivery, delDelivery }} handleRadioChange={this.handleChildSubmit}></Delivery>
           </Col>
 
-          <Col span={14}>
-            <RadioContainer title={language.ORDER_TITLE_INVOICE} submitType='invoice' data={invoiceTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>            
-          </Col>
+          {/*
+            <Col span={14}>
+              <RadioContainer title={language.ORDER_TITLE_INVOICE} submitType='invoice' data={invoiceTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>            
+            </Col>          
+          */}
 
           <Col span={14}>
             <RadioContainer title={language.ORDER_TITLE_PAYMENT_METHOD} submitType='payType' data={payTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>
@@ -166,6 +171,10 @@ class Confirm extends Component {
           <Col span={24}>
             <Contact title={language.ORDER_TITLE_CONTACT} submitType='contact' handleInputChange={this.handleChildSubmit}></Contact>
           </Col>
+
+          <Col span={24}>
+            <Note title={language.ORDER_TITLE_NOTE} submitType='note' handleInputChange={this.handleChildSubmit}></Note>
+          </Col>          
 
           <Col span={24}>
             <Cart title={language.ORDER_TITLE_ORDER_SUMMAGE} data={cart}></Cart>
