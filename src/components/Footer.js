@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col } from 'antd'
 
 const LINK_BRAND = ['http://www.insta360.com/public/images/v6/footer/logo@1x.png', 'http://www.insta360.com/public/js/pro/retina-fdbc1e31.js?#']
+
 const LINK_SOCIAL = [
   ['http://www.insta360.com/public/images/v6/footer/wechat@1x.png', ''],
   ['http://www.insta360.com/public/images/v6/footer/weibo@1x.png', 'http://weibo.com/insta360'],
@@ -47,7 +48,7 @@ const LINK_MENU = [{
 class Footer extends Component {
   render() {
     return (
-      <Row className="footer">
+      <Row className="component-footer">
 
         <Col span={24} className="top">
           <Row className="container">
