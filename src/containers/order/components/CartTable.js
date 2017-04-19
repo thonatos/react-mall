@@ -4,6 +4,10 @@ import lang from '../../../language/'
 
 const Option = Select.Option
 
+function parsePrice (price){
+  return Math.round(price * 100) / 100
+}
+
 class CartTable extends Component {
 
   state = {
@@ -12,13 +16,13 @@ class CartTable extends Component {
 
   handleChange = (value) => {
     const { fee, handleInputChange } = this.props
-    const { coupons } = fee    
+    const { coupons } = fee
     this.setState({
       coupon: value
-    }, () => {      
-      if (handleInputChange && coupons.length > 0) {        
+    }, () => {
+      if (handleInputChange && coupons.length > 0) {
         handleInputChange('coupon', coupons[this.state.coupon].id)
-      }      
+      }
     })
   }
 
@@ -37,7 +41,7 @@ class CartTable extends Component {
                 <h3>{lang.c_cart_table_select_coupons}</h3>
               </Col>
               <Col span={10}>
-                <Select onChange={this.handleChange} style={{ width: 200 }}>
+                <Select onChange={this.handleChange} style={{ width: 200 }} defaultValue="-1">
                   <Option value="-1">none</Option>
                   {
                     coupons.map((v, key) => {
@@ -68,8 +72,8 @@ class CartTable extends Component {
     const coupon = this.state.coupon === '-1' ? 0 : coupons[this.state.coupon].fee.amount
     const ship = (orderExtraFee && orderExtraFee.shippingCost.amount) || 0
     const tax = (orderExtraFee && orderExtraFee.tax.amount) || 0
-    const total = items_sum + ship + tax - coupon
-
+    const total = parsePrice(items_sum + ship + tax - coupon)    
+    
     const priceStyle = {
       textAlign: 'right'
     }
@@ -80,7 +84,7 @@ class CartTable extends Component {
     }
 
     const getCouponsNode = () => {
-      if (this.state.coupons === '-1') {
+      if (this.state.coupon === '-1') {
         return (<div></div>)
       } else {
         return (
@@ -105,8 +109,13 @@ class CartTable extends Component {
           {getCouponsNode()}
 
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_shipping_tax_cost}</h3></Col>
-            <Col span={10} style={priceStyle}><span>{ship + tax}</span></Col>
+            <Col span={14}><h3>{lang.c_cart_table_balance_tax}</h3></Col>
+            <Col span={10} style={priceStyle}><span>{tax}</span></Col>
+          </Row>
+
+          <Row>
+            <Col span={14}><h3>{lang.c_cart_table_balance_shipping_cost}</h3></Col>
+            <Col span={10} style={priceStyle}><span>{ship}</span></Col>
           </Row>
 
           <Row>
@@ -123,7 +132,7 @@ class CartTable extends Component {
   render() {
 
     const { data } = this.props
-    
+
     const columns = [
       {
         title: lang.c_cart_table_column_thumb,
@@ -140,7 +149,10 @@ class CartTable extends Component {
       {
         title: lang.c_cart_table_column_name,
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
+        render: (text, record, index) => {
+          return record.commodity.info.name
+        }        
       },
       {
         title: lang.c_cart_table_column_price,
@@ -167,7 +179,7 @@ class CartTable extends Component {
       }
     ]
 
-    
+
     return (
       <div className="section">
         <div className="header">

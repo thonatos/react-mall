@@ -1,17 +1,15 @@
 import { notification } from 'antd'
 import md5 from 'crypto-js/md5'
-import Cache from '../utils/cache'
 import request from '../utils/request'
 import lang from '../language/'
 import { API_SERVER_USER } from '../config/'
-
-const cache = new Cache()
 
 function getExpiretion() {
   return Math.ceil(Date.now() / 1000) + 60 * 60 // 30Min
 }
 
 function notify(title, message, type, callback) {
+  
   const args = {
     message: title,
     description: message,
@@ -21,6 +19,9 @@ function notify(title, message, type, callback) {
       }
     }
   }
+
+  console.log(type, args)
+  
   return type ? notification[type](args) : notification.open(args)
 }
 
@@ -79,9 +80,7 @@ export function login(user) {
           isLoggedIn: true,
           expiration: getExpiretion()
         }, response.data)
-
-        cache.set('auth', JSON.stringify(state))
-
+        
         notify(lang.auth_login_success_title, lang.auth_login_success, 'success')
 
         dispatch({
@@ -122,8 +121,6 @@ export function register(user) {
           isLoggedIn: true,
           expiration: getExpiretion()
         }, response.data)
-
-        cache.set('auth', JSON.stringify(state))
 
         notify(lang.auth_register_success_title, lang.auth_register_success, 'success')
 
@@ -177,8 +174,7 @@ export function retrieve(user) {
 // LOGOUT
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
 export function logout() {
-  return (dispatch) => {
-    cache.remove('auth')
+  return (dispatch) => {    
     dispatch({
       type: LOGOUT_SUCCESS,
       data: {}

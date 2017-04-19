@@ -25,11 +25,18 @@ class Auth extends Component {
   componentWillReceiveProps(nextProps) {
 
     const { router } = nextProps
-    const {common_redirect, authAction} = nextProps.reducer
+    const {redirectUrl, authAction, isLoggedIn} = nextProps.reducer
     const { setRedirect } = nextProps.actions
-    if(authAction === 'done' & common_redirect !== ''){
+    
+    // console.log('xxxx', isLoggedIn, authAction)
+    if(authAction === 'none' && !isLoggedIn){
+      router.push('/')
+    }
+
+    if(authAction === 'done' && redirectUrl !== ''){
+      console.log('####', redirectUrl)
       setRedirect('')
-      router.push(common_redirect)
+      router.push(redirectUrl)
     }    
   }
 
@@ -84,7 +91,8 @@ class Auth extends Component {
         return (
           <Row className="auth-login">
             <div className="auth-suggestion">
-              {lang.auth_login_tips}<a href="#" onClick={this.handleClick.bind(this, 'register')}>{lang.auth_login_tips_register}</a>{lang.auth_login_tips_retrieve_msg}<a href="#" onClick={this.handleClick.bind(this, 'retrieve')}>{lang.auth_login_tips_retrieve}</a>
+              {lang.auth_login_tips}<a href="#" onClick={this.handleClick.bind(this, 'register')}>{lang.auth_login_tips_register}</a> 
+              {/* {lang.auth_login_tips_retrieve_msg}<a href="#" onClick={this.handleClick.bind(this, 'retrieve')}>{lang.auth_login_tips_retrieve}</a> */}
             </div>
             <Col span={24}>
               <LoginForm handleLogin={this.handleLogin} />

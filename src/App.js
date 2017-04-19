@@ -14,15 +14,20 @@ export default class App extends Component {
     children: PropTypes.element.isRequired
   }
 
-  render() {    
-    const { router } = this.props    
-    const showCart = ((router.routes.length > 1 ? router.routes[1].path : '') === 'product')      
+  test(e){
+    console.log(e)
+  }
+
+  render() {
+    const { router } = this.props
+    const showCart = ((router.routes.length > 1 ? router.routes[1].path : '') === 'product')
 
     return (
-      <Row className="wrap">
+      <Row className="wrap" onScroll={this.test}>
         <Col span={24} className="g-header">
           <Header />
-        </Col>      
+        </Col>    
+        
         <Col span={24} className="content">
           {this.props.children}
         </Col>
@@ -30,7 +35,7 @@ export default class App extends Component {
           <Footer />
         </Col>
 
-        <Auth router={this.props.router}/>
+        <Auth router={this.props.router} />
         <Cart router={this.props.router} showCart={showCart} />
       </Row>
     )

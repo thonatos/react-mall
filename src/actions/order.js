@@ -29,15 +29,20 @@ export function getAllMeta() {
 // ORDER
 export const ORDER_CREATE_SUCCESS = 'ORDER_CREATE_SUCCESS'
 export const ORDER_CANCEL_SUCCESS = 'ORDER_CANCEL_SUCCESS'
+export const ORDER_REFUND_SUCCESS = 'ORDER_REFUND_SUCCESS'
 export const ORDER_GET_USER_ORDERS_SUCCESS = 'ORDER_GET_USER_ORDERS_SUCCESS'
 export const ORDER_GET_ORDER_INFO_SUCCESS = 'ORDER_GET_ORDER_INFO_SUCCESS'
+export const ORDER_GET_INVOICE_MAILTO_SUCCESS = 'ORDER_GET_INVOICE_MAILTO_SUCCESS'
 export const ORDER_COUNT_EXTRA_FEE_SUCCESS = 'ORDER_COUNT_EXTRA_FEE_SUCCESS'
 
 const API_ORDER_CREATE = API_SERVER_MALL + '/order/createOrder'
 const API_ORDER_CANCEL = API_SERVER_MALL + '/order/cancelOrder'
+const API_ORDER_REFUND = API_SERVER_MALL + '/order/refundOrder'
+
 const API_ORDER_GET_USER_ORDERS = API_SERVER_MALL + '/order/getUserOrders'
 const API_ORDER_GET_ORDER_INFO = API_SERVER_MALL + '/order/getOrderInfo'
 const API_ORDER_COUNT_EXTRA_FEE = API_SERVER_MALL + '/order/getOrderSheetExtra'
+const API_ORDER_GET_INVOICE_MAILTO = API_SERVER_MALL + '/meta/getRequestInvoiceMailto'
 
 export function createOrder(order) {
   return (dispatch) => {
@@ -90,6 +95,40 @@ export function cancelOrder(order) {
     })
   }
 }
+
+export function refundOrder(order){
+    return (dispatch) => {
+    return request({
+      url: API_ORDER_REFUND,
+      method: 'post',
+      data: order,
+      token: true
+    }, (data) => {
+      if (data.code === 0) {
+        dispatch({ type: ORDER_REFUND_SUCCESS, data:  data.data.order})
+      }
+    }, (response) => {
+      console.log('#server', response)
+    })
+  }
+}
+
+export function getInvoiceMailto(){
+    return (dispatch) => {
+    return request({
+      url: API_ORDER_GET_INVOICE_MAILTO,
+      method: 'get',      
+      token: false
+    }, (data) => {
+      if (data.code === 0) {
+        dispatch({ type: ORDER_GET_INVOICE_MAILTO_SUCCESS, data: data.data })
+      }
+    }, (response) => {
+      console.log('#server', response)
+    })
+  }
+} 
+
 
 export function countOrderExtraFee(order) {
   return (dispatch) => {
@@ -207,6 +246,7 @@ export function addToCart(data, type) {
     thumb: data.product.displays[0].url,
     price: data.commodity.price,
     count: data.count,
+    commodity: data.commodity,
     _productId: data.product.id,
     _commodityId: data.commodity.id
   }

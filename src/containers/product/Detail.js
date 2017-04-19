@@ -4,7 +4,6 @@ import { Row, Col, Radio, Button, Carousel, Spin, InputNumber, message } from 'a
 import './Detail.less'
 import lang from '../../language/'
 import { Loading } from '../../components/'
-import IC_CAR from '../../assets/icons/ic_car@2x.png'
 import { ReduxHelper } from '../../helpers/'
 
 const RadioButton = Radio.Button
@@ -23,12 +22,9 @@ class Detail extends Component {
   }
 
   componentDidMount() {
-    const { fetchProduct } = this.props.actions.product
-    const { getProBatch } = this.props.actions.order
+    const { fetchProduct } = this.props.actions.product    
     const { productName } = this.props.params
-
     fetchProduct(productName)
-    getProBatch()
   }
 
   onCountChange = (v) => {
@@ -77,8 +73,7 @@ class Detail extends Component {
 
 
   render() {
-    const { product } = this.props.reducer
-    const { delivery_info } = this.props.reducer.order
+    const { product } = this.props.reducer    
     const { loading, detail } = product
 
     if (loading) {
@@ -95,7 +90,7 @@ class Detail extends Component {
 
     const info = detail.info
     const displays = detail.displays
-    const features = detail.info.features
+    // const features = detail.info.features
     const commodities = detail.commodities
 
     const settings = {
@@ -142,43 +137,25 @@ class Detail extends Component {
               </div>
 
               <div className="package">
-                <p><span>{lang.product_detail_meta_package_span}</span>{commodity.info.description}</p>
+                <h4>{lang.product_detail_meta_package_span}</h4>
+                <p>{commodity.info.description}</p>
               </div>
 
               <Row className="price">
                 <Col span={12}>
-                  {lang.product_detail_meta_price}:
+                  <h4>{lang.product_detail_meta_price}</h4>
                 </Col>
                 <Col span={12} style={{ fontWeight: "bold" }}>
-                  {currency} {amount} {/*this.state.count*/}
+                  {currency} {amount}
                 </Col>
               </Row>
 
               <Row className="count">
                 <Col span={12}>
-                  {lang.product_detail_meta_quantity}:
+                  <h4>{lang.product_detail_meta_quantity}</h4>
                 </Col>
                 <Col span={12}>
                   <InputNumber size="large" min={1} max={5} defaultValue={this.state.count} onChange={this.onCountChange} />
-                </Col>
-              </Row>
-
-              <Row className="specs">
-                {
-                  features.map((obj, key) =>
-                    <Col md={12} key={key}>
-                      <Row className="feature-block" type="flex" align="middle">
-                        <Col span={6}><img src={obj.icon} alt="" style={{ width: '40px', display: 'block' }} /></Col>
-                        <Col span={18}><p>{obj.desc}</p></Col>
-                      </Row>
-                    </Col>
-                  )
-                }
-              </Row>
-
-              <Row className="notice">
-                <Col span={24}>
-                  <p><img className="car" src={IC_CAR} alt="" />{lang.confirm_meta_delivery} {delivery_info.deliveryTime}, {lang.confirm_meta_batch} {delivery_info.batch}</p>
                 </Col>
               </Row>
 

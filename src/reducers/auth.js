@@ -17,10 +17,10 @@ const initialState = {
   expiration: 0,
   token: '',
   email: '',
-  common_redirect: ''
+  redirectUrl: ''
 }
 
-const getInitialState = function () {  
+const getInitialState = function () {
   let raw = cache.get('auth') || false
   let auth = { ...initialState }
 
@@ -44,26 +44,37 @@ export default function reducer(state = getInitialState(), action = {}) {
       }
 
     case LOGIN_SUCCESS:
-      return {
+      const loginState = {
         ...state,
         ...data,
         authAction: 'done'
+      }
+      cache.set('auth', JSON.stringify(loginState))
+      return {
+        ...state,
+        ...loginState
       }
 
     case REGISTER_SUCCESS:
-      return {
+      const registerState = {
         ...state,
         ...data,
         authAction: 'done'
       }
+      cache.set('auth', JSON.stringify(registerState))
+      return {
+        ...state,
+        ...registerState
+      }
 
     case LOGOUT_SUCCESS:
+      cache.remove('auth')
       return { ...initialState }
 
     case COMMON_REDIRECT:
       return {
         ...state,
-        common_redirect: data
+        redirectUrl: data
       }
 
     default:

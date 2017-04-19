@@ -102,7 +102,7 @@ class Cart extends Component {
                         <img src={item.thumb} alt="" />
                       </div>
                       <div className="b-name">
-                        {item.name}
+                        {item.commodity.info.name}
                       </div>
                       <div className="b-count">
                         <InputNumber min={1} value={item.count} onChange={this.change.bind(this, item)} style={{

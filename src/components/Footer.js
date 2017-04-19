@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { Row, Col } from 'antd'
 import { Link } from 'react-router'
 
-const LINK_BRAND = ['http://www.insta360.com/public/images/v6/footer/logo@1x.png', 'http://www.insta360.com/public/js/pro/retina-fdbc1e31.js?#']
+const LINK_BRAND = ['https://static.insta360.com/assets/mall/logo_insta360@2x.png', 'http://www.insta360.com/']
 
 const LINK_SOCIAL = [
-  ['http://www.insta360.com/public/images/v6/footer/wechat@1x.png', ''],
+  // ['http://www.insta360.com/public/images/v6/footer/wechat@1x.png', ''],
   ['http://www.insta360.com/public/images/v6/footer/weibo@1x.png', 'http://weibo.com/insta360'],
   ['http://www.insta360.com/public/images/v6/footer/facebook@1x.png', 'https://www.facebook.com/Insta360-832149753506055/'],
   ['http://www.insta360.com/public/images/v6/footer/twitter@1x.png', 'https://twitter.com/insta360'],
@@ -61,7 +61,7 @@ class Footer extends Component {
         <Col span={24} className="top">
           <Row className="container">
             <Col span={4} className="brand">
-              <a href={LINK_BRAND[1]} alt=""><img src={LINK_BRAND[0]} alt="" /></a>
+              <a href={LINK_BRAND[1]} alt="" target="_blank"><img src={LINK_BRAND[0]} alt="" /></a>
             </Col>
             <Col span={20} className="social">
               {

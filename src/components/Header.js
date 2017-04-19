@@ -6,21 +6,34 @@ import React, { Component } from 'react'
 import { Row, Col, Menu, Dropdown, Icon } from 'antd'
 import { Link } from 'react-router'
 
-const BRAND = {
-  href: 'https://www.insta360.com',
-  eye: 'http://cloud.insta360.com/public/images/common/eye@2x.png',
-  home: 'http://cloud.insta360.com/public/images/common/home@2x.png'
-}
+// const HeaderMenu = {
+//   logo: 'https://static.insta360.com/assets/mall/logo_mall_zh@2x.png',
+//   brand: {
+//     href: 'https://www.insta360.com',
+//     eye: 'https://static.insta360.com/assets/mall/eye@2x.png',
+//     home: 'https://static.insta360.com/assets/mall/home@2x.png'
+//   },
+//   links: [
+//     ['/', 'Home']
+//   ]
+// }
 
-const links = [
-  ['#', 'Home'],
-  ['/order/list', 'Order']
-]
+const HeaderMenu = {
+  logo: 'https://static.insta360.com/assets/mall/logo_mall_en@2x.png',  
+  brand: {
+    href: 'https://www.insta360.com',
+    eye: 'https://static.insta360.com/assets/mall/eye@2x.png',
+    home: 'https://static.insta360.com/assets/mall/home@2x.png'
+  },
+  links: [
+    ['/', 'Home']
+  ]
+}
 
 class Header extends Component {
   onclick = (action, event) => {
     const { updateAuthAction, logout } = this.props.actions.auth
-    event.preventDefault()        
+    event.preventDefault()
     switch (action) {
       case 'register':
         updateAuthAction('register')
@@ -43,6 +56,9 @@ class Header extends Component {
     const { auth } = this.props.reducer
     const menu = (
       <Menu>
+        <Menu.Item>
+          <Link to='/order/list' rel="noopener noreferrer">Orders</Link>
+        </Menu.Item>
         <Menu.Item>
           <Link onClick={this.onclick.bind(this, 'logout')} rel="noopener noreferrer">Logout</Link>
         </Menu.Item>
@@ -72,16 +88,21 @@ class Header extends Component {
 
   render() {
     const menus = this.getMenu()
+    const {brand, logo, links} = HeaderMenu
     return (
       <div className="component-header">
         <Row className="container">
           <Col span={18}>
-            <a href={BRAND.href} alt="" className="home-brand">
+            <a href={brand.href} alt="" className="header-home">
               <div className="home-pic">
-                <img src={BRAND.home} alt="" />
-                <img src={BRAND.eye} alt="" />
+                <img src={brand.home} alt="" />
+                <img src={brand.eye} alt="" />
               </div>
             </a>
+
+            <Link to="/" className="header-brand">
+              <img src={logo} alt="" />
+            </Link>
 
             <ul className="menu">
               {

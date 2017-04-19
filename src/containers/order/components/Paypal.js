@@ -30,8 +30,7 @@ class Paypal extends Component {
         var CREATE_PAYMENT_URL = baseUrl + '/mall/v1/payment/payOrder';
         var params = { id: orderId, channel: 'paypal' };
         return paypal.request.post(CREATE_PAYMENT_URL, null, { json: params })
-          .then(function (json) {
-            console.log('###TTT', json.data.payData)
+          .then(function (json) {            
             if (json.code === 0) {
               resolve(json.data.payData.paymentId);
             }

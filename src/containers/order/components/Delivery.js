@@ -165,7 +165,7 @@ class Delivery extends Component {
                 }}>
                   <p>{obj.phone}</p>
                   <p>{obj.country}</p>
-                  <p>{obj.address}</p>
+                  <p style={{overflow: 'hidden'}}>{obj.address}</p>
                   <p>{obj.sub_address}</p>
                 </Card>
               </Radio>

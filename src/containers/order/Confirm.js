@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import { Row, Col, Button, message, Checkbox } from 'antd'
 
 import Contact from './components/Contact'
@@ -8,11 +7,13 @@ import ContactAdditional from './components/ContactAdditional'
 import Remark from './components/Remark'
 import Delivery from './components/Delivery'
 import CartTable from './components/CartTable'
+import TaxNumber from './components/TaxNumber'
 // import RadioContainer from './components/RadioContainer'
 
 import './Confirm.less'
 import lang from '../../language/'
 import { ReduxHelper } from '../../helpers/'
+import { Base64 } from '../../utils/encode'
 import overseaAddr from '../../assets/address/oversea.json'
 
 message.config({
@@ -30,6 +31,7 @@ class Confirm extends Component {
     contact_email: '',
     subscribe: true,
     country: '',
+    individual_tax_number: '',
     items: [],
     flag_price_updated: false,
     agree: false
@@ -42,7 +44,6 @@ class Confirm extends Component {
       contact_email: email,
       flag_price_updated: false
     }, () => {
-      console.log('init', this.state)
       resetCartExtraFee()
       listDelivery()
       getAllMeta()
@@ -73,12 +74,12 @@ class Confirm extends Component {
       country: country
     })
 
-    if(typeof(callback) === 'function'){
+    if (typeof (callback) === 'function') {
       callback()
     }
   }
 
-  checkUpdate = (nextProps) =>{
+  checkUpdate = (nextProps) => {
     const { cart_items_type, cart_items, cart_items_once } = nextProps.reducer.order
     const { deliveries } = nextProps.reducer.order
     const items = cart_items_type === 'once' ? cart_items_once : cart_items
@@ -91,15 +92,15 @@ class Confirm extends Component {
         }
       })
       this.setState({ items: new_items })
-    }  
+    }
 
-    if (!this.state.flag_price_updated && deliveries.length > 0) {      
-      this.setState({        
+    if (!this.state.flag_price_updated && deliveries.length > 0) {
+      this.setState({
         country: deliveries[0].country,
         delivery: deliveries[0].id
       }, () => {
         console.log(this.state)
-        this.updatePriceAndExtraFee(deliveries[0].country, ()=>{
+        this.updatePriceAndExtraFee(deliveries[0].country, () => {
           this.setState({
             flag_price_updated: true
           })
@@ -107,13 +108,13 @@ class Confirm extends Component {
       })
     }
 
-  }  
+  }
 
   componentWillReceiveProps(nextProps) {
     const { router } = nextProps
     const { cart_items_type, cart_payable, cart_order } = nextProps.reducer.order
     const { resetCartItems, resetCartItemsOnce } = nextProps.actions.order
-    
+
     this.checkUpdate(nextProps)
 
     if (cart_payable) {
@@ -122,8 +123,7 @@ class Confirm extends Component {
       } else {
         resetCartItems()
       }
-
-      router.push('/order/pay/' + cart_order.id)
+      router.push('/order/pay/' + Base64.encode(cart_order.id))
       return
     }
 
@@ -138,6 +138,7 @@ class Confirm extends Component {
   handleChildSubmit = (type, values) => {
 
     console.log(type, values)
+
     let state = {}
     switch (type) {
       case 'invoice':
@@ -155,32 +156,35 @@ class Confirm extends Component {
         state['country'] = country
         break
 
-      case 'remark':
-        state[type] = values
-        break
+      // case 'remark':
+      //   state[type] = values
+      //   break
 
-      case 'backup_email':
-        state[type] = values
-        break
+      // case 'backup_email':
+      //   state[type] = values
+      //   break
 
-      case 'subscribe':
-        state[type] = values
-        break
+      // case 'subscribe':
+      //   state[type] = values
+      //   break
 
-      case 'contact_email':
-        state[type] = values
-        break
+      // case 'contact_email':
+      //   state[type] = values
+      //   break
 
-      case 'backup_phone':
-        state[type] = values
-        break
+      // case 'backup_phone':
+      //   state[type] = values
+      //   break
 
-      case 'coupon':
-        state[type] = values
-        break
+      // case 'coupon':
+      //   state[type] = values
+      //   break
+
+      // case 'individual_tax_number':
+      //   state[type] = values
 
       default:
-        state[type] = values.key
+        state[type] = values
         break
     }
 
@@ -190,7 +194,10 @@ class Confirm extends Component {
   }
 
   handleSubmit = (e) => {
+
+    const { cart_extra_fee } = this.props.reducer.order
     const { createOrder } = this.props.actions.order
+    const { needTaxNumber } = cart_extra_fee
 
     if (!this.state.delivery) {
       console.log('delivery')
@@ -202,6 +209,14 @@ class Confirm extends Component {
     //   console.log('invoice')
     //   return
     // }
+
+    if (needTaxNumber) {
+      if (!this.state.individual_tax_number) {
+        console.log('individual_tax_number')
+        message.warn(lang.confirm_message_warning_tax_number)
+        return
+      }
+    }
 
     if (!this.state.pay_type) {
       console.log('pay_type')
@@ -223,23 +238,17 @@ class Confirm extends Component {
   render() {
     const { addDelivery, delDelivery, updateDelivery } = this.props.actions.order
     const { deliveries, delivery_info } = this.props.reducer.order
-
-    // const { payTypes } = this.props.reducer.meta
-    // const { showPayModal, submitStatus,cart_items,  payOrder, cart, deliveries } = this.props.reducer
-    // payTypes, invoiceTypes, shippingMethods, payChannels
-
     const { cart_items_type, cart_items, cart_items_once, cart_extra_fee } = this.props.reducer.order
     const current_items = cart_items_type === 'once' ? cart_items_once : cart_items
     const submitStatus = (current_items.length > 0) && this.state.agree ? '' : 'disabled'
+
+    const { needTaxNumber } = cart_extra_fee
 
     return (
       <div className="order">
         <div className="breadcrumb">
           <div className="container links">
             <h2>{lang.confirm_meta_breadcrumb}</h2>
-            <div>
-              <Link to="/order/list">{lang.breadcrumb_my_orders}</Link>
-            </div>
           </div>
         </div>
 
@@ -253,23 +262,26 @@ class Confirm extends Component {
             <Contact handleInputChange={this.handleChildSubmit} data={{ defaultEmail: this.state.contact_email }}></Contact>
           </Col>
 
-
           <Col span={24}>
             <ContactAdditional handleInputChange={this.handleChildSubmit}></ContactAdditional>
           </Col>
 
           <Col span={24}>
+            <TaxNumber handleInputChange={this.handleChildSubmit} {...{ visible: needTaxNumber }} />
+          </Col>
+          <Col span={24}>
             <Remark submitType='remark' handleInputChange={this.handleChildSubmit}></Remark>
           </Col>
 
           <Col span={24}>
-            <CartTable data={current_items} fee={cart_extra_fee} handleInputChange={this.handleChildSubmit}></CartTable>
+            <div className="delivery-info">
+              <h3>{lang.confirm_meta_delivery} </h3>
+              <p className="tips">{delivery_info.deliveryTime}, {lang.confirm_meta_batch} {delivery_info.batch}</p>
+            </div>
           </Col>
 
           <Col span={24}>
-            <div className="delivery-info">
-              <p className="tips">{lang.confirm_meta_delivery} {delivery_info.deliveryTime}, {lang.confirm_meta_batch} {delivery_info.batch}</p>
-            </div>
+            <CartTable data={current_items} fee={cart_extra_fee} handleInputChange={this.handleChildSubmit}></CartTable>
           </Col>
 
           <Col span={24} className="action-block">
@@ -281,32 +293,13 @@ class Confirm extends Component {
             </div>
 
             <Button type="primary" disabled={submitStatus} onClick={this.handleSubmit}>{lang.confirm_btn_submit}</Button>
-            {/*
-              <p className="tips">{lang.confirm_tips}<a href="/page/privacy" target="_blank">{lang.confirm_tips_policy}</a></p>
-            */}
           </Col>
-
-          {/*
-            <PayModal visible={showPayModal} handlePayModalCallback={this.handlePayModalCallback} payChannels={payChannels} order={{ ...payOrder, pagePayments }} ></PayModal>  
-          */}
 
           {/*
             <Col span={14}>
               <RadioContainer title={lang.confirm_title_invoice} submitType='invoice' data={invoiceTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>            
             </Col>          
           */}
-
-          {/*
-          <Col span={14}>
-            <RadioContainer title={lang.confirm_title_payment_method} submitType='payType' data={payTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>
-          </Col>          
-          */}
-
-          {/*
-            <Col span={14}>
-            <RadioContainer title={lang.confirm_title_shipping_method} submitType='shippingMethods' data={shippingMethods} handleRadioChange={this.handleChildSubmit}></RadioContainer>
-          </Col>            
-        */}
 
         </Row>
       </div>

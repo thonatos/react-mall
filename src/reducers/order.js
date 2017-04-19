@@ -5,8 +5,10 @@ import {
 
   ORDER_CREATE_SUCCESS,
   ORDER_CANCEL_SUCCESS,
+  ORDER_REFUND_SUCCESS,
   ORDER_GET_USER_ORDERS_SUCCESS,
   ORDER_GET_ORDER_INFO_SUCCESS,
+  ORDER_GET_INVOICE_MAILTO_SUCCESS,
   ORDER_COUNT_EXTRA_FEE_SUCCESS,
 
   CART_STATE_UPDATE,
@@ -72,6 +74,7 @@ const getInitialState = function () {
     cart_order: { id: '' },
     
     orders: {},
+    order_mailto: '',
     deliveries: [],
 
     delivery_info: {},
@@ -108,6 +111,12 @@ export default function reducer(state = getInitialState(), action = {}) {
         orders: data.orders
       }
 
+    case ORDER_GET_INVOICE_MAILTO_SUCCESS:
+      return {
+        ...state,
+        order_mailto: data.mailto
+      }
+
     case ORDER_CREATE_SUCCESS:
       return {
         ...state,
@@ -124,7 +133,15 @@ export default function reducer(state = getInitialState(), action = {}) {
         orders: cancel_order
       }
 
-
+    case ORDER_REFUND_SUCCESS: 
+      let refund_order = state.orders.map((v) => {
+        return v.id === data.id ? data : v
+      })
+      return {
+        ...state,
+        orders: refund_order
+      }
+      
     case ORDER_GET_ORDER_INFO_SUCCESS:
       return {
         ...state,

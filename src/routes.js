@@ -29,9 +29,8 @@ function requireAuth(nextState, replace) {
   }
 
   if (!loggedIn()) {
-    replace({
-      // pathname: '/user/login'
-      pathname: '/product/1'
+    replace({      
+      pathname: '/'
     })
   }
 }

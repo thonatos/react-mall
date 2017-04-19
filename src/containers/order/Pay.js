@@ -1,14 +1,27 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { Row, Col, Button } from 'antd'
-import lang from '../../language/'
 import { ReduxHelper } from '../../helpers/'
-import './Pay.less'
+import { Base64 } from '../../utils/encode'
+import lang from '../../language/'
 import Paypal from './components/Paypal'
+import './Pay.less'
 
-const icons = {
-  'credit_card': ['https://static.insta360.cn/assets/mall/ic_visa@2x.png', 'https://static.insta360.cn/assets/mall/ic_mastercard_2@2x.png'],
-  'paypal': ['https://static.insta360.cn/assets/mall/PP_logo@2x.png']
+// const icons = {
+//   'credit_card': ['https://static.insta360.cn/assets/mall/ic_visa@2x.png', 'https://static.insta360.cn/assets/mall/ic_mastercard_2@2x.png'],
+//   'paypal': ['https://static.insta360.cn/assets/mall/PP_logo@2x.png']
+// }
+
+const channels = {
+  'paypal': {
+    thumb: 'https://static.insta360.cn/assets/mall/PP_logo@2x.png'
+  },
+  'credit_card': {
+    thumb: 'https://static.insta360.cn/assets/mall/ic_mastercard_2@2x.png'
+  },
+  'alipay': {
+    thumb: 'https://static.insta360.cn/assets/mall/ic_visa@2x.png'
+  }
 }
 
 const icon_order = 'https://static.insta360.cn/assets/mall/ic_order@2x.png'
@@ -16,55 +29,82 @@ const icon_order = 'https://static.insta360.cn/assets/mall/ic_order@2x.png'
 class Pay extends Component {
 
   componentDidMount() {
-    const { orderId } = this.props.params
+    const orderId = Base64.decode(this.props.params.orderId)
     const { getOrderInfo, getAllMeta, updateCartState } = this.props.actions.order
-
     updateCartState({
       cart_payable: false
     })
-    
+
     getOrderInfo(orderId)
     getAllMeta()
   }
 
+
+  getChannelNode = (channel) => {
+    const { meta } = this.props.reducer.order
+    const { pagePayments } = meta
+    const orderId = Base64.decode(this.props.params.orderId)
+    const baseUrl = pagePayments + orderId || ''
+
+    console.log(channel)
+
+    switch (channel.key) {
+      case 'credit_card':
+        return (
+          <div>
+            <img src={channels[channel.key].thumb} alt='' />
+            <a href={baseUrl + '&channel=' + channel.key} className="btn-channel" target="_blank">
+              <Button className="btn-channel-button">{lang.pay_actions_btn_pay_now}</Button>
+            </a>
+          </div>
+        )
+
+      case 'alipay':
+        return (
+          <div>
+            <img src={channels[channel.key].thumb} alt='' />
+            <a href={baseUrl + '&channel=' + channel.key} className="btn-channel" target="_blank">
+              <Button className="btn-channel-button">{lang.pay_actions_btn_pay_now}</Button>
+            </a>
+          </div>
+        )
+
+      case 'paypal':
+        return (
+          <div>
+            <img src={channels[channel.key].thumb} alt='' />
+            <Paypal id={'paypal'} orderId={orderId} />
+            <p className="channel-desc">
+              {lang.pay_channel_paypal_description}
+            </p>
+          </div>
+        )
+
+      default:
+        return null
+    }
+  }
+
   formatOrderInfo = (orderInfo) => {
+
+    function parsePrice(price) {
+      return Math.round(price * 100) / 100
+    }
+
+    const totalRound = orderInfo.order_number ? (orderInfo.payment.amount + orderInfo.payment.shipping_cost + orderInfo.payment.tax - orderInfo.payment.coupon_fee) : false
+    const total = totalRound ? parsePrice(totalRound) : ''
+
     return {
       order_number: (orderInfo.order_number ? orderInfo.order_number : ''),
       currency: (orderInfo.order_number ? orderInfo.payment.currency : ''),
-      amount: (orderInfo.order_number ? (orderInfo.payment.amount + orderInfo.payment.shipping_cost + orderInfo.payment.tax - orderInfo.payment.coupon_fee) : '')
+      amount: total
     }
   }
 
   render() {
     const { meta, detailOrder } = this.props.reducer.order
-    const { pagePayments, payChannels } = meta
-    const { orderId } = this.props.params
-    const baseUrl = pagePayments + orderId || ''
+    const { payChannels } = meta
     const OrderInfo = this.formatOrderInfo(detailOrder)
-
-    const paypal = (
-      <div className="icons">
-        {
-          icons.paypal.map((v, key) => {
-            return <img src={v} alt="" key={key} style={{ width: '184px' }} />
-          })
-        }
-      </div>
-    )
-
-    const credit_card = (<div className="icons">
-      {
-        icons.credit_card.map((v, key) => {
-          return <img src={v} alt="" key={key} style={{ width: '112px' }} />
-        })
-      }
-    </div>
-    )
-
-    const payNodes = {
-      'paypal': paypal,
-      'credit_card': credit_card
-    }
 
     return (
       <div className="order-pay">
@@ -73,7 +113,16 @@ class Pay extends Component {
             <h2>{lang.pay_meta_breadcrumb}</h2>
           </div>
         </div>
+
         <Row className="container info">
+
+          <Col span={24}>
+            <div className="pay-suggestion">
+              <h2 className="title">{lang.pay_suggestion_title}</h2>
+              <p>{lang.pay_suggestion_desc}</p>
+            </div>
+          </Col>
+
           <Col span={24}>
             <div className="detail">
               <div className="icon">
@@ -92,7 +141,6 @@ class Pay extends Component {
                     <p className="price">{OrderInfo.currency} {OrderInfo.amount}</p>
                   </div>
                 </div>
-
               </div>
             </div>
           </Col>
@@ -104,34 +152,15 @@ class Pay extends Component {
                 {
                   payChannels.map((obj, key) => {
                     return (
-                      <Col span={12} className="channel" key={key}>
-                        <Col span={12}>
-                          {payNodes[obj.key]}
-                          {
-                            obj.key === 'paypal' ? (
-                              <Paypal id={'paypal'} orderId={orderId} />
-                            ) : (
-                                <a href={baseUrl + '&channel=' + obj.key} key={key} className="btn-channel" target="_blank">
-                                  <Button className="btn-channel-button">{lang.pay_actions_btn_pay_now}</Button>
-                                </a>
-                              )
-                          }
-                        </Col>
+                      <Col span={8} className="channel" key={key}>
+                        {this.getChannelNode(obj)}
                       </Col>
                     )
-                  }
-                  )
+                  })
                 }
               </Row>
             </div>
           </Col>
-
-          <Col span={24}>
-            <div className="pay-suggestion">
-            <h2 className="title">{lang.pay_suggestion_title}</h2>
-            <p>{lang.pay_suggestion_desc}</p>
-            </div>
-          </Col>          
 
           <Col span={6} offset={18}>
             <div className="actions">

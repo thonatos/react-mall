@@ -85,10 +85,24 @@
             .channels {
                 margin: 4em 0;
                 .channel {
-                    .icons {
-                        height: 80px;
+                    text-align: center;
+                    img {
+                        display: block;
+                        margin: 0 auto;
+                        height: 56px;
+                    }
+                    #paypal {
+                        margin: 1em 0;
+                        display: block;
+                        iframe {
+                            margin:  0 auto;
+                        }
+                    }
+                    .channel-desc {
+                        font-size: 14px;
                     }
                     .btn-channel {
+                        padding: 1em 0;
                         display: inline-block;
                         .btn-channel-button {
                             background: #FFD200;
@@ -99,15 +113,14 @@
                 }
             }
         }
-        .pay-suggestion{
-            margin-top: 48px;            
+        .pay-suggestion {
+            margin: 0 0 2em 0;
             .title {
                 padding: 0.5em 0;
                 margin-bottom: 1em;
                 border-bottom: 1px solid #E6E6E6;
             }
         }
-
         .actions {
             text-align: right;
             margin-top: 4em;

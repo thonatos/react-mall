@@ -72,6 +72,7 @@ class Additional extends Component {
           <h3>{lang.c_contact_add_title}</h3>
         </div>
         <div className="contact">
+          <p>{lang.c_contact_add_tips}</p>
           <div>
             <Input onBlur={this.onEmailBlur} onChange={this.handleEmailChange} value={this.state.backup_email} placeholder={lang.c_contact_add_input_mail_placeholder} />
             {

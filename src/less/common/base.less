@@ -32,8 +32,7 @@ a {
 }
 
 #root {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;    
     overflow-x: hidden;
     padding-top: 64px;
     .wrap {
@@ -54,7 +53,7 @@ a {
                 width: 100%;
                 background: #fff;
                 border-bottom: 1px #f2f2f2 solid;
-                .home-brand {
+                .header-home {
                     display: block;
                     float: left;
                     margin: 16px 16px 16px 0;
@@ -78,9 +77,22 @@ a {
                         }
                     }
                 }
+                .header-brand {
+                    display: inline-block;                                                            
+                    height: 64px;
+                    line-height: 64px;
+                    padding: 10px 0px;
+                    width: 72px;
+                    overflow: hidden;                                                                
+
+                    img{
+                        width: 100%;
+                    }
+                }
                 ul.menu {
+                    display: inline-block;
                     margin: 0;
-                    padding-left: 0;
+                    padding-left: 48px;
                     list-style: none;
                     overflow: hidden;
                     li.menu-item {
@@ -260,8 +272,6 @@ a {
         }
     }
 }
-
-
 
 .post-section {
     margin-top: 2em;
