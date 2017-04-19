@@ -2,7 +2,7 @@ import { FETCH_PRODUCT_SUCCESS } from '../actions/product'
 
 const initialState = {
   loading: true,
-  data: {}
+  detail: {}
 }
 
 export default function reducer(state = initialState, action = {}) {
@@ -11,7 +11,7 @@ export default function reducer(state = initialState, action = {}) {
     case FETCH_PRODUCT_SUCCESS:
       return {
         ...state,
-        data: data.product,
+        detail: data.product,
         loading: false
       }
     default:

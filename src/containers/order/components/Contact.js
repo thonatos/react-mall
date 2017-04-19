@@ -1,70 +1,85 @@
 import React, { Component } from 'react'
 import { Input, Checkbox } from 'antd'
+import lang from '../../../language/'
 
-const language = {
-  "CONTACT_DESC": "It’s important that you leave your email address, as well send your order confirmation as well as delivery updates to this address.",
-  "CONTACT_RECEIVE": "Receive the latest news about Insta360 products, service and software updates."
-
+function emailValid(email) {
+  var reg = /([\w\.]+)@([\w\.]+)\.(\w+)/g
+  return reg.test(email)
 }
 
 class Contact extends Component {
 
   state = {
-    email: '',
-    subscribe: false
+    contact_email: '',
+    subscribe: true,
+    errMsg: ''
   }
 
-  handle = () => {
-    const { submitType, handleInputChange } = this.props
-    if (handleInputChange) {
-      handleInputChange(submitType, {
-        email: this.state.email,
-        subscribe: this.state.subscribe
+  componentWillReceiveProps(nextProps) {
+    const { defaultEmail } = nextProps.data
+    if (defaultEmail !== '') {
+      this.setState({
+        contact_email: defaultEmail
       })
     }
   }
 
   onBlur = (e) => {
-    const { submitType, handleInputChange } = this.props
+    const { handleInputChange } = this.props
     const value = e.target.value
     this.setState({
-      email: value
+      contact_email: value
     }, () => {
-      if (handleInputChange) {
-        handleInputChange(submitType, this.state)
+      if (emailValid(value)) {
+        this.setState({
+          errMsg: ''
+        })
+        if (handleInputChange) {
+          handleInputChange('contact_email', this.state.contact_email)
+        }
+      } else {
+        this.setState({
+          errMsg: lang.c_contact_input_mail_invalid
+        })
       }
     })
   }
 
+  handleChange = (event) => {
+    this.setState({ contact_email: event.target.value })
+  }
+
   onChange = (e) => {
-    const { submitType, handleInputChange } = this.props
+    const { handleInputChange } = this.props
     const checked = e.target.checked
 
     this.setState({
       subscribe: checked
     }, () => {
       if (handleInputChange) {
-        handleInputChange(submitType, this.state)
+        handleInputChange('subscribe', this.state.subscribe)
       }
     })
   }
 
   render() {
-    const { title } = this.props
 
     return (
 
       <div className="section">
         <div className="header">
-          <h3>{title}</h3>
+          <h3>{lang.c_contact_title}</h3>
         </div>
         <div className="contact">
-          <p>{language.CONTACT_DESC}</p>
+          <p>{lang.c_contact_tips}</p>
           <div>
-            <Input onBlur={this.onBlur} placeholder="example@domain.com" />
+            <Input value={this.state.contact_email} onBlur={this.onBlur} onChange={this.handleChange} placeholder={lang.c_contact_input_mail_placeholder} />
+            {
+              this.state.errMsg ? (<span style={{ color: 'red' }}>{this.state.errMsg}</span>) : ('')
+            }
           </div>
           <div>
-            <Checkbox onChange={this.onChange}>{language.CONTACT_RECEIVE}</Checkbox>
+            <Checkbox onChange={this.onChange} checked={this.state.subscribe}>{lang.c_contact_checkbox_subscribe_desc}</Checkbox>
           </div>
         </div>
       </div>

@@ -1,5 +1,8 @@
 import axios from 'axios'
 import { X_Language } from '../config/'
+import Cache from './cache'
+
+const cache = new Cache()
 
 // function request(options, success, error) {
 
@@ -41,7 +44,11 @@ export default function (options, success, error) {
   }
   
   if (!!options.token) {
-    headers['X-User-Token'] = options.token
+    const auth = cache.get('auth')    
+    const token = auth ? JSON.parse(auth).token : ''
+
+    // console.log('xxx', token)
+    headers['X-User-Token'] = token
   }
 
   queryObj.headers = headers

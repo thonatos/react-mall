@@ -1,100 +1,127 @@
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-
-import * as orderActions from '../../actions/order'
-import * as authActions from '../../actions/auth'
-
+import moment from 'moment'
 import React, { Component } from 'react'
-import { Row, Col, Table, Button } from 'antd'
+import { Link } from 'react-router'
+import { Row, Col, Table, Popconfirm, Collapse } from 'antd'
 
 import './List.less'
+import lang from '../../language/'
+import { ReduxHelper } from '../../helpers/'
+
+const ENUM_STATE = {
+  '0': lang.order_state_0,
+  '1': lang.order_state_1,
+  '2': lang.order_state_2,
+  '3': lang.order_state_3,
+  '8': lang.order_state_8,
+  '9': lang.order_state_9,
+  '-1': lang.order_state_x1,
+  '-2': lang.order_state_x2
+}
+
+const Panel = Collapse.Panel;
+
+const text = `
+  A dog is a type of domesticated animal.
+  Known for its loyalty and faithfulness,
+  it can be found as a welcome guest in many households across the world.
+`
 
 class List extends Component {
 
   componentDidMount() {
-    const { getUserOrders, restoreAuth } = this.props.actions
-    restoreAuth()
+    const { getUserOrders } = this.props.actions.order
     getUserOrders()
   }
 
-  onClick = (action, value) => {
-    console.log(action, value)
+  componentWillReceiveProps(nextProps) {
+    const { auth } = nextProps.reducer
+    const { router } = nextProps
+    if (!auth.isLoggedIn) {
+      router.push('/')
+    }
+  }
+
+  logout = (event) => {
+    event.preventDefault()
+    const { logout } = this.props.actions.auth
+    logout()
+  }
+
+  cancel = (order, event) => {
+    event.preventDefault()
+    const { cancelOrder } = this.props.actions.order
+    cancelOrder({
+      id: order.id
+    })
   }
 
   render() {
-    const { orders, auth } = this.props.reducer
-
-    const profile = {
-      avatar: 'https://static.insta360.cn/assets/mall/ic_avatar@2x.png',
-      mail: auth.email
-    }
+    const { orders } = this.props.reducer
 
     const columns = [
       {
-        title: 'Thumb',
-        dataIndex: 'thumb',
-        key: 'thumb',
+        title: lang.list_table_column_order_number,
+        dataIndex: 'on',
+        key: 'on',
+        className: 'text-align-center',
         render: (text, record, index) => {
-          return (
-            <img style={{
-              maxWidth: '50px'
-            }} src={record.thumb} alt="" />
-          )
+          return (<Link to={`/order/detail/${record.id}`} className="order-link">{record.on}</Link>)
         }
       },
       {
-        title: 'Email',
+        title: lang.list_table_column_contact_email,
         dataIndex: 'email',
-        key: 'email'
+        key: 'email',
+        className: 'text-align-center'
       },
       {
-        title: 'Order Number',
-        dataIndex: 'on',
-        key: 'on'
-      },
-      {
-        title: 'Created Time',
+        title: lang.list_table_column_created_time,
         dataIndex: 'created',
-        key: 'created'
+        key: 'created',
+        className: 'text-align-center'
       },
       {
-        title: 'Payment',
-        dataIndex: 'payment',
-        key: 'payment'
-      },
-      {
-        title: 'State',
+        title: lang.list_table_column_state,
         dataIndex: 'state',
-        key: 'state'
-      },      
+        key: 'state',
+        className: 'text-align-center',
+        render: (text, record, index) => {
+          const str = ENUM_STATE[text]
+          return (<div>{str}</div>)
+        }
+      },
       {
-        title: 'Action',
+        // title: 'Action',
         dataIndex: 'action',
         key: 'action',
-        render: (text, record, index) => {          
+        className: 'text-align-center',
+        render: (text, record, index) => {
           if (record.state === 0) {
             return (<div>
-              <Button className="action-btn" onClick={this.onClick.bind(this, 'view', record)}>View</Button>
-              <Button className="action-btn" onClick={this.onClick.bind(this, 'pay', record)}>Pay Now</Button>
-              <Button className="action-btn" onClick={this.onClick.bind(this, 'cancel', record)}>Cancel</Button>
+              <Link to={`/order/pay/${record.id}`} className="order-action">{lang.list_table_action_pay_now}</Link>
+              <Popconfirm title={lang.list_table_action_cancel_confirm_tip} onConfirm={this.cancel.bind(this, record)} okText={lang.list_table_action_cancel_confirm_ok} cancelText={lang.list_table_action_cancel_confirm_cancel}>
+                <a href="#" className="order-action">{lang.list_table_action_cancel}</a>
+              </Popconfirm>
             </div>)
           }
-          return (<Button className="action-btn" onClick={this.onClick.bind(this, 'view', record)}>View</Button>)
         }
       }
     ]
 
     let dataSource = []
     if (Array.isArray(orders) && orders.length > 0) {
-      dataSource = orders.map((item, key) => {
+      let sortedOrder = orders.sort((a, b) =>
+        b.create_time - a.create_time
+      )
+
+      dataSource = sortedOrder.map((item, key) => {
         return {
-          thumb: 'https://www.insta360.com/public/images/v6/download/air@1x.png',
           key: item.id,
           id: item.id,
           account: item.account,
           email: item.contact_email || 'none',
           on: item.order_number,
-          created: new Date(item.create_time).toISOString(),
+          created: moment(item.create_time).format("YYYY/MM/DD hh:mm:ss"),
           state: item.state,
           payment: item.pay_type,
           action: item.state
@@ -107,22 +134,34 @@ class List extends Component {
       <div className="list">
         <div className="breadcrumb">
           <div className="container links">
-            <h2>My Account</h2>
+            <h2>{lang.breadcrumb_my_orders}</h2>
           </div>
         </div>
 
         <Row className="container detail">
-
-          <Col span={6} className="account">
-            <img src={profile.avatar} alt="" style={{ maxWidth: '100px' }} />
-            <p>{profile.mail}</p>
-          </Col>
-
-          <Col span={18} className="info">
+          <Col span={24} className="info">
             <Table pagination={false}
               columns={columns}
-              dataSource={dataSource}              
+              bordered={true}
+              dataSource={dataSource}
             />
+          </Col>
+
+          <Col span={24} className="faq">
+
+            <h2>FAQ</h2>
+
+            <Collapse bordered={false} defaultActiveKey={['1']}>
+              <Panel header="This is panel header 1" key="1">
+                <p>{text}</p>
+              </Panel>
+              <Panel header="This is panel header 2" key="2">
+                <p>{text}</p>
+              </Panel>
+              <Panel header="This is panel header 3" key="3">
+                <p>{text}</p>
+              </Panel>
+            </Collapse>
           </Col>
         </Row >
       </div>
@@ -131,17 +170,4 @@ class List extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    reducer: {
-      orders: state.order.orders,
-      auth: state.auth
-    }
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ ...orderActions, restoreAuth: authActions.restoreAuth }, dispatch) }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(List)
+export default ReduxHelper(List)

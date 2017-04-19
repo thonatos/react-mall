@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
 import { Row, Col, Form, Input, Button, Icon } from 'antd'
+import lang from '../../language/'
 
 const FormItem = Form.Item
 
-class Register extends Component {
+class Retrieve extends Component {
 
-  state = {
-    confirmDirty: false
+  constructor(props) {
+    super(props)
+    this.state = {
+      confirmDirty: false
+    }
   }
 
   handleConfirmBlur = (e) => {
@@ -17,7 +21,7 @@ class Register extends Component {
   checkPassword = (rule, value, callback) => {
     const form = this.props.form
     if (value && value !== form.getFieldValue('password')) {
-      callback('两次输入的密码不一致!')
+      callback(lang.c_auth_form_passwd_confirm_error_msg)
     } else {
       callback()
     }
@@ -35,7 +39,7 @@ class Register extends Component {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.register(values)
+        this.props.retrieve(values)
       }
     })
   }
@@ -44,7 +48,7 @@ class Register extends Component {
     e.preventDefault()
     this.props.form.validateFields(['email'], (err, values) => {
       if (values.email) {
-        this.props.getCaptcha(values)
+        this.props.getCaptcha({ type: 'forgetAccountPassword', ...values })
       }
     })
   }
@@ -54,79 +58,80 @@ class Register extends Component {
     const { getFieldDecorator } = this.props.form
 
     return (
-      <Form onSubmit={this.handleSubmit} style={{ marginTop: '2em' }}>
+      <Form onSubmit={this.handleSubmit} className="auth-form">
 
         <Row type="flex" align="top">
 
           {/* Email */}
           <Col span={24}>
-            <FormItem>
+            <FormItem label={lang.c_auth_form_email_label}>
               {getFieldDecorator('email', {
                 rules: [{
-                  type: 'email', message: 'Invalid Email Address!',
+                  type: 'email', message: lang.c_auth_form_email_error_msg,
                 }, {
-                  required: true, message: 'Please input your email address!',
+                  required: true, message: lang.c_auth_form_email_msg,
                 }],
               })(
-                <Input prefix={<Icon type="mail" />} placeholder="email" />
+                <Input prefix={<Icon type="mail" />} placeholder={lang.c_auth_form_email_placeholder} />
                 )}
             </FormItem>
           </Col>
 
           {/* Password */}
           <Col span={24}>
-            <FormItem>
+            <FormItem label={lang.c_auth_form_passwd_label}>
               {getFieldDecorator('password', {
                 rules: [{
-                  required: true, message: 'Please input your password!',
+                  required: true, message: lang.c_auth_form_passwd_msg,
                 }, {
                   validator: this.checkConfirm,
                 }],
               })(
-                <Input type="password" prefix={<Icon type="lock" />} placeholder="password" />
+                <Input type="password" prefix={<Icon type="lock" />} placeholder={lang.c_auth_form_passwd_placeholder} />
                 )}
             </FormItem>
           </Col>
 
           {/* Confirm Password */}
           <Col span={24}>
-            <FormItem>
+            <FormItem label={lang.c_auth_form_passwd_confirm_label}>
               {getFieldDecorator('confirm', {
                 rules: [{
-                  required: true, message: 'Please confirm your password!',
+                  required: true, message: lang.c_auth_form_passwd_confirm_msg,
                 }, {
                   validator: this.checkPassword,
                 }],
               })(
-                <Input type="password" onBlur={this.handleConfirmBlur} prefix={<Icon type="lock" />} placeholder="confirm password" />
+                <Input type="password" onBlur={this.handleConfirmBlur} prefix={<Icon type="lock" />} placeholder={lang.c_auth_form_passwd_confirm_placeholder} />
                 )}
             </FormItem>
           </Col>
 
           {/* Captcha */}
           <Col span={24}>
-            <FormItem>
-              <Row>
-                <Col span={12}>
+
+            <Row gutter="16">
+              <Col span={12}>
+                <FormItem label={lang.c_auth_form_captcha_label}>
                   {
                     getFieldDecorator('code', {
-                      rules: [{ required: true, message: 'Please input your captcha' }],
+                      rules: [{ required: true, message: lang.c_auth_form_code_msg }],
                     })(
                       <Input placeholder="captcha" prefix={<Icon type="message" />} />
                       )
                   }
-                </Col>
-                <Col span={10} offset={2}>
-                  <Button style={{ width: '100%' }} onClick={this.handleGetCaptcha}>GET CAPTCHA</Button>
-                </Col>
-              </Row>
-            </FormItem>
+                </FormItem>
+              </Col>
+              <Col span={12}>
+                <Button style={{ width: '100%', marginTop: '33px' }} onClick={this.handleGetCaptcha}>{lang.c_auth_btn_captcha}</Button>
+              </Col>
+            </Row>
           </Col>
 
           {/* Submit */}
           <Col span={24}>
             <FormItem >
-              <Button type="primary" htmlType="submit" size="large" style={{ width: '100%', height: '48px' }}>REGISTER</Button>
+              <Button type="primary" htmlType="submit" size="large" style={{ width: '100%', height: '48px' }}>{lang.c_auth_btn_retrieve}</Button>
             </FormItem>
           </Col>
 
@@ -137,4 +142,4 @@ class Register extends Component {
   }
 }
 
-export default Form.create()(Register)
+export default Form.create()(Retrieve)

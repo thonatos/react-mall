@@ -1,11 +1,11 @@
 .order {
-    .breadcrumb {        
+    .breadcrumb {
         background: #F8F8F8;
-        .links {            
+        .links {
             height: 4em;
             display: flex;
             align-items: center;
-            justify-content: space-between;            
+            justify-content: space-between;
             a {
                 padding-left: 1em;
                 font-family: PingFangSC-Regular;
@@ -28,19 +28,33 @@
                 line-height: 20px;
             }
         }
+        .delivery-info {
+            .tips {
+                margin-top: 8px;
+                font-family: PingFangSC-Regular;
+                font-size: 13px;
+                color: rgba(0, 0, 0, 0.55);
+                line-height: 16px;
+                text-align: right;
+            }
+        }
         .action-block {
             text-align: right;
+            color: rgba(0, 0, 0, 0.55);
+            line-height: 16px;
             .ant-btn {
                 width: 184px;
                 height: 48px;
             }
-            .tips,
-            .tips a {
-                margin-top: 8px;
-                font-family: PingFangSC-Regular;
-                font-size: 12px;
-                color: rgba(0, 0, 0, 0.55);
-                line-height: 16px;
+            .agreement {
+                margin: 1em 0;
+                line-height: 22px;
+                
+                .tips {                    
+                    a {
+                        text-decoration: underline;
+                    }
+                }
             }
         }
     }
@@ -95,13 +109,11 @@
 
 .delivery-form {
     margin-top: 1em;
+    font-family: Arial, Helvetica, sans-serif;
     .id {
         width: 383px;
     }
     .name {
-        width: 383px;
-    }
-    .phone {
         width: 383px;
     }
     .zip {

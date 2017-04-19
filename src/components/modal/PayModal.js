@@ -6,7 +6,7 @@ const Panel = Collapse.Panel
 class PayModal extends Component {
 
   handleOk = (e) => {
-    const { handlePayModalCallback } = this.props    
+    const { handlePayModalCallback } = this.props
     handlePayModalCallback('ok')
   }
 
@@ -16,15 +16,16 @@ class PayModal extends Component {
   }
 
   render() {
-    const { visible, payChannels, order } = this.props
-
+    const { payChannels, pagePayments, cart } = this.props.data
+    const visible = cart.showPayModal
+    const orderId = cart.order.id
     const text = `
       A dog is a type of domesticated animal.
       Known for its loyalty and faithfulness,
       it can be found as a welcome guest in many households across the world.
     `;
-    
-    const baseUrl = order.pagePayments + order.id || ''
+
+    const baseUrl = pagePayments + orderId || ''
 
     return (
       <Modal
@@ -52,7 +53,7 @@ class PayModal extends Component {
             </Panel>
             <Panel header="Payments" key="2">
               <p>{text}</p>
-            </Panel>            
+            </Panel>
           </Collapse>
         </div>
 

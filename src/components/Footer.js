@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col } from 'antd'
+import { Link } from 'react-router'
 
 const LINK_BRAND = ['http://www.insta360.com/public/images/v6/footer/logo@1x.png', 'http://www.insta360.com/public/js/pro/retina-fdbc1e31.js?#']
 
@@ -45,6 +46,13 @@ const LINK_MENU = [{
   ]
 }]
 
+const POLICY = [
+  ['Terms & Conditions', '/page/terms'],
+  ['Warranty & Return', 'https://support.insta360.com/aftersales?name=after'],
+  ['Privacy Policy', '/page/privacy'],
+  ['Shipping Policy ', '/page/shipping-policy']
+]
+
 class Footer extends Component {
   render() {
     return (
@@ -58,7 +66,7 @@ class Footer extends Component {
             <Col span={20} className="social">
               {
                 LINK_SOCIAL.map((social, key) => {
-                  return <a href={social[1]} key={key}><img src={social[0]} alt="" /></a>
+                  return <a href={social[1]} key={key} target="_blank"><img src={social[0]} alt="" /></a>
                 })
               }
             </Col>
@@ -78,7 +86,7 @@ class Footer extends Component {
                           menu.links.map((link, key) => {
                             return (
                               <li key={key}>
-                                <a href={link[1]} >{link[0]}</a>
+                                <a href={link[1]} target="_blank">{link[0]}</a>
                               </li>
                             )
                           })
@@ -93,6 +101,22 @@ class Footer extends Component {
               <p>
                 Toll Free: 888-888-4ASI<span></span>Office Hours: 09:00 - 18:00 (GMT+8), Monday to Friday
               </p>
+            </Col>
+
+
+            <Col span={24} className="policy">
+              <ul>
+                {
+                  POLICY.map((v, key) => {
+                    return (
+                      <li key={key}>
+                        <Link to={v[1]} target="_blank">{v[0]}</Link>
+                      </li>
+                    )
+                  })
+                }
+              </ul>
+
             </Col>
           </Row>
         </Col>

@@ -11,6 +11,7 @@ class RadioContainer extends Component {
     value: 0
   }
 
+
   onChange = (e) => {
     const { submitType, handleRadioChange, data } = this.props
     this.setState({
@@ -32,8 +33,8 @@ class RadioContainer extends Component {
       radioNodes = data.map((obj, key) =>
         <RadioButton value={key} key={key}>{obj.name}</RadioButton>
       )
-    }else{
-      radioNodes = (<RadioButton value='none' disabled>none</RadioButton>)      
+    } else {
+      radioNodes = (<RadioButton value='none' disabled>none</RadioButton>)
     }
 
     return (

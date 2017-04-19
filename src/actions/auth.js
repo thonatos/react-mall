@@ -1,13 +1,14 @@
+import { notification } from 'antd'
 import md5 from 'crypto-js/md5'
 import Cache from '../utils/cache'
-import { API_SERVER_USER } from '../config/'
 import request from '../utils/request'
+import lang from '../language/'
+import { API_SERVER_USER } from '../config/'
 
-import { notification } from 'antd'
 const cache = new Cache()
 
 function getExpiretion() {
-  return Math.ceil(Date.now() / 1000) + 60 * 30 // 30Min
+  return Math.ceil(Date.now() / 1000) + 60 * 60 // 30Min
 }
 
 function notify(title, message, type, callback) {
@@ -23,18 +24,15 @@ function notify(title, message, type, callback) {
   return type ? notification[type](args) : notification.open(args)
 }
 
-// INIT
-export const AUTH_RESTORE = 'AUTH_RESTORE'
-export function restoreAuth() {
-  const auth_raw = cache.get('auth') || false
+
+// ACTION
+export const AUTH_ACTION = 'AUTH_ACTION'
+export function updateAuthAction(action) {
   return (dispatch) => {
-    if (auth_raw) {
-      const auth = JSON.parse(auth_raw)
-      dispatch({
-        type: AUTH_RESTORE,
-        data: auth
-      })
-    }
+    dispatch({
+      type: AUTH_ACTION,
+      data: action
+    })
   }
 }
 
@@ -49,13 +47,14 @@ export function sendCaptcha(data) {
       responseType: 'json'
     }, (response) => {
       if (response.code === 0) {
-        notify('Captcha', 'Success, Please check your email', 'success')
+        notify(lang.auth_captcha_title, lang.auth_captcha_send_success, 'success')
       } else {
-        notify('Captcha', 'Error:' + response.errorMsg, 'error')
+        console.log(response.errorMsg)
+        notify(lang.auth_captcha_title, lang.auth_captcha_send_failed, 'error')
       }
     }, (err) => {
       console.log('#server', err)
-      notify('Captcha', 'Network Error, Please try again', 'error')
+      notify(lang.network_error_title, lang.network_error_tips, 'error')
     })
   }
 }
@@ -63,6 +62,7 @@ export function sendCaptcha(data) {
 // SIGNIN
 const API_ACCOUNT_SIGNIN = API_SERVER_USER + '/account/signin'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+
 export function login(user) {
   user['username'] = user.email
   user['password'] = md5(user.password).toString()
@@ -79,26 +79,32 @@ export function login(user) {
           isLoggedIn: true,
           expiration: getExpiretion()
         }, response.data)
+
         cache.set('auth', JSON.stringify(state))
+
+        notify(lang.auth_login_success_title, lang.auth_login_success, 'success')
+
         dispatch({
           type: LOGIN_SUCCESS,
           data: state
         })
+
       } else {
-        notify('Login', 'Error:' + response.errorMsg, 'error')
+        notify(lang.auth_login_failed_title, lang.auth_login_failed, 'error')
       }
     }, (err) => {
       console.log('#server', err)
-      notify('Login', 'Network Error, Please try again', 'error')
+      notify(lang.network_error_title, lang.network_error_tips, 'error')
     })
   }
 }
 
 // SIGNUP
-const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 const API_ACCOUNT_SIGNUP = API_SERVER_USER + '/account/signup'
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
+
 export function register(user) {
-  user['source'] = 'shop'
+  user['source'] = 'mall'
   user['password'] = md5(user.password).toString()
   delete user['confirm']
 
@@ -109,25 +115,37 @@ export function register(user) {
       data: user,
       responseType: 'json'
     }, (response) => {
+
       if (response.code === 0) {
-        notify('Register', 'Success, Please login with the email & password', 'success')
+        let state = Object.assign({
+          email: user.email,
+          isLoggedIn: true,
+          expiration: getExpiretion()
+        }, response.data)
+
+        cache.set('auth', JSON.stringify(state))
+
+        notify(lang.auth_register_success_title, lang.auth_register_success, 'success')
+
         dispatch({
           type: REGISTER_SUCCESS,
-          data: { register: true }
+          data: state
         })
+
       } else {
-        notify('Register', 'Error:' + response.errorMsg, 'error')
+        notify(lang.auth_register_failed_title, lang.auth_register_failed, 'error')
       }
     }, (err) => {
       console.log('#server', err)
-      notify('Register', 'Network Error, Please try again', 'error')
+      notify(lang.network_error_title, lang.network_error_tips, 'error')
     })
   }
 }
 
 // RETIREVE
-const RETIREVE_SUCCESS = 'RETIREVE_SUCCESS'
 const API_ACCOUNT_RESET_PASSWORD = API_SERVER_USER + '/account/resetPassword'
+export const RETIREVE_SUCCESS = 'RETIREVE_SUCCESS'
+
 export function retrieve(user) {
   user['password'] = md5(user.password).toString()
   user['username'] = user.email
@@ -141,17 +159,39 @@ export function retrieve(user) {
       responseType: 'json'
     }, (response) => {
       if (response.code === 0) {
-        notify('Retrieve', 'Success, Please login with the email & password', 'success')
+        notify(lang.auth_retrieve_success_title, lang.auth_retrieve_success, 'success')
         dispatch({
           type: RETIREVE_SUCCESS,
           data: { retrieve: true }
         })
       } else {
-        notify('Retrieve', 'Error:' + response.errorMsg, 'error')
+        notify(lang.auth_retrieve_failed_title, lang.auth_retrieve_failed, 'error')
       }
     }, (err) => {
       console.log('#server', err)
-      notify('Retrieve', 'Network Error, Please try again', 'error')
+      notify(lang.network_error_title, lang.network_error_tips, 'error')
+    })
+  }
+}
+
+// LOGOUT
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
+export function logout() {
+  return (dispatch) => {
+    cache.remove('auth')
+    dispatch({
+      type: LOGOUT_SUCCESS,
+      data: {}
+    })
+  }
+}
+
+export const COMMON_REDIRECT = 'COMMON_REDIRECT'
+export function setRedirect(target){
+  return (dispatch) =>{
+    dispatch({
+      type: COMMON_REDIRECT,
+      data: target
     })
   }
 }

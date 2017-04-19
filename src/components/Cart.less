@@ -1,0 +1,115 @@
+.c-card {
+    position: fixed;
+    right: 20px;
+    top: 100px;
+    z-index: 999;
+    background: #FFFFFF;
+    border: 1px solid #E6E6E6;
+    border-radius: 4px;
+    transition: opacity 0.2s;
+    min-width: 320px;
+    .ant-card-body {
+        padding: 0;
+    }
+    ul.c-list {
+        list-style: none;
+        .c-ul-li-box {
+            padding: 16px;
+            border-bottom: 1px solid #E6E6E6;
+            .b-thumb {
+                display: inline-block;
+                img {
+                    display: block;
+                    width: 55px;
+                    height: 55px;
+                    overflow: hidden;
+                }
+            }
+            .b-name {
+                display: inline-block;
+                font-family: PingFangSC-Regular;
+                font-size: 12px;
+                color: #191919;
+                line-height: 55px;
+                vertical-align: text-bottom;
+                padding: 0 1em;
+            }
+            .b-count {
+                display: inline-block;
+                vertical-align: text-bottom;
+                padding: 13px 0;
+            }
+            .b-action {
+                display: inline-block;
+                a {
+                    display: block;
+                    padding: 15.5px;
+                    img {
+                        width: 24px;
+                        height: 24px;
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+    .c-footer {
+        background: #F8F8F8;
+        border-radius: 2px;
+        top: 100px;
+        right: 0;
+        padding: 16px;
+        .c-calc {
+            padding-bottom: 0.5em;
+            .c-f-count {
+                font-family: PingFangSC-Regular;
+                font-size: 12px;
+                color: #191919;
+                float: left;
+            }
+            .c-f-total {
+                font-family: PingFangSC-Medium;
+                font-size: 16px;
+                color: #191919;
+                float: right;
+            }
+            &:after {
+                content: ' ';
+                display: block;
+                clear: both;
+            }
+        }
+        .btn-checkout {
+            margin: 0 auto;
+            padding: 1em 0;
+            display: block;
+            width: 100%;
+            background: #FFD200;
+            border-radius: 2px;
+            font-family: PingFangSC-Medium;
+            font-size: 14px;
+            color: #191919;
+        }
+    }
+}
+
+.btn-cart-fixed {
+    position: fixed;
+    right: 20px;
+    height: 48px;
+    background: #FFD200;
+    border-radius: 100px;
+    z-index: 99999;
+    bottom: 100px;
+    padding: 8px 32px;
+    img {
+        width: 32px;
+        display: inline-block;
+        height: 32px;
+    }
+    span {
+        display: inline-block;
+        line-height: 32px;
+        vertical-align: text-bottom;
+    }
+}

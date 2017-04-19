@@ -5,8 +5,8 @@
             height: 4em;
             display: flex;
             align-items: center;
-            justify-content: space-between;
             a {
+                display: block;
                 padding-left: 1em;
                 font-family: PingFangSC-Regular;
                 font-size: 14px;
@@ -17,14 +17,30 @@
     }
     .detail {
         padding: 4em 0;
-        
         .account {
-            padding-bottom: 1.8em;            
+            padding-bottom: 1.8em;
+        }
+        .info {
+            .order-link {
+                color: rgba(16, 142, 233, 0.63);
+            }
+            .order-action {
+                margin: 0 0.2em;
+                padding: 0 0.5em;
+                color: rgba(16, 142, 233, 0.63);
+                &:not(:first-child) {
+                    border-left: 1px solid #c5bfbf;
+                }
+            }
+            .text-align-center {
+                text-align: center;
+            }
         }
 
-        .info {
-            .action-btn{
-                margin: 0 0.2em;
+        .faq{
+            margin: 2em 0;
+            > h2{
+                margin-bottom: 1em;
             }
         }
     }
