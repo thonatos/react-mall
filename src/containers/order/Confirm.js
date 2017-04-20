@@ -11,10 +11,9 @@ import TaxNumber from './components/TaxNumber'
 // import RadioContainer from './components/RadioContainer'
 
 import './Confirm.less'
-import lang from '../../language/'
+import { LANG } from '../../locales/'
 import { ReduxHelper } from '../../helpers/'
 import { Base64 } from '../../utils/encode'
-import overseaAddr from '../../assets/address/oversea.json'
 
 message.config({
   top: 100,
@@ -201,7 +200,7 @@ class Confirm extends Component {
 
     if (!this.state.delivery) {
       console.log('delivery')
-      message.warn(lang.confirm_message_warning_delivery)
+      message.warn(LANG.confirm_message_warning_delivery)
       return
     }
 
@@ -213,20 +212,20 @@ class Confirm extends Component {
     if (needTaxNumber) {
       if (!this.state.individual_tax_number) {
         console.log('individual_tax_number')
-        message.warn(lang.confirm_message_warning_tax_number)
+        message.warn(LANG.confirm_message_warning_tax_number)
         return
       }
     }
 
     if (!this.state.pay_type) {
       console.log('pay_type')
-      message.warn(lang.confirm_message_warning_pay_type)
+      message.warn(LANG.confirm_message_warning_pay_type)
       return
     }
 
     if (!this.state.contact_email) {
       console.log('contact_email')
-      message.warn(lang.confirm_message_warning_contact_email)
+      message.warn(LANG.confirm_message_warning_contact_email)
       return
     }
 
@@ -248,14 +247,14 @@ class Confirm extends Component {
       <div className="order">
         <div className="breadcrumb">
           <div className="container links">
-            <h2>{lang.confirm_meta_breadcrumb}</h2>
+            <h2>{LANG.confirm_meta_breadcrumb}</h2>
           </div>
         </div>
 
         <Row className="container detail">
 
           <Col span={24}>
-            <Delivery data={{ deliveries, overseaAddr }} {...{ addDelivery, updateDelivery, delDelivery }} handleRadioChange={this.handleChildSubmit}></Delivery>
+            <Delivery data={{ deliveries }} {...{ addDelivery, updateDelivery, delDelivery }} handleRadioChange={this.handleChildSubmit}></Delivery>
           </Col>
 
           <Col span={24}>
@@ -275,8 +274,8 @@ class Confirm extends Component {
 
           <Col span={24}>
             <div className="delivery-info">
-              <h3>{lang.confirm_meta_delivery} </h3>
-              <p className="tips">{delivery_info.deliveryTime}, {lang.confirm_meta_batch} {delivery_info.batch}</p>
+              <h3>{LANG.confirm_meta_delivery} </h3>
+              <p className="tips">{delivery_info.deliveryTime}, {LANG.confirm_meta_batch} {delivery_info.batch}</p>
             </div>
           </Col>
 
@@ -287,17 +286,17 @@ class Confirm extends Component {
           <Col span={24} className="action-block">
 
             <div span={24} className="agreement">
-              <Checkbox onChange={this.onAgreeChange}>{lang.confirm_agreement_checkbox_msg}</Checkbox>
-              <p className="tips">{lang.confirm_agreement_policy_msg}<a href="/page/privacy" target="_blank">{lang.confirm_agreement_policy_desc}</a>
+              <Checkbox onChange={this.onAgreeChange}>{LANG.confirm_agreement_checkbox_msg}</Checkbox>
+              <p className="tips">{LANG.confirm_agreement_policy_msg} <a href="/page/privacy" target="_blank">{LANG.confirm_agreement_policy_desc}</a>
               </p>
             </div>
 
-            <Button type="primary" disabled={submitStatus} onClick={this.handleSubmit}>{lang.confirm_btn_submit}</Button>
+            <Button type="primary" disabled={submitStatus} onClick={this.handleSubmit}>{LANG.confirm_btn_submit}</Button>
           </Col>
 
           {/*
             <Col span={14}>
-              <RadioContainer title={lang.confirm_title_invoice} submitType='invoice' data={invoiceTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>            
+              <RadioContainer title={LANG.confirm_title_invoice} submitType='invoice' data={invoiceTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>            
             </Col>          
           */}
 

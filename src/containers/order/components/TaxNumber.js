@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Input } from 'antd'
-import lang from '../../../language/'
+import { LANG } from '../../../locales/'
 
 class TaxNumber extends Component {
 
@@ -23,7 +23,7 @@ class TaxNumber extends Component {
         }
       } else {
         this.setState({
-          errMsg: lang.c_tax_number_input_invalid
+          errMsg: LANG.c_tax_number_input_invalid
         })
       }
     })
@@ -36,12 +36,12 @@ class TaxNumber extends Component {
         display: (visible ? 'block' : 'none')
       }}>
         <div className="header">
-          <h3>{lang.c_tax_number_title}</h3>
+          <h3>{LANG.c_tax_number_title}</h3>
         </div>
         <div className="contact">
-          <p>{lang.c_tax_number_tips}</p>
+          <p>{LANG.c_tax_number_tips}</p>
           <div>
-            <Input onBlur={this.onBlur} placeholder={lang.c_tax_number_input_placeholder} />
+            <Input onBlur={this.onBlur} placeholder={LANG.c_tax_number_input_placeholder} />
             {
               this.state.errMsg ? (<span style={{ color: 'red' }}>{this.state.errMsg}</span>) : ('')
             }

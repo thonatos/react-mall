@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 import { Row, Col } from 'antd'
-import { Link } from 'react-router'
+// import { Link } from 'react-router'
+import { MENU } from '../locales/'
+const MenuFooter = MENU.footer
+const LINK_MENU = MenuFooter.links
+const CONTACT = MenuFooter.contact
+const COPYRIGHT = MenuFooter.copyrighy
 
 const LINK_BRAND = ['https://static.insta360.com/assets/mall/logo_insta360@2x.png', 'http://www.insta360.com/']
-
 const LINK_SOCIAL = [
   // ['http://www.insta360.com/public/images/v6/footer/wechat@1x.png', ''],
   ['http://www.insta360.com/public/images/v6/footer/weibo@1x.png', 'http://weibo.com/insta360'],
@@ -12,45 +16,6 @@ const LINK_SOCIAL = [
   ['http://www.insta360.com/public/images/v6/footer/instagram@1x.png', 'https://www.instagram.com/insta360official/'],
   ['http://www.insta360.com/public/images/v6/footer/youku@1x.png', 'https://i.youku.com/insta360'],
   ['http://www.insta360.com/public/images/v6/footer/youtube@1x.png', 'https://www.youtube.com/channel/UC3qWcF49rv8VMZO7Vg6kj5w']
-]
-
-const LINK_MENU = [{
-  title: 'Site Map',
-  links: [
-    ['Insta360 Pro', 'http://www.insta360.com/product/insta360-pro'],
-    ['Insta360 Air', 'http://www.insta360.com/product/insta360-air'],
-    ['Insta360 Nano', 'http://www.insta360.com/product/insta360-nano'],
-    ['Insta360 4K', 'http://www.insta360.com/product/insta360-4k'],
-    ['Downloads', 'http://www.insta360.com/download']
-  ]
-},
-{
-  title: 'How to Buy',
-  links: [
-    ['Online Store', 'https://support.insta360.com/buy'],
-    ['Find a store', 'https://support.insta360.com/buy-map']
-  ]
-},
-{
-  title: 'Developer Center',
-  links: [
-    ['SDK application', 'https://www.wenjuan.com/s/3Y3Izie/']
-  ]
-}, {
-  title: 'About Us',
-  links: [
-    ['About Insta360', 'http://www.insta360.com/about'],
-    ['Newsroom', 'http://blog.insta360.com/'],
-    ['Join us', 'http://www.insta360.com/jobs'],
-    ['Contact us', 'http://www.insta360.com/contact']
-  ]
-}]
-
-const POLICY = [
-  ['Terms & Conditions', '/page/terms'],
-  ['Warranty & Return', 'https://support.insta360.com/aftersales?name=after'],
-  ['Privacy Policy', '/page/privacy'],
-  ['Shipping Policy ', '/page/shipping-policy']
 ]
 
 class Footer extends Component {
@@ -99,25 +64,10 @@ class Footer extends Component {
             </Row>
             <Col span={24} className="contact">
               <p>
-                Toll Free: 888-888-4ASI<span></span>Office Hours: 09:00 - 18:00 (GMT+8), Monday to Friday
+                {CONTACT.tell}<span></span>{CONTACT.work_day}
               </p>
             </Col>
 
-
-            <Col span={24} className="policy">
-              <ul>
-                {
-                  POLICY.map((v, key) => {
-                    return (
-                      <li key={key}>
-                        <Link to={v[1]} target="_blank">{v[0]}</Link>
-                      </li>
-                    )
-                  })
-                }
-              </ul>
-
-            </Col>
           </Row>
         </Col>
 
@@ -127,7 +77,7 @@ class Footer extends Component {
               <p className="copy-right">Copyright © 2017 Arashi Vision All Rights Reserved.</p>
             </Col>
             <Col span={12} className="text-right">
-              <p className="icp">Jiang Su ICP  No. 14006102-4.</p>
+              <p className="icp">{COPYRIGHT.icp}</p>              
             </Col>
           </Row>
         </Col>

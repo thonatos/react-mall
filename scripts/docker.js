@@ -1,14 +1,23 @@
+var fs = require('fs')
 var shell = require('shelljs')
 var exec = shell.exec
 
 var mainVersion = require('../package.json').version
 var dateString = new Date().toLocaleDateString()
+var lang = process.env.NODE_LANG === 'zh_CN' ? 'zh_CN' : 'en_US'
 
-if(process.env.NODE_ENV === 'production'){
-  version = `${mainVersion}-rc.${dateString}`
-}else{
-  version = `${mainVersion}-beta.${dateString}`
+if (process.env.NODE_ENV === 'production') {
+  version = `${mainVersion}-rc.${lang}.${dateString}`
+} else {
+  version = `${mainVersion}-beta.${lang}.${dateString}`
 }
+
+const data_env = `module.exports = {
+      LANG: '${lang}',
+      ENV: 'production'
+    }
+  `
+fs.writeFileSync('./src/locales/node_env.js', data_env)
 
 var cmds = [
   'npm run build',

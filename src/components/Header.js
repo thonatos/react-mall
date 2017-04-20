@@ -5,30 +5,9 @@ import * as authActions from '../actions/auth'
 import React, { Component } from 'react'
 import { Row, Col, Menu, Dropdown, Icon } from 'antd'
 import { Link } from 'react-router'
+import { LANG, MENU } from '../locales/'
 
-// const HeaderMenu = {
-//   logo: 'https://static.insta360.com/assets/mall/logo_mall_zh@2x.png',
-//   brand: {
-//     href: 'https://www.insta360.com',
-//     eye: 'https://static.insta360.com/assets/mall/eye@2x.png',
-//     home: 'https://static.insta360.com/assets/mall/home@2x.png'
-//   },
-//   links: [
-//     ['/', 'Home']
-//   ]
-// }
-
-const HeaderMenu = {
-  logo: 'https://static.insta360.com/assets/mall/logo_mall_en@2x.png',  
-  brand: {
-    href: 'https://www.insta360.com',
-    eye: 'https://static.insta360.com/assets/mall/eye@2x.png',
-    home: 'https://static.insta360.com/assets/mall/home@2x.png'
-  },
-  links: [
-    ['/', 'Home']
-  ]
-}
+const HeaderMenu = MENU.header
 
 class Header extends Component {
   onclick = (action, event) => {
@@ -57,10 +36,10 @@ class Header extends Component {
     const menu = (
       <Menu>
         <Menu.Item>
-          <Link to='/order/list' rel="noopener noreferrer">Orders</Link>
+          <Link to='/order/list' rel="noopener noreferrer">{LANG.header_right_menu_orders}</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link onClick={this.onclick.bind(this, 'logout')} rel="noopener noreferrer">Logout</Link>
+          <Link onClick={this.onclick.bind(this, 'logout')} rel="noopener noreferrer">{LANG.header_right_menu_logout}</Link>
         </Menu.Item>
       </Menu>
     )
@@ -78,8 +57,8 @@ class Header extends Component {
     } else {
       return (
         <div className="menu-links">
-          <Link onClick={this.onclick.bind(this, 'register')}>Register</Link>
-          <Link onClick={this.onclick.bind(this, 'login')}>Log in</Link>
+          <Link onClick={this.onclick.bind(this, 'register')}>{LANG.header_right_menu_register}</Link>
+          <Link onClick={this.onclick.bind(this, 'login')}>{LANG.header_right_menu_login}</Link>
         </div>
       )
     }

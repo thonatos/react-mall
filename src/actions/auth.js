@@ -1,8 +1,9 @@
 import { notification } from 'antd'
 import md5 from 'crypto-js/md5'
 import request from '../utils/request'
-import lang from '../language/'
-import { API_SERVER_USER } from '../config/'
+import { LANG, SERVER } from '../locales/'
+
+const { API_SERVER_USER } = SERVER
 
 function getExpiretion() {
   return Math.ceil(Date.now() / 1000) + 60 * 60 // 30Min
@@ -19,9 +20,7 @@ function notify(title, message, type, callback) {
       }
     }
   }
-
-  console.log(type, args)
-  
+    
   return type ? notification[type](args) : notification.open(args)
 }
 
@@ -48,14 +47,14 @@ export function sendCaptcha(data) {
       responseType: 'json'
     }, (response) => {
       if (response.code === 0) {
-        notify(lang.auth_captcha_title, lang.auth_captcha_send_success, 'success')
+        notify(LANG.auth_captcha_title, LANG.auth_captcha_send_success, 'success')
       } else {
         console.log(response.errorMsg)
-        notify(lang.auth_captcha_title, lang.auth_captcha_send_failed, 'error')
+        notify(LANG.auth_captcha_title, LANG.auth_captcha_send_failed, 'error')
       }
     }, (err) => {
       console.log('#server', err)
-      notify(lang.network_error_title, lang.network_error_tips, 'error')
+      notify(LANG.network_error_title, LANG.network_error_tips, 'error')
     })
   }
 }
@@ -81,7 +80,7 @@ export function login(user) {
           expiration: getExpiretion()
         }, response.data)
         
-        notify(lang.auth_login_success_title, lang.auth_login_success, 'success')
+        notify(LANG.auth_login_success_title, LANG.auth_login_success, 'success')
 
         dispatch({
           type: LOGIN_SUCCESS,
@@ -89,11 +88,11 @@ export function login(user) {
         })
 
       } else {
-        notify(lang.auth_login_failed_title, lang.auth_login_failed, 'error')
+        notify(LANG.auth_login_failed_title, LANG.auth_login_failed, 'error')
       }
     }, (err) => {
       console.log('#server', err)
-      notify(lang.network_error_title, lang.network_error_tips, 'error')
+      notify(LANG.network_error_title, LANG.network_error_tips, 'error')
     })
   }
 }
@@ -122,7 +121,7 @@ export function register(user) {
           expiration: getExpiretion()
         }, response.data)
 
-        notify(lang.auth_register_success_title, lang.auth_register_success, 'success')
+        notify(LANG.auth_register_success_title, LANG.auth_register_success, 'success')
 
         dispatch({
           type: REGISTER_SUCCESS,
@@ -130,11 +129,11 @@ export function register(user) {
         })
 
       } else {
-        notify(lang.auth_register_failed_title, lang.auth_register_failed, 'error')
+        notify(LANG.auth_register_failed_title, LANG.auth_register_failed, 'error')
       }
     }, (err) => {
       console.log('#server', err)
-      notify(lang.network_error_title, lang.network_error_tips, 'error')
+      notify(LANG.network_error_title, LANG.network_error_tips, 'error')
     })
   }
 }
@@ -156,17 +155,17 @@ export function retrieve(user) {
       responseType: 'json'
     }, (response) => {
       if (response.code === 0) {
-        notify(lang.auth_retrieve_success_title, lang.auth_retrieve_success, 'success')
+        notify(LANG.auth_retrieve_success_title, LANG.auth_retrieve_success, 'success')
         dispatch({
           type: RETIREVE_SUCCESS,
           data: { retrieve: true }
         })
       } else {
-        notify(lang.auth_retrieve_failed_title, lang.auth_retrieve_failed, 'error')
+        notify(LANG.auth_retrieve_failed_title, LANG.auth_retrieve_failed, 'error')
       }
     }, (err) => {
       console.log('#server', err)
-      notify(lang.network_error_title, lang.network_error_tips, 'error')
+      notify(LANG.network_error_title, LANG.network_error_tips, 'error')
     })
   }
 }

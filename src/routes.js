@@ -10,10 +10,6 @@ import OrderDetail from './containers/order/Detail'
 import OrderConfirm from './containers/order/Confirm'
 import ProductDetail from './containers/product/Detail'
 
-import PagePrivacy from './containers/page/Privacy'
-import PageShipping from './containers/page/Shipping'
-import PageTerms from './containers/page/Terms'
-
 const cache = new Cache()
 
 function requireAuth(nextState, replace) {
@@ -60,14 +56,6 @@ export default (
       <Route path="list" component={OrderList} onEnter={requireAuth} />
       <Route path="confirm" component={OrderConfirm} onEnter={requireAuth} />
     </Route>
-    <Route path="page">
-      <IndexRoute component={NoMatch} />
-      <Route path="privacy" component={PagePrivacy} />
-      <Route path="shipping-policy" component={PageShipping} />
-      <Route path="terms" component={PageTerms} />
-    </Route>
-
-
     <Route path="*" component={NoMatch} />
   </Route>
 )

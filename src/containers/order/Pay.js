@@ -3,24 +3,19 @@ import { Link } from 'react-router'
 import { Row, Col, Button } from 'antd'
 import { ReduxHelper } from '../../helpers/'
 import { Base64 } from '../../utils/encode'
-import lang from '../../language/'
+import { LANG } from '../../locales/'
 import Paypal from './components/Paypal'
 import './Pay.less'
 
-// const icons = {
-//   'credit_card': ['https://static.insta360.cn/assets/mall/ic_visa@2x.png', 'https://static.insta360.cn/assets/mall/ic_mastercard_2@2x.png'],
-//   'paypal': ['https://static.insta360.cn/assets/mall/PP_logo@2x.png']
-// }
-
 const channels = {
   'paypal': {
-    thumb: 'https://static.insta360.cn/assets/mall/PP_logo@2x.png'
+    thumb: 'https://static.insta360.cn/assets/mall/pay/PP_logo@2x.png'
   },
   'credit_card': {
-    thumb: 'https://static.insta360.cn/assets/mall/ic_mastercard_2@2x.png'
+    thumb: 'https://static.insta360.cn/assets/mall/pay/ic_creditcard@2x.png'
   },
   'alipay': {
-    thumb: 'https://static.insta360.cn/assets/mall/ic_visa@2x.png'
+    thumb: 'https://static.insta360.cn/assets/mall/pay/ic_alipay@2x.png'
   }
 }
 
@@ -39,7 +34,6 @@ class Pay extends Component {
     getAllMeta()
   }
 
-
   getChannelNode = (channel) => {
     const { meta } = this.props.reducer.order
     const { pagePayments } = meta
@@ -52,31 +46,40 @@ class Pay extends Component {
       case 'credit_card':
         return (
           <div>
-            <img src={channels[channel.key].thumb} alt='' />
-            <a href={baseUrl + '&channel=' + channel.key} className="btn-channel" target="_blank">
-              <Button className="btn-channel-button">{lang.pay_actions_btn_pay_now}</Button>
-            </a>
+            <div className="channel-box">
+              <p className="c-b-header">{LANG.pay_channel_creditcart_title}</p>
+              <img src={channels[channel.key].thumb} alt='' />
+              <a href={baseUrl + '&channel=' + channel.key} className="btn-channel" target="_blank">
+                <Button className="btn-channel-button">{LANG.pay_actions_btn_pay_now}</Button>
+              </a>
+            </div>
           </div>
         )
 
       case 'alipay':
         return (
           <div>
-            <img src={channels[channel.key].thumb} alt='' />
-            <a href={baseUrl + '&channel=' + channel.key} className="btn-channel" target="_blank">
-              <Button className="btn-channel-button">{lang.pay_actions_btn_pay_now}</Button>
-            </a>
+            <div className="channel-box">
+              <p className="c-b-header">{LANG.pay_channel_alipay_title}</p>
+              <img src={channels[channel.key].thumb} alt='' />
+              <a href={baseUrl + '&channel=' + channel.key} className="btn-channel" target="_blank">
+                <Button className="btn-channel-button">{LANG.pay_actions_btn_pay_now}</Button>
+              </a>
+            </div>
           </div>
         )
 
       case 'paypal':
         return (
           <div>
-            <img src={channels[channel.key].thumb} alt='' />
-            <Paypal id={'paypal'} orderId={orderId} />
-            <p className="channel-desc">
-              {lang.pay_channel_paypal_description}
-            </p>
+            <div className="channel-box">
+              <p className="c-b-header">{LANG.pay_channel_paypal_title}</p>
+              <img src={channels[channel.key].thumb} alt='' />
+              <Paypal id={'paypal'} orderId={orderId} />
+              <p className="channel-desc">
+                {LANG.pay_channel_paypal_description}
+              </p>
+            </div>
           </div>
         )
 
@@ -110,7 +113,7 @@ class Pay extends Component {
       <div className="order-pay">
         <div className="breadcrumb">
           <div className="container links">
-            <h2>{lang.pay_meta_breadcrumb}</h2>
+            <h2>{LANG.pay_meta_breadcrumb}</h2>
           </div>
         </div>
 
@@ -118,8 +121,8 @@ class Pay extends Component {
 
           <Col span={24}>
             <div className="pay-suggestion">
-              <h2 className="title">{lang.pay_suggestion_title}</h2>
-              <p>{lang.pay_suggestion_desc}</p>
+              <h2 className="title">{LANG.pay_suggestion_title}</h2>
+              <p>{LANG.pay_suggestion_desc}</p>
             </div>
           </Col>
 
@@ -129,15 +132,15 @@ class Pay extends Component {
                 <img src={icon_order} alt="" />
               </div>
               <div className="summary">
-                <h2 className="title">{lang.pay_detail_summary_title}</h2>
+                <h2 className="title">{LANG.pay_detail_summary_title}</h2>
 
                 <div className="box">
                   <div className="num">
-                    <h4>{lang.pay_detail_summary_order_number}</h4>
+                    <h4>{LANG.pay_detail_summary_order_number}</h4>
                     <p className="number">{OrderInfo.order_number}</p>
                   </div>
                   <div className="amount">
-                    <h4>{lang.pay_detail_summary_pay_amount}</h4>
+                    <h4>{LANG.pay_detail_summary_pay_amount}</h4>
                     <p className="price">{OrderInfo.currency} {OrderInfo.amount}</p>
                   </div>
                 </div>
@@ -147,7 +150,9 @@ class Pay extends Component {
 
           <Col span={24}>
             <div className="pay-channels">
-              <h2 className="title">{lang.pay_channels_title}</h2>
+              {/*
+              <h2 className="title">{LANG.pay_channels_title}</h2>
+              */}
               <Row className="channels">
                 {
                   payChannels.map((obj, key) => {
@@ -164,8 +169,8 @@ class Pay extends Component {
 
           <Col span={6} offset={18}>
             <div className="actions">
-              <Link to={'/order/list'}><Button type="primary" className="btn-actions">{lang.pay_actions_btn_pay_later}</Button></Link>
-              <Link to={'/order/list'}><Button type="primary" className="btn-actions">{lang.pay_actions_btn_done}</Button></Link>
+              <Link to={'/order/list'}><Button type="primary" className="btn-actions">{LANG.pay_actions_btn_pay_later}</Button></Link>
+              <Link to={'/order/list'}><Button type="primary" className="btn-actions">{LANG.pay_actions_btn_done}</Button></Link>
             </div>
           </Col>
         </Row>

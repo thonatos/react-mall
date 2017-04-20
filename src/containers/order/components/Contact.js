@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Input, Checkbox } from 'antd'
-import lang from '../../../language/'
+import { LANG } from '../../../locales/'
 
 function emailValid(email) {
   var reg = /([\w\.]+)@([\w\.]+)\.(\w+)/g
@@ -39,7 +39,7 @@ class Contact extends Component {
         }
       } else {
         this.setState({
-          errMsg: lang.c_contact_input_mail_invalid
+          errMsg: LANG.c_contact_input_mail_invalid
         })
       }
     })
@@ -68,18 +68,18 @@ class Contact extends Component {
 
       <div className="section">
         <div className="header">
-          <h3>{lang.c_contact_title}</h3>
+          <h3>{LANG.c_contact_title}</h3>
         </div>
         <div className="contact">
-          <p>{lang.c_contact_tips}</p>
+          <p>{LANG.c_contact_tips}</p>
           <div>
-            <Input value={this.state.contact_email} onBlur={this.onBlur} onChange={this.handleChange} placeholder={lang.c_contact_input_mail_placeholder} />
+            <Input value={this.state.contact_email} onBlur={this.onBlur} onChange={this.handleChange} placeholder={LANG.c_contact_input_mail_placeholder} />
             {
               this.state.errMsg ? (<span style={{ color: 'red' }}>{this.state.errMsg}</span>) : ('')
             }
           </div>
           <div>
-            <Checkbox onChange={this.onChange} checked={this.state.subscribe}>{lang.c_contact_checkbox_subscribe_desc}</Checkbox>
+            <Checkbox onChange={this.onChange} checked={this.state.subscribe}>{LANG.c_contact_checkbox_subscribe_desc}</Checkbox>
           </div>
         </div>
       </div>

@@ -1,5 +1,7 @@
-import { API_SERVER_MALL } from '../config/'
+import { SERVER } from '../locales/'
 import request from '../utils/request'
+
+const { API_SERVER_MALL } = SERVER
 
 export const FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS'
 

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { X_Language } from '../config/'
+import { X_Language } from '../locales/'
 import Cache from './cache'
 
 const cache = new Cache()
@@ -38,9 +38,10 @@ export default function (options, success, error) {
   }
 
   let headers = {}
+  headers['X-Language'] = X_Language
 
-  if (!!options.language) {
-    headers['X-Language'] = X_Language
+  if (options.language & !options.language) {
+    delete headers['X-Language']
   }
   
   if (!!options.token) {

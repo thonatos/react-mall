@@ -1,0 +1,61 @@
+{
+  "header": {
+    "logo": "https://static.insta360.com/assets/mall/logo_mall_en@2x.png",
+    "brand": {
+      "href": "https://www.insta360.com",
+      "eye": "https://static.insta360.com/assets/mall/eye@2x.png",
+      "home": "https://static.insta360.com/assets/mall/home@2x.png"
+    },
+    "links": [
+      [
+        "/",
+        "Home"
+      ]
+    ]
+  },
+  "footer": {
+    "contact":{
+      "tell":"Toll Free: 888-888-4ASI",
+      "work_day":"Office Hours: 09:00 - 18:00 (GMT+8), Monday to Friday"
+    },
+    "copyrighy":{
+      "icp":"Jiang Su ICP  No. 14006102-4."
+    },    
+    "links":[
+      {
+        "title":"Insta360 Store Guide",
+        "links":[
+          ["General Sales Policy","https://support-i.insta360.com/mall/2907#1"],
+          ["Pro Sales Policy","https://support-i.insta360.com/mall/2907#3"],
+          ["Logistics and Payment","#"],
+          ["Returning and Exchanging Policy","#"]          
+        ]
+      },{
+        "title":"Warranty Terms",
+        "links":[
+          ["Warranty Policy","#"],
+          ["Warranty Period","#"],
+          ["Warranty Service Procedure","#"],
+          ["Repair Services","#"]          
+        ]
+      },{
+        "title":"About Us",
+        "links":[
+          ["About Insta360","#"],
+          ["Newsroom","#"],
+          ["Join us","#"],
+          ["Contact us","#"]                    
+        ]
+      },{
+        "title":"Website Terms",
+        "links":[
+          ["Terms of Use","#"],
+          ["Privacy Policy","#"]                    
+        ]
+      }      
+          
+    ]
+  }
+}
+
+

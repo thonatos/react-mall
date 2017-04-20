@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Input } from 'antd'
-import lang from '../../../language/'
+import { LANG } from '../../../locales/'
 
 function emailValid(email) {
   var reg = /([\w\.]+)@([\w\.]+)\.(\w+)/g
@@ -40,7 +40,7 @@ class Additional extends Component {
 
       } else {
         this.setState({
-          errMsg: lang.c_contact_input_mail_invalid
+          errMsg: LANG.c_contact_input_mail_invalid
         })
       }
 
@@ -69,18 +69,18 @@ class Additional extends Component {
     return (
       <div className="section">
         <div className="header">
-          <h3>{lang.c_contact_add_title}</h3>
+          <h3>{LANG.c_contact_add_title}</h3>
         </div>
         <div className="contact">
-          <p>{lang.c_contact_add_tips}</p>
+          <p>{LANG.c_contact_add_tips}</p>
           <div>
-            <Input onBlur={this.onEmailBlur} onChange={this.handleEmailChange} value={this.state.backup_email} placeholder={lang.c_contact_add_input_mail_placeholder} />
+            <Input onBlur={this.onEmailBlur} onChange={this.handleEmailChange} value={this.state.backup_email} placeholder={LANG.c_contact_add_input_mail_placeholder} />
             {
               this.state.errMsg ? (<span style={{ color: 'red' }}>{this.state.errMsg}</span>) : ('')
             }
           </div>
           <div>
-            <Input onBlur={this.onPhoneBlur} placeholder={lang.c_contact_add_input_phone_placeholder} />
+            <Input onBlur={this.onPhoneBlur} placeholder={LANG.c_contact_add_input_phone_placeholder} />
           </div>
         </div>
       </div>

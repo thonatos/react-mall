@@ -1,0 +1,59 @@
+{
+  "header": {
+    "logo": "https://static.insta360.com/assets/mall/logo_mall_zh@2x.png",
+    "brand": {
+      "href": "https://www.insta360.com",
+      "eye": "https://static.insta360.com/assets/mall/eye@2x.png",
+      "home": "https://static.insta360.com/assets/mall/home@2x.png"
+    },
+    "links": [
+      [
+        "/",
+        "首页"
+      ]
+    ]    
+  },
+  "footer": {
+    "contact":{
+      "tell":"服务热线：400-833-4360",
+      "work_day":"工作时间：周一至周五 09:00 - 18:00 (GMT+8)"
+    },
+    "copyrighy":{
+      "icp":"苏ICP备 14006102号-4"
+    },
+    "links":[
+      {
+        "title":"商城指南",
+        "links":[
+          ["购买指南","#"],
+          ["Pro销售协议","#"],
+          ["订单接收与确认","#"],
+          ["物流和交付","#"],
+          ["退货及换货",""]
+        ]
+      },{
+        "title":"保修条款",
+        "links":[
+          ["售后服务流程","#"],
+          ["售后服务政策","#"],
+          ["付费维修流程","#"],
+          ["部件保修期限","#"]          
+        ]
+      },{
+        "title":"关于我们",
+        "links":[
+          ["公司简介","#"],
+          ["媒体报道","#"],
+          ["如何加入","#"],
+          ["联系我们","#"]                    
+        ]
+      },{
+        "title":"网站条款",
+        "links":[
+          ["使用条款","#"],
+          ["隐私条款","#"]                    
+        ]
+      }      
+    ] 
+  }
+}

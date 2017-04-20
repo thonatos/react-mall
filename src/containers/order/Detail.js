@@ -2,7 +2,7 @@ import moment from 'moment'
 import React, { Component } from 'react'
 import { Row, Col, Table, Modal, Button } from 'antd'
 
-import lang from '../../language/'
+import { LANG } from '../../locales/'
 import './Detail.less'
 import { ReduxHelper } from '../../helpers/'
 import { Base64 } from '../../utils/encode'
@@ -10,14 +10,14 @@ import { Base64 } from '../../utils/encode'
 const icon_order = 'https://static.insta360.cn/assets/mall/ic_order@2x.png'
 
 const ENUM_STATE = {
-  '0': lang.order_state_0,
-  '1': lang.order_state_1,
-  '2': lang.order_state_2,
-  '3': lang.order_state_3,
-  '8': lang.order_state_8,
-  '9': lang.order_state_9,
-  '-1': lang.order_state_x1,
-  '-2': lang.order_state_x2
+  '0': LANG.order_state_0,
+  '1': LANG.order_state_1,
+  '2': LANG.order_state_2,
+  '3': LANG.order_state_3,
+  '8': LANG.order_state_8,
+  '9': LANG.order_state_9,
+  '-1': LANG.order_state_x1,
+  '-2': LANG.order_state_x2
 }
 
 function parsePrice(price) {
@@ -26,13 +26,13 @@ function parsePrice(price) {
 
 function info() {
   Modal.info({
-    title: lang.detail_delivery_modal_change_title,
+    title: LANG.detail_delivery_modal_change_title,
     content: (
       <div>
-        <p>{lang.detail_delivery_modal_change_msg}</p>
+        <p>{LANG.detail_delivery_modal_change_msg}</p>
       </div>
     ),
-    okText: lang.detail_delivery_modal_ok_text,
+    okText: LANG.detail_delivery_modal_ok_text,
     onOk() { },
   })
 }
@@ -69,27 +69,27 @@ class Detail extends Component {
         <Col span={10} offset={14}>
 
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_product}</h3></Col>
+            <Col span={14}><h3>{LANG.c_cart_table_balance_product}</h3></Col>
             <Col span={10} style={priceStyle}><span>{amount}</span></Col>
           </Row>
 
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_coupons}</h3></Col>
+            <Col span={14}><h3>{LANG.c_cart_table_balance_coupons}</h3></Col>
             <Col span={10} style={priceStyle}><span>{0 - coupon}</span></Col>
           </Row>
 
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_tax}</h3></Col>
+            <Col span={14}><h3>{LANG.c_cart_table_balance_tax}</h3></Col>
             <Col span={10} style={priceStyle}><span>{tax}</span></Col>
           </Row>
 
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_shipping_cost}</h3></Col>
+            <Col span={14}><h3>{LANG.c_cart_table_balance_shipping_cost}</h3></Col>
             <Col span={10} style={priceStyle}><span>{ship}</span></Col>
           </Row>
 
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_total}</h3></Col>
+            <Col span={14}><h3>{LANG.c_cart_table_balance_total}</h3></Col>
             <Col span={10} style={totalStyle}><span>{total}</span></Col>
           </Row>
 
@@ -142,7 +142,7 @@ class Detail extends Component {
   getCartTable = (data) => {
     const columns = [
       {
-        title: lang.c_cart_table_column_thumb,
+        title: LANG.c_cart_table_column_thumb,
         dataIndex: 'thumb',
         key: 'thumb',
         render: (text, record, index) => {
@@ -154,22 +154,22 @@ class Detail extends Component {
         }
       },
       {
-        title: lang.c_cart_table_column_name,
+        title: LANG.c_cart_table_column_name,
         dataIndex: 'commodity_name',
         key: 'name'
       },
       {
-        title: lang.c_cart_table_column_price,
+        title: LANG.c_cart_table_column_price,
         dataIndex: 'price',
         key: 'price'
       },
       {
-        title: lang.c_cart_table_column_quantity,
+        title: LANG.c_cart_table_column_quantity,
         dataIndex: 'number',
         key: 'number'
       },
       {
-        title: lang.c_cart_table_column_sum,
+        title: LANG.c_cart_table_column_sum,
         dataIndex: 'sum',
         key: 'sum',
         render: (text, record, index) => {
@@ -218,7 +218,7 @@ class Detail extends Component {
       <div className="order-detail">
         <div className="breadcrumb">
           <div className="container links">
-            <h2>{lang.detail_meta_breadcrumb}</h2>
+            <h2>{LANG.detail_meta_breadcrumb}</h2>
           </div>
         </div>
         <Row className="container info">
@@ -228,18 +228,18 @@ class Detail extends Component {
                 <img src={icon_order} alt="" />
               </div>
               <div className="order-box">
-                <h2 className="title">{lang.detail_summary_title}</h2>
+                <h2 className="title">{LANG.detail_summary_title}</h2>
                 <div className="box">
                   <div className="num">
-                    <h4>{lang.pay_detail_summary_order_number}</h4>
+                    <h4>{LANG.pay_detail_summary_order_number}</h4>
                     <p>{detailOrder.order_number}</p>
-                    <h4>{lang.detail_summary_contact_email}</h4>
+                    <h4>{LANG.detail_summary_contact_email}</h4>
                     <p>{detailOrder.contact_email}</p>
                   </div>
                   <div className="amount">
-                    <h4>{lang.pay_detail_summary_pay_state}</h4>
+                    <h4>{LANG.pay_detail_summary_pay_state}</h4>
                     <p>{ENUM_STATE[detailOrder.state]}</p>
-                    <h4>{lang.pay_detail_summary_pay_amount}</h4>
+                    <h4>{LANG.pay_detail_summary_pay_amount}</h4>
                     <p className="price">{OrderInfo.currency} {OrderInfo.amount}</p>
                   </div>
                 </div>
@@ -248,8 +248,8 @@ class Detail extends Component {
                 {
                   OrderInfo.expired > 0 ? (
                     <div>
-                      <h2 className="title">{lang.pay_suggestion_title}</h2>
-                      <p>{lang.pay_suggestion_desc}</p>
+                      <h2 className="title">{LANG.pay_suggestion_title}</h2>
+                      <p>{LANG.pay_suggestion_desc}</p>
                     </div>
                   ) : null
                 }
@@ -259,8 +259,8 @@ class Detail extends Component {
 
           <Col span={24}>
             <div className="delivery">
-              <h2 className="title">{lang.detail_delivery_title}</h2>
-              <Button className="btn-delivery-change" onClick={info}>{lang.detail_delivery_btn_change}</Button>
+              <h2 className="title">{LANG.detail_delivery_title}</h2>
+              <Button className="btn-delivery-change" onClick={info}>{LANG.detail_delivery_btn_change}</Button>
               <div>
                 {this.getDeliveryTable()}
               </div>
@@ -269,7 +269,7 @@ class Detail extends Component {
 
           <Col span={24}>
             <div className="items">
-              <h2 className="title">{lang.c_cart_table_column_name}</h2>
+              <h2 className="title">{LANG.c_cart_table_column_name}</h2>
               {cartTable}
               <div style={{ padding: '2em 0' }}>
                 {this.getTotalFee()}

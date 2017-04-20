@@ -1,5 +1,6 @@
-import { API_SERVER_MALL, PAGE_SERVER_PAYMENT } from '../config/'
 import request from '../utils/request'
+import { SERVER } from '../locales/'
+const { API_SERVER_MALL, PAGE_SERVER_PAYMENT } = SERVER
 
 // META
 export const META_GET_ALL_SUCCESS = 'META_GET_ALL_SUCCESS'
@@ -9,7 +10,7 @@ export function getAllMeta() {
   return (dispatch) => {
     return request({
       url: API_META_GET_ALL,
-      token: true
+      token: true      
     }, (data) => {
       if (data.code === 0) {
         dispatch({ 
@@ -338,7 +339,7 @@ export function getProBatch() {
   return (dispatch) => {
     return request({
       url: API_DELIVERY_GET_PRO_BATCH,
-      method: 'get'
+      method: 'post'
     }, (data) => {
       if (data.code === 0) {
         dispatch({ type: DELIVERY_GET_PRO_BATCH_SUCCESS, data: data.data })

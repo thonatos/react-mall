@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Table, Select } from 'antd'
-import lang from '../../../language/'
+import { LANG } from '../../../locales/'
 
 const Option = Select.Option
 
@@ -38,7 +38,7 @@ class CartTable extends Component {
           <Col span={10} offset={14}>
             <Row style={style}>
               <Col span={14}>
-                <h3>{lang.c_cart_table_select_coupons}</h3>
+                <h3>{LANG.c_cart_table_select_coupons}</h3>
               </Col>
               <Col span={10}>
                 <Select onChange={this.handleChange} style={{ width: 200 }} defaultValue="-1">
@@ -89,7 +89,7 @@ class CartTable extends Component {
       } else {
         return (
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_coupons}</h3></Col>
+            <Col span={14}><h3>{LANG.c_cart_table_balance_coupons}</h3></Col>
             <Col span={10} style={priceStyle}><span>{0 - coupon}</span></Col>
           </Row>
         )
@@ -102,24 +102,24 @@ class CartTable extends Component {
         <Col span={10} offset={14}>
 
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_product}</h3></Col>
+            <Col span={14}><h3>{LANG.c_cart_table_balance_product}</h3></Col>
             <Col span={10} style={priceStyle}><span>{items_sum}</span></Col>
           </Row>
 
           {getCouponsNode()}
 
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_tax}</h3></Col>
+            <Col span={14}><h3>{LANG.c_cart_table_balance_tax}</h3></Col>
             <Col span={10} style={priceStyle}><span>{tax}</span></Col>
           </Row>
 
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_shipping_cost}</h3></Col>
+            <Col span={14}><h3>{LANG.c_cart_table_balance_shipping_cost}</h3></Col>
             <Col span={10} style={priceStyle}><span>{ship}</span></Col>
           </Row>
 
           <Row>
-            <Col span={14}><h3>{lang.c_cart_table_balance_total}</h3></Col>
+            <Col span={14}><h3>{LANG.c_cart_table_balance_total}</h3></Col>
             <Col span={10} style={totalStyle}><span>{total}</span></Col>
           </Row>
 
@@ -135,7 +135,7 @@ class CartTable extends Component {
 
     const columns = [
       {
-        title: lang.c_cart_table_column_thumb,
+        title: LANG.c_cart_table_column_thumb,
         dataIndex: 'thumb',
         key: 'thumb',
         render: (text, record, index) => {
@@ -147,7 +147,7 @@ class CartTable extends Component {
         }
       },
       {
-        title: lang.c_cart_table_column_name,
+        title: LANG.c_cart_table_column_name,
         dataIndex: 'name',
         key: 'name',
         render: (text, record, index) => {
@@ -155,7 +155,7 @@ class CartTable extends Component {
         }        
       },
       {
-        title: lang.c_cart_table_column_price,
+        title: LANG.c_cart_table_column_price,
         dataIndex: 'price',
         key: 'price',
         render: (text, record, index) => {
@@ -163,12 +163,12 @@ class CartTable extends Component {
         }
       },
       {
-        title: lang.c_cart_table_column_quantity,
+        title: LANG.c_cart_table_column_quantity,
         dataIndex: 'count',
         key: 'count'
       },
       {
-        title: lang.c_cart_table_column_sum,
+        title: LANG.c_cart_table_column_sum,
         dataIndex: 'sum',
         key: 'sum',
         render: (text, record, index) => {
@@ -183,7 +183,7 @@ class CartTable extends Component {
     return (
       <div className="section">
         <div className="header">
-          <h3>{lang.c_cart_table_title}</h3>
+          <h3>{LANG.c_cart_table_title}</h3>
         </div>
         <Row className="cart" type="flex" align="top">
           <Col span={24}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Form, Input, Button, Icon, Checkbox } from 'antd'
-import lang from '../../language/'
+import { LANG } from '../../locales/'
 
 const FormItem = Form.Item
 
@@ -27,7 +27,7 @@ class Register extends Component {
   checkPassword = (rule, value, callback) => {
     const form = this.props.form
     if (value && value !== form.getFieldValue('password')) {
-      callback(lang.c_auth_form_passwd_confirm_error_msg)
+      callback(LANG.c_auth_form_passwd_confirm_error_msg)
     } else {
       callback()
     }
@@ -70,45 +70,45 @@ class Register extends Component {
 
           {/* Email */}
           <Col span={24}>
-            <FormItem label={lang.c_auth_form_email_label}>
+            <FormItem label={LANG.c_auth_form_email_label}>
               {getFieldDecorator('email', {
                 rules: [{
-                  type: 'email', message: lang.c_auth_form_email_error_msg,
+                  type: 'email', message: LANG.c_auth_form_email_error_msg,
                 }, {
-                  required: true, message: lang.c_auth_form_email_msg,
+                  required: true, message: LANG.c_auth_form_email_msg,
                 }],
               })(
-                <Input prefix={<Icon type="mail" />} placeholder={lang.c_auth_form_email_placeholder} />
+                <Input prefix={<Icon type="mail" />} placeholder={LANG.c_auth_form_email_placeholder} />
                 )}
             </FormItem>
           </Col>
 
           {/* Password */}
           <Col span={24}>
-            <FormItem label={lang.c_auth_form_passwd_label}>
+            <FormItem label={LANG.c_auth_form_passwd_label}>
               {getFieldDecorator('password', {
                 rules: [{
-                  required: true, message: lang.c_auth_form_passwd_msg,
+                  required: true, message: LANG.c_auth_form_passwd_msg,
                 }, {
                   validator: this.checkConfirm,
                 }],
               })(
-                <Input type="password" prefix={<Icon type="lock" />} placeholder={lang.c_auth_form_passwd_placeholder} />
+                <Input type="password" prefix={<Icon type="lock" />} placeholder={LANG.c_auth_form_passwd_placeholder} />
                 )}
             </FormItem>
           </Col>
 
           {/* Confirm Password */}
           <Col span={24}>
-            <FormItem label={lang.c_auth_form_passwd_confirm_label}>
+            <FormItem label={LANG.c_auth_form_passwd_confirm_label}>
               {getFieldDecorator('confirm', {
                 rules: [{
-                  required: true, message: lang.c_auth_form_passwd_confirm_msg,
+                  required: true, message: LANG.c_auth_form_passwd_confirm_msg,
                 }, {
                   validator: this.checkPassword,
                 }],
               })(
-                <Input type="password" onBlur={this.handleConfirmBlur} prefix={<Icon type="lock" />} placeholder={lang.c_auth_form_passwd_confirm_placeholder} />
+                <Input type="password" onBlur={this.handleConfirmBlur} prefix={<Icon type="lock" />} placeholder={LANG.c_auth_form_passwd_confirm_placeholder} />
                 )}
             </FormItem>
           </Col>
@@ -137,16 +137,16 @@ class Register extends Component {
           */}
 
           <Col span={24} className="agreement">
-            <Checkbox onChange={this.onAgreeChange}>{lang.c_auth_form_agreement_checkbox_msg}</Checkbox>
+            <Checkbox onChange={this.onAgreeChange}>{LANG.c_auth_form_agreement_checkbox_msg}</Checkbox>
 
-            <p className="tips">{lang.c_auth_form_agreement_link_tips}<a href="/page/privacy" target="_blank">{lang.c_auth_form_agreement_link_desc}</a>
+            <p className="tips">{LANG.c_auth_form_agreement_link_tips} <a href="/page/privacy" target="_blank">{LANG.c_auth_form_agreement_link_desc}</a>
             </p>
 
           </Col>
           {/* Submit */}
           <Col span={24}>
             <FormItem>
-              <Button type="primary" htmlType="submit" size="large" style={{ width: '100%', height: '48px' }} disabled={this.state.agree ? '' : 'disabled'}>{lang.c_auth_btn_register}</Button>
+              <Button type="primary" htmlType="submit" size="large" style={{ width: '100%', height: '48px' }} disabled={this.state.agree ? '' : 'disabled'}>{LANG.c_auth_btn_register}</Button>
             </FormItem>
           </Col>
 

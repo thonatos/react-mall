@@ -4,8 +4,8 @@ import * as orderActions from '../actions/order'
 import * as authActions from '../actions/auth'
 
 import React, { Component } from 'react'
-import { Button, Card, InputNumber } from 'antd'
-import lang from '../language/'
+import { Button, Card, InputNumber, notification } from 'antd'
+import { LANG } from '../locales/'
 import './Cart.less'
 
 const ic_cart = 'https://static.insta360.cn/assets/mall/ic_cart@2x.png'
@@ -53,12 +53,21 @@ class Cart extends Component {
   checkout = (event) => {
     const { router } = this.props
     const { auth } = this.props.reducer
+    const {cart_items} = this.props.reducer.order
     const { updateCartItemsType } = this.props.actions.order
     const { setRedirect } = this.props.actions.auth
     const { updateAuthAction } = this.props.actions.auth
+      
+    if(cart_items.length < 1){
+      notification.warning({
+        message: LANG.cart_warning_blank_items_msg,
+        description: LANG.cart_warning_blank_items_desc
+      })
+      return
+    }
 
     updateCartItemsType('items')
-
+  
     if (!auth.isLoggedIn) {
       setRedirect('/order/confirm')
       updateAuthAction('login')
@@ -123,10 +132,10 @@ class Cart extends Component {
 
           <div className="c-footer">
             <div className="c-calc">
-              <span className="c-f-count">{items_number} {lang.cart_calc_items} </span>
+              <span className="c-f-count">{items_number} {LANG.cart_calc_items} </span>
               <span className="c-f-total">{items_currency} {items_total}</span>
             </div>
-            <Button className="btn-checkout" onClick={this.checkout.bind(this)}>{lang.cart_calc_checkout}</Button>
+            <Button className="btn-checkout" onClick={this.checkout.bind(this)}>{LANG.cart_calc_checkout}</Button>
           </div>
         </Card>
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Form, Input, Button, Icon } from 'antd'
-import lang from '../../language/'
+import { LANG } from '../../locales/'
 
 const FormItem = Form.Item
 
@@ -27,28 +27,28 @@ class Login extends Component {
 
           {/* Email */}
           <Col span={24}>
-            <FormItem label={lang.c_auth_form_email_label}>
+            <FormItem label={LANG.c_auth_form_email_label}>
               {getFieldDecorator('email', {
                 rules: [{
-                  type: 'email', message: lang.c_auth_form_email_error_msg,
+                  type: 'email', message: LANG.c_auth_form_email_error_msg,
                 }, {
-                  required: true, message: lang.c_auth_form_email_msg,
+                  required: true, message: LANG.c_auth_form_email_msg,
                 }],
               })(
-                <Input prefix={<Icon type="mail" />} placeholder={lang.c_auth_form_email_placeholder} />
+                <Input prefix={<Icon type="mail" />} placeholder={LANG.c_auth_form_email_placeholder} />
                 )}
             </FormItem>
           </Col>
 
           {/* Password */}
           <Col span={24}>
-            <FormItem label={lang.c_auth_form_passwd_label}>
+            <FormItem label={LANG.c_auth_form_passwd_label}>
               {getFieldDecorator('password', {
                 rules: [{
-                  required: true, message: lang.c_auth_form_passwd_msg,
+                  required: true, message: LANG.c_auth_form_passwd_msg,
                 }],
               })(
-                <Input type="password" prefix={<Icon type="lock" />} placeholder={lang.c_auth_form_passwd_placeholder} />
+                <Input type="password" prefix={<Icon type="lock" />} placeholder={LANG.c_auth_form_passwd_placeholder} />
                 )}
             </FormItem>
           </Col>
@@ -56,7 +56,7 @@ class Login extends Component {
           {/* Submit */}
           <Col span={24}>
             <FormItem >
-              <Button type="primary" htmlType="submit" size="large" style={{ width: '100%', height: '48px' }}>{lang.c_auth_btn_login}</Button>
+              <Button type="primary" htmlType="submit" size="large" style={{ width: '100%', height: '48px' }}>{LANG.c_auth_btn_login}</Button>
             </FormItem>
           </Col>
 

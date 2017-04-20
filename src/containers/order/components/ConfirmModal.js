@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Input, Modal } from 'antd'
-import lang from '../../../language/'
+import { LANG } from '../../../locales/'
 
 class ConfirmModal extends Component {
 
@@ -14,7 +14,7 @@ class ConfirmModal extends Component {
 
     if (this.state.reason === '') {
       this.setState({
-        errMsg: lang.c_refund_modal_err_msg
+        errMsg: LANG.c_refund_modal_err_msg
       })
     } else {
       this.setState({
@@ -40,16 +40,16 @@ class ConfirmModal extends Component {
     const { visible, handleCancel } = this.props
     return (
       <Modal
-        title={lang.c_refund_modal_title}
+        title={LANG.c_refund_modal_title}
         visible={visible}
         onOk={this.handleModalOk}
         onCancel={handleCancel}
-        okText={lang.c_refund_modal_ok_text}
-        cancelText={lang.c_refund_modal_cancel_text}
+        okText={LANG.c_refund_modal_ok_text}
+        cancelText={LANG.c_refund_modal_cancel_text}
       >
         <div>
-          <p>{lang.c_refund_modal_tips}</p>
-          <Input onBlur={this.onBlur} ref="reason" type="textarea" autosize={true} />
+          <p>{LANG.c_refund_modal_tips}</p>
+          <Input onBlur={this.onBlur} ref="reason" type="textarea" autosize={{ minRows: 2, maxRows: 6 }} />
           {
             this.state.errMsg ? (<span style={{ color: 'red' }}>{this.state.errMsg}</span>) : ('')
           }

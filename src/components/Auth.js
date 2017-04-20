@@ -10,7 +10,7 @@ import RegisterForm from './form/Register'
 import RetrieveForm from './form/Retrieve'
 
 import './Auth.less'
-import lang from '../language/'
+import { LANG } from '../locales/'
 
 const STATUS_MAP = {
   'none': false,
@@ -77,7 +77,7 @@ class Auth extends Component {
         return (
           <Row className="auth-register">
             <div className="auth-suggestion">
-              {lang.auth_register_tips}<a href="#" onClick={this.handleClick.bind(this, 'login')}>{lang.auth_register_tips_login}</a>
+              {LANG.auth_register_tips} <a href="#" onClick={this.handleClick.bind(this, 'login')}>{LANG.auth_register_tips_login}</a>
             </div>
             <Col span={24}>
               <RegisterForm
@@ -91,8 +91,8 @@ class Auth extends Component {
         return (
           <Row className="auth-login">
             <div className="auth-suggestion">
-              {lang.auth_login_tips}<a href="#" onClick={this.handleClick.bind(this, 'register')}>{lang.auth_login_tips_register}</a> 
-              {/* {lang.auth_login_tips_retrieve_msg}<a href="#" onClick={this.handleClick.bind(this, 'retrieve')}>{lang.auth_login_tips_retrieve}</a> */}
+              {LANG.auth_login_tips} <a href="#" onClick={this.handleClick.bind(this, 'register')}>{LANG.auth_login_tips_register}</a> 
+              {/* {LANG.auth_login_tips_retrieve_msg}<a href="#" onClick={this.handleClick.bind(this, 'retrieve')}>{LANG.auth_login_tips_retrieve}</a> */}
             </div>
             <Col span={24}>
               <LoginForm handleLogin={this.handleLogin} />
@@ -104,7 +104,7 @@ class Auth extends Component {
         return (
           <Row className="auth-retrieve">
             <div className="auth-suggestion">
-              {lang.auth_retrieve_tips}
+              {LANG.auth_retrieve_tips}
             </div>
             <Col span={24}>
               <RetrieveForm
@@ -134,12 +134,12 @@ class Auth extends Component {
     const { authAction } = this.props.reducer
     switch (authAction) {
       case 'register':
-        return lang.auth_register_title
+        return LANG.auth_register_title
       case 'login':
-        return lang.auth_login_title
+        return LANG.auth_login_title
 
       case 'retrieve':
-        return lang.auth_retrieve_title
+        return LANG.auth_retrieve_title
 
       default:
         return ''

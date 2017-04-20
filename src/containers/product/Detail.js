@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col, Radio, Button, Carousel, Spin, InputNumber, message } from 'antd'
 
 import './Detail.less'
-import lang from '../../language/'
+import { LANG } from '../../locales/'
 import { Loading } from '../../components/'
 import { ReduxHelper } from '../../helpers/'
 
@@ -67,7 +67,7 @@ class Detail extends Component {
         router.push('/order/confirm')
       }
     } else {
-      message.info(lang.product_detail_message_add_cart)
+      message.info(LANG.product_detail_message_add_cart)
     }
   }
 
@@ -137,13 +137,13 @@ class Detail extends Component {
               </div>
 
               <div className="package">
-                <h4>{lang.product_detail_meta_package_span}</h4>
+                <h4>{LANG.product_detail_meta_package_span}</h4>
                 <p>{commodity.info.description}</p>
               </div>
 
               <Row className="price">
                 <Col span={12}>
-                  <h4>{lang.product_detail_meta_price}</h4>
+                  <h4>{LANG.product_detail_meta_price}</h4>
                 </Col>
                 <Col span={12} style={{ fontWeight: "bold" }}>
                   {currency} {amount}
@@ -152,7 +152,7 @@ class Detail extends Component {
 
               <Row className="count">
                 <Col span={12}>
-                  <h4>{lang.product_detail_meta_quantity}</h4>
+                  <h4>{LANG.product_detail_meta_quantity}</h4>
                 </Col>
                 <Col span={12}>
                   <InputNumber size="large" min={1} max={5} defaultValue={this.state.count} onChange={this.onCountChange} />
@@ -160,8 +160,8 @@ class Detail extends Component {
               </Row>
 
               <Row gutter={16}>
-                <Col span={12}><Button type="primary" className="btn-next" onClick={this.onSubmit.bind(this, '')}>{lang.product_detail_btn_add_to_cart}</Button></Col>
-                <Col span={12}><Button type="primary" className="btn-next" onClick={this.onSubmit.bind(this, 'once')}>{lang.product_detail_btn_buy_now}</Button></Col>
+                <Col span={12}><Button type="primary" className="btn-next" onClick={this.onSubmit.bind(this, '')}>{LANG.product_detail_btn_add_to_cart}</Button></Col>
+                <Col span={12}><Button type="primary" className="btn-next" onClick={this.onSubmit.bind(this, 'once')}>{LANG.product_detail_btn_buy_now}</Button></Col>
               </Row>
 
             </Col>
