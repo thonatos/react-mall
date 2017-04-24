@@ -6,7 +6,7 @@ import { LANG, SERVER } from '../locales/'
 const { API_SERVER_USER } = SERVER
 
 function getExpiretion() {
-  return Math.ceil(Date.now() / 1000) + 60 * 60 // 30Min
+  return Math.ceil(Date.now() / 1000) + 60 * 60 * 24 // 30Min
 }
 
 function notify(title, message, type, callback) {

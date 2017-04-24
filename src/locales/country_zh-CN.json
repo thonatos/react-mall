@@ -1,7 +1,18 @@
 [
 	{
-		"label":"中国",
-		"value":"china",
-		"phone_code":"86"
-	}
+		"label":"中国大陆",		
+		"phone_code":"+86"
+	},
+	{
+		"label":"中国香港",		
+		"phone_code":"+852"
+	},
+	{
+		"label":"中国澳门",		
+		"phone_code":"+853"
+	},
+	{
+		"label":"中华台湾",		
+		"phone_code":"+886"
+	}			
 ]

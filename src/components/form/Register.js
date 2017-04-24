@@ -139,7 +139,7 @@ class Register extends Component {
           <Col span={24} className="agreement">
             <Checkbox onChange={this.onAgreeChange}>{LANG.c_auth_form_agreement_checkbox_msg}</Checkbox>
 
-            <p className="tips">{LANG.c_auth_form_agreement_link_tips} <a href="/page/privacy" target="_blank">{LANG.c_auth_form_agreement_link_desc}</a>
+            <p className="tips">{LANG.c_auth_form_agreement_link_tips} <a href="https://support.insta360.com/aftersales?name=mall&default_id=2888" target="_blank">{LANG.c_auth_form_agreement_link_desc}</a>
             </p>
 
           </Col>

@@ -79,16 +79,22 @@ class List extends Component {
     })
   }
 
-  handleInvoiceGet = (event) => {
+  handleInvoiceGet = (orderNumber, event) => {    
     event.preventDefault()
     const { order_mailto } = this.props.reducer.order
+    let mailto = ''
+    if(order_mailto){
+      mailto = order_mailto.replace(/x_orderNumber/g,orderNumber)      
+    }
     Modal.info({
       title: LANG.list_modal_get_invoice_title,
       content: (
         <div>
-          <p>{LANG.list_modal_get_invoice_content_desc} <a className="order-action" style={{
+          <p>{LANG.list_modal_get_invoice_content_desc}
+          <br/>
+          <a className="order-action" style={{
             color: 'rgba(16, 142, 233, 0.63)'
-          }} href={order_mailto} >{LANG.list_modal_get_invoice_content_link}</a></p>
+          }} href={mailto} >{LANG.list_modal_get_invoice_content_link}</a></p>
         </div>
       ),
       okText: LANG.list_modal_get_invoice_ok_text,
@@ -112,7 +118,7 @@ class List extends Component {
 
 
     const invoiceNode = order._order.allow_request_invoice ? (
-      <a className="order-action" onClick={this.handleInvoiceGet}>{LANG.list_table_action_get_invoice}</a>
+      <a className="order-action" onClick={this.handleInvoiceGet.bind(this, order.order_number)}>{LANG.list_table_action_get_invoice}</a>
     ) : null
 
     return (
@@ -190,6 +196,7 @@ class List extends Component {
           state: item.state,
           payment: item.pay_type,
           action: item.state,
+          order_number: item.order_number,
           _order: item
         }
       })
@@ -217,7 +224,7 @@ class List extends Component {
 
           <Col span={24} className="faq">
 
-            <h2>FAQ</h2>
+            <h2>{LANG.order_list_faq_title}</h2>
 
             <Collapse bordered={false}>
               {

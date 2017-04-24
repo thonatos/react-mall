@@ -13,7 +13,6 @@ import ProductDetail from './containers/product/Detail'
 const cache = new Cache()
 
 function requireAuth(nextState, replace) {
-
   function loggedIn() {
     const auth_raw = cache.get('auth') || false
     if (auth_raw) {
@@ -25,6 +24,7 @@ function requireAuth(nextState, replace) {
   }
 
   if (!loggedIn()) {
+    cache.remove('auth')
     replace({      
       pathname: '/'
     })

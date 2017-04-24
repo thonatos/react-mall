@@ -88,14 +88,16 @@ class Cart extends Component {
         opacity: '0'
       }
 
-    const items_number = cart_items.length
+    // const items_number = cart_items.length
     let items_total = 0
+    let items_count = 0
     let items_currency = cart_items.length > 0 ? cart_items[0].price.currency : ''
 
     cart_items.forEach(function (element) {
       items_total += element.price.amount * element.count
+      items_count += element.count
     })
-
+    
     return (
       <div>
 
@@ -132,7 +134,7 @@ class Cart extends Component {
 
           <div className="c-footer">
             <div className="c-calc">
-              <span className="c-f-count">{items_number} {LANG.cart_calc_items} </span>
+              <span className="c-f-count">{items_count} {LANG.cart_calc_items} </span>
               <span className="c-f-total">{items_currency} {items_total}</span>
             </div>
             <Button className="btn-checkout" onClick={this.checkout.bind(this)}>{LANG.cart_calc_checkout}</Button>
@@ -143,7 +145,7 @@ class Cart extends Component {
           display: showFixButton ? 'block' : 'none'
         }} className="btn-cart-fixed" onClick={this.toogle.bind(this)}>
           <img src={ic_cart} alt="" />
-          <span>({items_number})</span>
+          <span>({items_count})</span>
         </div>
       </div>
     )

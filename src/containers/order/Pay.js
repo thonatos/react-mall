@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { Row, Col, Button } from 'antd'
 import { ReduxHelper } from '../../helpers/'
 import { Base64 } from '../../utils/encode'
-import { LANG } from '../../locales/'
+import { LANG, X_Language } from '../../locales/'
 import Paypal from './components/Paypal'
 import './Pay.less'
 
@@ -25,11 +25,11 @@ class Pay extends Component {
 
   componentDidMount() {
     const orderId = Base64.decode(this.props.params.orderId)
-    const { getOrderInfo, getAllMeta, updateCartState } = this.props.actions.order
+    const { getOrderInfo, resetOrderInfo, getAllMeta, updateCartState } = this.props.actions.order
     updateCartState({
       cart_payable: false
     })
-
+    resetOrderInfo()
     getOrderInfo(orderId)
     getAllMeta()
   }
@@ -49,7 +49,7 @@ class Pay extends Component {
             <div className="channel-box">
               <p className="c-b-header">{LANG.pay_channel_creditcart_title}</p>
               <img src={channels[channel.key].thumb} alt='' />
-              <a href={baseUrl + '&channel=' + channel.key} className="btn-channel" target="_blank">
+              <a href={baseUrl + '&channel=' + channel.key + '&lang=' + X_Language} className="btn-channel" target="_blank">
                 <Button className="btn-channel-button">{LANG.pay_actions_btn_pay_now}</Button>
               </a>
             </div>
@@ -62,7 +62,7 @@ class Pay extends Component {
             <div className="channel-box">
               <p className="c-b-header">{LANG.pay_channel_alipay_title}</p>
               <img src={channels[channel.key].thumb} alt='' />
-              <a href={baseUrl + '&channel=' + channel.key} className="btn-channel" target="_blank">
+              <a href={baseUrl + '&channel=' + channel.key + '&lang=' + X_Language} className="btn-channel" target="_blank">
                 <Button className="btn-channel-button">{LANG.pay_actions_btn_pay_now}</Button>
               </a>
             </div>
@@ -122,7 +122,7 @@ class Pay extends Component {
           <Col span={24}>
             <div className="pay-suggestion">
               <h2 className="title">{LANG.pay_suggestion_title}</h2>
-              <p>{LANG.pay_suggestion_desc}</p>
+              <p>{LANG.pay_suggestion_desc_before} <span style={{ color: 'red' }}>{LANG.pay_suggestion_desc}</span> {LANG.pay_suggestion_desc_after}</p>
             </div>
           </Col>
 
@@ -165,6 +165,14 @@ class Pay extends Component {
                 }
               </Row>
             </div>
+          </Col>
+
+          <Col span={18}>
+            <p style={{padding: '1em 0', fontWeight: 'bold'}}>
+              {LANG.pay_failed_suggestion_message_1}
+              <br/>
+              {LANG.pay_failed_suggestion_message_2}
+            </p>
           </Col>
 
           <Col span={6} offset={18}>

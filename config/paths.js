@@ -24,11 +24,14 @@ var nodePaths = (process.env.NODE_PATH || '')
   .filter(Boolean)
   .map(resolveApp);
 
+var indexHTML = process.env.NODE_LANG === 'zh_CN' ? 'public/index.cn.html' : 'public/index.html'
+
 // config after eject: we're in ./config/
 module.exports = {
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
-  appHtml: resolveApp('public/index.html'),
+  // appHtml: resolveApp('public/index.html'),
+  appHtml: resolveApp(indexHTML),
   appIndexJs: resolveApp('src/index.js'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),

@@ -49,7 +49,7 @@ theme['@primary-color'] = "#ffd200"
 // @border-radius-sm       : 2px;
 
 theme['@font-size-base'] = '14px'
-theme['@border-radius-base'] = "0px"
+theme['@border-radius-base'] = "2px"
 theme['@border-radius-sm'] = "0px"
 
 // // ICONFONT

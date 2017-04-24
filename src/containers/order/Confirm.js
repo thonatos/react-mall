@@ -32,7 +32,6 @@ class Confirm extends Component {
     country: '',
     individual_tax_number: '',
     items: [],
-    flag_price_updated: false,
     agree: false
   }
 
@@ -40,8 +39,7 @@ class Confirm extends Component {
     const { email } = this.props.reducer.auth
     const { getAllMeta, listDelivery, getProBatch, resetCartExtraFee } = this.props.actions.order
     this.setState({
-      contact_email: email,
-      flag_price_updated: false
+      contact_email: email
     }, () => {
       resetCartExtraFee()
       listDelivery()
@@ -80,7 +78,6 @@ class Confirm extends Component {
 
   checkUpdate = (nextProps) => {
     const { cart_items_type, cart_items, cart_items_once } = nextProps.reducer.order
-    const { deliveries } = nextProps.reducer.order
     const items = cart_items_type === 'once' ? cart_items_once : cart_items
 
     if (items.length > 0) {
@@ -91,20 +88,6 @@ class Confirm extends Component {
         }
       })
       this.setState({ items: new_items })
-    }
-
-    if (!this.state.flag_price_updated && deliveries.length > 0) {
-      this.setState({
-        country: deliveries[0].country,
-        delivery: deliveries[0].id
-      }, () => {
-        console.log(this.state)
-        this.updatePriceAndExtraFee(deliveries[0].country, () => {
-          this.setState({
-            flag_price_updated: true
-          })
-        })
-      })
     }
 
   }
@@ -155,33 +138,6 @@ class Confirm extends Component {
         state['country'] = country
         break
 
-      // case 'remark':
-      //   state[type] = values
-      //   break
-
-      // case 'backup_email':
-      //   state[type] = values
-      //   break
-
-      // case 'subscribe':
-      //   state[type] = values
-      //   break
-
-      // case 'contact_email':
-      //   state[type] = values
-      //   break
-
-      // case 'backup_phone':
-      //   state[type] = values
-      //   break
-
-      // case 'coupon':
-      //   state[type] = values
-      //   break
-
-      // case 'individual_tax_number':
-      //   state[type] = values
-
       default:
         state[type] = values
         break
@@ -194,7 +150,7 @@ class Confirm extends Component {
 
   handleSubmit = (e) => {
 
-    const { cart_extra_fee } = this.props.reducer.order
+    const { cart_extra_fee, delivery_info } = this.props.reducer.order
     const { createOrder } = this.props.actions.order
     const { needTaxNumber } = cart_extra_fee
 
@@ -229,7 +185,9 @@ class Confirm extends Component {
       return
     }
 
-    createOrder(this.state)
+    createOrder(Object.assign({}, this.state, {
+      extra: { proOrderBatch: delivery_info.batch }
+    }))
   }
 
 
@@ -287,18 +245,12 @@ class Confirm extends Component {
 
             <div span={24} className="agreement">
               <Checkbox onChange={this.onAgreeChange}>{LANG.confirm_agreement_checkbox_msg}</Checkbox>
-              <p className="tips">{LANG.confirm_agreement_policy_msg} <a href="/page/privacy" target="_blank">{LANG.confirm_agreement_policy_desc}</a>
+              <p className="tips">{LANG.confirm_agreement_policy_msg} <a href="http://support.insta360.com/aftersales?name=mall&default_id=2921" target="_blank">{LANG.confirm_agreement_policy_desc}</a>
               </p>
             </div>
 
             <Button type="primary" disabled={submitStatus} onClick={this.handleSubmit}>{LANG.confirm_btn_submit}</Button>
           </Col>
-
-          {/*
-            <Col span={14}>
-              <RadioContainer title={LANG.confirm_title_invoice} submitType='invoice' data={invoiceTypes} handleRadioChange={this.handleChildSubmit}></RadioContainer>            
-            </Col>          
-          */}
 
         </Row>
       </div>

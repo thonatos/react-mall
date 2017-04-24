@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
+import { X_Language } from '../../../locales/'
 
+ // + '&lang' + X_Language
 class Paypal extends Component {
 
   componentDidMount() {
 
     const paypal= window.paypal
 
-    var baseUrl = 'http://fk.insta360.com:8080/insta_mall';
+    var baseUrl = 'https://api-mall.insta360.com';
     let container = this.props.id
     let orderId = this.props.orderId
 
@@ -28,7 +30,7 @@ class Paypal extends Component {
 
       payment: function (resolve, reject) {
         var CREATE_PAYMENT_URL = baseUrl + '/mall/v1/payment/payOrder';
-        var params = { id: orderId, channel: 'paypal' };
+        var params = { id: orderId, channel: 'paypal', lang: X_Language };
         return paypal.request.post(CREATE_PAYMENT_URL, null, { json: params })
           .then(function (json) {            
             if (json.code === 0) {

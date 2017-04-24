@@ -5,17 +5,18 @@ import { MENU } from '../locales/'
 const MenuFooter = MENU.footer
 const LINK_MENU = MenuFooter.links
 const CONTACT = MenuFooter.contact
+const SERVICE = MenuFooter.service
 const COPYRIGHT = MenuFooter.copyrighy
 
 const LINK_BRAND = ['https://static.insta360.com/assets/mall/logo_insta360@2x.png', 'http://www.insta360.com/']
 const LINK_SOCIAL = [
   // ['http://www.insta360.com/public/images/v6/footer/wechat@1x.png', ''],
-  ['http://www.insta360.com/public/images/v6/footer/weibo@1x.png', 'http://weibo.com/insta360'],
-  ['http://www.insta360.com/public/images/v6/footer/facebook@1x.png', 'https://www.facebook.com/Insta360-832149753506055/'],
-  ['http://www.insta360.com/public/images/v6/footer/twitter@1x.png', 'https://twitter.com/insta360'],
-  ['http://www.insta360.com/public/images/v6/footer/instagram@1x.png', 'https://www.instagram.com/insta360official/'],
-  ['http://www.insta360.com/public/images/v6/footer/youku@1x.png', 'https://i.youku.com/insta360'],
-  ['http://www.insta360.com/public/images/v6/footer/youtube@1x.png', 'https://www.youtube.com/channel/UC3qWcF49rv8VMZO7Vg6kj5w']
+  ['https://www.insta360.com/public/images/v6/footer/weibo@1x.png', 'http://weibo.com/insta360'],
+  ['https://www.insta360.com/public/images/v6/footer/facebook@1x.png', 'https://www.facebook.com/Insta360-832149753506055/'],
+  ['https://www.insta360.com/public/images/v6/footer/twitter@1x.png', 'https://twitter.com/insta360'],
+  ['https://www.insta360.com/public/images/v6/footer/instagram@1x.png', 'https://www.instagram.com/insta360official/'],
+  ['https://www.insta360.com/public/images/v6/footer/youku@1x.png', 'https://i.youku.com/insta360'],
+  ['https://www.insta360.com/public/images/v6/footer/youtube@1x.png', 'https://www.youtube.com/channel/UC3qWcF49rv8VMZO7Vg6kj5w']
 ]
 
 class Footer extends Component {
@@ -63,8 +64,13 @@ class Footer extends Component {
               }
             </Row>
             <Col span={24} className="contact">
+              <h4>{SERVICE.s_title}</h4>
+              <p>{SERVICE.s_link} <a href={SERVICE.s_href} target="_blank">{SERVICE.s_a}</a></p>
               <p>
-                {CONTACT.tell}<span></span>{CONTACT.work_day}
+                {SERVICE.s_mail} <a href="mailto:ecommerce@insta360.com">ecommerce@insta360.com</a>
+              </p>
+              <p>
+                {CONTACT.work_day}
               </p>
             </Col>
 
@@ -77,7 +83,7 @@ class Footer extends Component {
               <p className="copy-right">Copyright © 2017 Arashi Vision All Rights Reserved.</p>
             </Col>
             <Col span={12} className="text-right">
-              <p className="icp">{COPYRIGHT.icp}</p>              
+              <p className="icp">{COPYRIGHT.icp}</p>
             </Col>
           </Row>
         </Col>

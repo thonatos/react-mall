@@ -10,9 +10,10 @@ import {
   ORDER_GET_ORDER_INFO_SUCCESS,
   ORDER_GET_INVOICE_MAILTO_SUCCESS,
   ORDER_COUNT_EXTRA_FEE_SUCCESS,
+  ORDER_RESET_ORDER_INFO,
 
   CART_STATE_UPDATE,
-  
+
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
   CART_PLUS_ITEM,
@@ -21,7 +22,7 @@ import {
   CART_RESET_ITEMS,
   CART_EXTRA_FEE_RESET,
   CART_GET_ITEMS_PRICE_SUCCESS,
-  
+
   CART_RESET_ITEMS_ONCE,
   CART_ADD_ITEM_ONCE,
   CART_GET_ITEMS_ONCE_PRICE_SUCCESS,
@@ -33,7 +34,7 @@ import {
   DELIVERY_DEL_SUCCESS,
   DELIVERY_UPDATE_SUCCESS,
   DELIVERY_GET_PRO_BATCH_SUCCESS,
-  
+
 } from '../actions/order'
 
 const cache = new Cache()
@@ -48,31 +49,31 @@ const getInitialState = function () {
   const restoreCartItemsOnce = function () {
     let raw = cache.get('cart_items_once')
     return raw ? JSON.parse(raw) : []
-  }  
+  }
 
   const restoreCartItemsType = function () {
     let raw = cache.get('cart_items_type')
     return raw ? raw : 'items' // once / ''
-  }  
+  }
 
 
   const cart_items = restoreCartItems()
   const cart_items_once = restoreCartItemsOnce()
   const cart_items_type = restoreCartItemsType()
-  
+
   // {namespace}_{class}_{type}_{action}
-  
+
   return {
 
     detailOrder: {},
-        
+
     cart_items: cart_items,
     cart_items_once: cart_items_once,
-    cart_items_type: cart_items_type,     
+    cart_items_type: cart_items_type,
     cart_payable: false,
     cart_extra_fee: {},
     cart_order: { id: '' },
-    
+
     orders: {},
     order_mailto: '',
     deliveries: [],
@@ -120,7 +121,7 @@ export default function reducer(state = getInitialState(), action = {}) {
     case ORDER_CREATE_SUCCESS:
       return {
         ...state,
-        cart_order: data.order,        
+        cart_order: data.order,
         cart_payable: true
       }
 
@@ -133,7 +134,7 @@ export default function reducer(state = getInitialState(), action = {}) {
         orders: cancel_order
       }
 
-    case ORDER_REFUND_SUCCESS: 
+    case ORDER_REFUND_SUCCESS:
       let refund_order = state.orders.map((v) => {
         return v.id === data.id ? data : v
       })
@@ -141,11 +142,17 @@ export default function reducer(state = getInitialState(), action = {}) {
         ...state,
         orders: refund_order
       }
-      
+
     case ORDER_GET_ORDER_INFO_SUCCESS:
       return {
         ...state,
         detailOrder: data.order
+      }
+
+    case ORDER_RESET_ORDER_INFO:
+      return {
+        ...state,
+        detailOrder: {}
       }
 
     case ORDER_COUNT_EXTRA_FEE_SUCCESS:
@@ -162,7 +169,7 @@ export default function reducer(state = getInitialState(), action = {}) {
 
     case CART_STATE_UPDATE:
       return {
-        ...state,        
+        ...state,
         cart_items: data.cart || state.cart_items,
         cart_order: data.order || state.cart_order,
         cart_payable: data.cart_payable || false
@@ -172,7 +179,7 @@ export default function reducer(state = getInitialState(), action = {}) {
       cache.set('cart_items_type', data)
       return {
         ...state,
-        cart_items_type: data 
+        cart_items_type: data
       }
 
     case CART_ADD_ITEM:
@@ -193,8 +200,8 @@ export default function reducer(state = getInitialState(), action = {}) {
       cache.set('cart_items', JSON.stringify(itemsAfterAdd))
 
       return {
-        ...state,        
-        cart_items: itemsAfterAdd        
+        ...state,
+        cart_items: itemsAfterAdd
       }
 
     case CART_PLUS_ITEM:
@@ -211,8 +218,8 @@ export default function reducer(state = getInitialState(), action = {}) {
       cache.set('cart_items', JSON.stringify(itemsAfterPlus))
 
       return {
-        ...state,        
-        cart_items: itemsAfterPlus        
+        ...state,
+        cart_items: itemsAfterPlus
       }
 
     case CART_MINUS_ITEM:
@@ -228,26 +235,26 @@ export default function reducer(state = getInitialState(), action = {}) {
       cache.set('cart_items', JSON.stringify(itemsAfterMinus))
 
       return {
-        ...state,        
+        ...state,
         cart_items: itemsAfterMinus
       }
 
     case CART_CHANGE_ITEM:
       let itemToChange = data
       let itemsAfterChange = state.cart_items.map((item, key) => {
-        if (item._commodityId === itemToChange._commodityId) {          
+        if (item._commodityId === itemToChange._commodityId) {
           return itemToChange
-        }else{
+        } else {
           return item
         }
-        
+
       })
 
       cache.set('cart_items', JSON.stringify(itemsAfterChange))
 
       return {
-        ...state,        
-        cart_items: itemsAfterChange        
+        ...state,
+        cart_items: itemsAfterChange
       }
 
     case CART_REMOVE_ITEM:
@@ -260,7 +267,7 @@ export default function reducer(state = getInitialState(), action = {}) {
 
       return {
         ...state,
-        cart_items: itemsAfterRemove        
+        cart_items: itemsAfterRemove
       }
 
     case CART_RESET_ITEMS:
@@ -274,7 +281,7 @@ export default function reducer(state = getInitialState(), action = {}) {
       const itemsOnce = Array.of(data)
       cache.set('cart_items_once', JSON.stringify(itemsOnce))
       return {
-        ...state,        
+        ...state,
         cart_items_once: itemsOnce
       }
 

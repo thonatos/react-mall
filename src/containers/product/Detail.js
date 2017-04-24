@@ -22,7 +22,7 @@ class Detail extends Component {
   }
 
   componentDidMount() {
-    const { fetchProduct } = this.props.actions.product    
+    const { fetchProduct } = this.props.actions.product
     const { productName } = this.props.params
     fetchProduct(productName)
   }
@@ -73,7 +73,7 @@ class Detail extends Component {
 
 
   render() {
-    const { product } = this.props.reducer    
+    const { product } = this.props.reducer
     const { loading, detail } = product
 
     if (loading) {
@@ -90,7 +90,6 @@ class Detail extends Component {
 
     const info = detail.info
     const displays = detail.displays
-    // const features = detail.info.features
     const commodities = detail.commodities
 
     const settings = {
@@ -137,8 +136,15 @@ class Detail extends Component {
               </div>
 
               <div className="package">
-                <h4>{LANG.product_detail_meta_package_span}</h4>
-                <p>{commodity.info.description}</p>
+                <h4>{LANG.product_detail_meta_commodity_description}</h4>
+                <p className="p-title">{LANG.product_detail_meta_commodity_package}</p>
+                <p className="p-items">
+                  {
+                    commodity.info.package.map((p, key) => {
+                      return <span key={key}>{p}</span>
+                    })
+                  }
+                </p>
               </div>
 
               <Row className="price">
@@ -160,8 +166,8 @@ class Detail extends Component {
               </Row>
 
               <Row gutter={16}>
-                <Col span={12}><Button type="primary" className="btn-next" onClick={this.onSubmit.bind(this, '')}>{LANG.product_detail_btn_add_to_cart}</Button></Col>
-                <Col span={12}><Button type="primary" className="btn-next" onClick={this.onSubmit.bind(this, 'once')}>{LANG.product_detail_btn_buy_now}</Button></Col>
+                <Col span={12}><Button className="btn-buy" onClick={this.onSubmit.bind(this, '')}>{LANG.product_detail_btn_add_to_cart}</Button></Col>
+                <Col span={12}><Button className="btn-buy btn-buy-now" onClick={this.onSubmit.bind(this, 'once')}>{LANG.product_detail_btn_buy_now}</Button></Col>
               </Row>
 
             </Col>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, Modal, Form, Input, Radio, Button, Row, Col, Select } from 'antd'
-import { LANG, COUNTRY } from '../../../locales/'
+import { LANG, COUNTRY, X_Language } from '../../../locales/'
 
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
@@ -10,7 +10,27 @@ class Delivery extends Component {
 
   state = {
     visible: false,
-    value: 0
+    value: 0,
+    updated: false
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { deliveries } = nextProps.data
+    const { handleRadioChange } = nextProps
+    if (!this.state.updated && deliveries && deliveries.length > 0) {
+      this.setState({
+        value: 0,
+        updated: true
+      }, () => {
+        if (handleRadioChange) {
+          const { id, country } = deliveries[0]
+          handleRadioChange('delivery', {
+            id: id,
+            country: country
+          })
+        }
+      })
+    }
   }
 
   // Form
@@ -27,7 +47,8 @@ class Delivery extends Component {
           addDelivery(delivery)
         }
         this.setState({
-          value: ''
+          value: '',
+          updated: false
         }, () => {
           callback(false)
         })
@@ -68,15 +89,17 @@ class Delivery extends Component {
   }
 
   onChange = (e) => {
-    const {handleRadioChange } = this.props
+    if (!this.state.updated) {
+      return
+    }
+
+    const { handleRadioChange } = this.props
     const { deliveries } = this.props.data
     this.setState({
       value: e.target.value,
     }, () => {
       if (handleRadioChange) {
         const { id, country } = deliveries[e.target.value]
-
-        console.log(id, country)
         handleRadioChange('delivery', {
           id: id,
           country: country
@@ -92,7 +115,7 @@ class Delivery extends Component {
 
     this.props.form.setFields({
       phone_code: {
-        value: '+' + (c[0].phone_code || '')
+        value: (c[0].phone_code || '')
       }
     })
   }
@@ -129,7 +152,11 @@ class Delivery extends Component {
         break;
 
       case 'delete':
-        delDelivery(deliveries[index])
+        this.setState({
+          updated: false
+        }, () => {
+          delDelivery(deliveries[index])
+        })
         break;
 
       default:
@@ -140,7 +167,7 @@ class Delivery extends Component {
   // Render
   render() {
 
-    const { getFieldDecorator } = this.props.form    
+    const { getFieldDecorator } = this.props.form
     const { deliveries } = this.props.data
 
     let radioComponent = (<div></div>)
@@ -162,9 +189,15 @@ class Delivery extends Component {
                 } style={{
                   marginTop: '1em'
                 }}>
-                  <p>{obj.phone}</p>
-                  <p>{obj.country}</p>
-                  <p style={{overflow: 'hidden'}}>{obj.address}</p>
+                  {
+                    X_Language === 'zh_cn' ? (
+                      <p>{obj.last_name} {obj.first_name}, {obj.phone}</p>
+                    ) : (
+                        <p>{obj.first_name} {obj.last_name}, {obj.phone}</p>
+                      )
+                  }
+                  <p>{obj.country}, {obj.province}, {obj.city} </p>
+                  <p style={{ overflow: 'hidden' }}>{obj.address}</p>
                   <p>{obj.sub_address}</p>
                 </Card>
               </Radio>
@@ -240,33 +273,64 @@ class Delivery extends Component {
                 color: '#999'
               }}>{LANG.c_delivery_input_country_tips}  <a href={"mailto:" + LANG.c_delivery_input_country_tips_email}>{LANG.c_delivery_input_country_tips_email}</a></span>
             </div>
-            
+
             {/* Name */}
             <div className="name">
-              <Row gutter={8}>
-                <Col span={8}>
-                  <FormItem label={LANG.c_delivery_input_first_name_label} >
-                    {
-                      getFieldDecorator('first_name', {
-                        rules: [{ required: true, message: LANG.c_delivery_input_first_name_error_msg }],
-                      })(
-                        <Input placeholder={LANG.c_delivery_input_first_name_placeholder} />
-                        )
-                    }
-                  </FormItem>
-                </Col>
-                <Col span={16}>
-                  <FormItem label={LANG.c_delivery_input_last_name_label} >
-                    {
-                      getFieldDecorator('last_name', {
-                        rules: [{ required: true, message: LANG.c_delivery_input_last_name_error_msg }],
-                      })(
-                        <Input placeholder={LANG.c_delivery_input_last_name_placeholder} />
-                        )
-                    }
-                  </FormItem>
-                </Col>
-              </Row>
+              {
+                X_Language === 'zh_cn' ? (
+                  <Row gutter={8}>
+                    <Col span={8}>
+                      <FormItem label={LANG.c_delivery_input_last_name_label} >
+                        {
+                          getFieldDecorator('last_name', {
+                            rules: [{ required: true, message: LANG.c_delivery_input_last_name_error_msg }],
+                          })(
+                            <Input placeholder={LANG.c_delivery_input_last_name_placeholder} />
+                            )
+                        }
+                      </FormItem>
+                    </Col>
+                    <Col span={16}>
+                      <FormItem label={LANG.c_delivery_input_first_name_label} >
+                        {
+                          getFieldDecorator('first_name', {
+                            rules: [{ required: true, message: LANG.c_delivery_input_first_name_error_msg }],
+                          })(
+                            <Input placeholder={LANG.c_delivery_input_first_name_placeholder} />
+                            )
+                        }
+                      </FormItem>
+                    </Col>
+
+                  </Row>
+
+                ) : (
+                    <Row gutter={8}>
+                      <Col span={8}>
+                        <FormItem label={LANG.c_delivery_input_first_name_label} >
+                          {
+                            getFieldDecorator('first_name', {
+                              rules: [{ required: true, message: LANG.c_delivery_input_first_name_error_msg }],
+                            })(
+                              <Input placeholder={LANG.c_delivery_input_first_name_placeholder} />
+                              )
+                          }
+                        </FormItem>
+                      </Col>
+                      <Col span={16}>
+                        <FormItem label={LANG.c_delivery_input_last_name_label} >
+                          {
+                            getFieldDecorator('last_name', {
+                              rules: [{ required: true, message: LANG.c_delivery_input_last_name_error_msg }],
+                            })(
+                              <Input placeholder={LANG.c_delivery_input_last_name_placeholder} />
+                              )
+                          }
+                        </FormItem>
+                      </Col>
+                    </Row>
+                  )
+              }
             </div>
 
             {/* PhoneNumber */}
@@ -300,21 +364,10 @@ class Delivery extends Component {
               </Row>
             </div>
 
-           {/* City/Province */}
+            {/* City/Province */}
             <div className="city">
               <Row gutter={8}>
-                <Col span={4}>
-                  <FormItem label={LANG.c_delivery_input_city_label}>
-                    {
-                      getFieldDecorator('city', {
-                        rules: [{ required: true, message: LANG.c_delivery_input_city_error_msg }],
-                      })(
-                        <Input placeholder={LANG.c_delivery_input_city_placeholder} />
-                        )
-                    }
-                  </FormItem>
-                </Col>
-                <Col span={20}>
+                <Col span={12}>
                   <FormItem label={LANG.c_delivery_input_province_label}>
                     {
                       getFieldDecorator('province', {
@@ -325,6 +378,18 @@ class Delivery extends Component {
                     }
                   </FormItem>
                 </Col>
+                <Col span={12}>
+                  <FormItem label={LANG.c_delivery_input_city_label}>
+                    {
+                      getFieldDecorator('city', {
+                        rules: [{ required: true, message: LANG.c_delivery_input_city_error_msg }],
+                      })(
+                        <Input placeholder={LANG.c_delivery_input_city_placeholder} />
+                        )
+                    }
+                  </FormItem>
+                </Col>
+
               </Row>
             </div>
 
@@ -353,7 +418,7 @@ class Delivery extends Component {
                 }
               </FormItem>
             </div>
-                        
+
             {/* ZipCode */}
             <div className="zip">
               <FormItem label={LANG.c_delivery_input_zip_code_label}>

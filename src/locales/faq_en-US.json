@@ -1,7 +1,7 @@
 [
   {
     "q": "When will my Insta360 Pro be delivered?",
-    "a": "For the delivery time of your Pro, please refer to the \"estimated delivery date\" on the Confirm Order page. \nThe sequence of the successfully paid order decides the shipping \"batch\", and different shipping \"batch\" leads to different delivery date. Please notice that the \"estimated delivery date\" and the \"batch\" keep updating and can only be used as a reference. We will try our best to arrange your delivery by this date."
+    "a": "For the shipping time of your Pro, please refer to the \"estimated shipping time\" on the Confirm Order page. The sequence of the successfully paid order decides the shipping \"batch\", and different shipping \"batch\" leads to different shipping date. Please notice that the \"estimated shipping time\" and the \"batch\" keep updating and can only be used as a reference. We will try our best to arrange your shipping by this date."    
   },
   {
     "q": "Why did the payment fail?",
@@ -21,7 +21,7 @@
   },
   {
     "q": "How can I cancel my order or return the Pro?",
-    "a": "Please check the Return & Exchange Policy"
+    "a": "Please check the <a href=\"https://support.insta360.com/aftersales?name=mall&default_id=2921#loc03\" target=\"_blank\">Return & Exchange Policy</a>."    
   },
   {
     "q": "How about the Warranty & Repair?",

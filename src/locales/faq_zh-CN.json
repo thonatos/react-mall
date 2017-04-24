@@ -1,7 +1,7 @@
 [
     {
         "q": "下单并支付后什么时候会发货？",
-        "a": "Pro的发货日期可以参考“estimated delivery date”，这一日期会在confirm order 和order summary显示。完成购买的订单顺序会决定发货批次，不同批次的预期发货日期不同。estimate date和批次会实时更新。预期日期仅做参考，我们会努力在此日期或之前为您发货。"
+        "a": "Pro的发货日期可以参考“预计发货时间”，这一日期会在“确认订单”和“订单概览”显示。完成购买的订单顺序会决定发货批次，不同批次的预期发货日期不同。“预计发货时间”和批次会实时更新。预期日期仅做参考，我们会努力在此日期或之前为您发货。"
     },
     {
         "q": "为什么我会支付失败？",
@@ -17,11 +17,11 @@
     },
     {
         "q": "我要怎样取消订单或者退换？",
-        "a": "关于取消订单和退换，请参考相关政策：（链接-pro相关）"
+        "a": "关于取消订单和退换，请参考相关政策：<a href=\"https://support.insta360.com/aftersales?name=mall&default_id=2907\" target=\"_blank\">PRO销售协议</a>"
     },
     {
         "q": "售后和维修？",
-        "a": "保修和维修问题请参考相关政策：https://support.insta360.com/aftersales?name=after"
+        "a": "保修和维修问题请参考相关政策：<a href=\"https://support.insta360.com/aftersales?name=mall&default_id=2867\" target=\"_blank\">保修条款</a>"
     },
     {
         "q": "通过FAQ无法解决的问题？",

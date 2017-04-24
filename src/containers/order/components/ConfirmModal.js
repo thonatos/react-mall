@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Modal } from 'antd'
+import { Input, Modal, message } from 'antd'
 import { LANG } from '../../../locales/'
 
 class ConfirmModal extends Component {
@@ -10,8 +10,6 @@ class ConfirmModal extends Component {
 
   handleModalOk = (e) => {
     const { handleOk } = this.props
-
-
     if (this.state.reason === '') {
       this.setState({
         errMsg: LANG.c_refund_modal_err_msg
@@ -22,6 +20,7 @@ class ConfirmModal extends Component {
         reason: ''
       }, () => {
         if (handleOk) {
+          message.success(LANG.c_refund_success_meseage_text, 5)
           handleOk(this.state.reason)
           this.refs.reason.refs.input.value = ''
         }

@@ -4,12 +4,12 @@
     "brand": {
       "href": "https://www.insta360.com",
       "eye": "https://static.insta360.com/assets/mall/eye@2x.png",
-      "home": "https://static.insta360.com/assets/mall/home@2x.png"
+      "home": "https://static.insta360.com/assets/mall/ic_header_shoppingbag@2x.png"
     },
     "links": [
       [
         "/",
-        "Home"
+        "Insta360 Pro"
       ]
     ]
   },
@@ -17,6 +17,13 @@
     "contact": {
       "tell": "Toll Free: 888-888-4ASI",
       "work_day": "Office Hours: 09:00 - 18:00 (GMT+8), Monday to Friday"
+    },
+    "service":{
+      "s_title":"Service Center",
+      "s_mail": "Email:",
+      "s_link": "Chat:",
+      "s_a": "click here to chat now",
+      "s_href": "https://es.echatsoft.com/visitor/pc/chat.html?companyId=72&lan=en&echatTag=mall"
     },
     "copyrighy": {
       "icp": "Jiang Su ICP  No. 14006102-4."
@@ -27,15 +34,15 @@
         "links": [
           [
             "Order Acceptance and Confirmation",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2921#en01"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2921#loc01"
           ],
           [
             "Logistics and Payment",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2921#en02"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2921#loc02"
           ],
           [
             "Returning and Exchanging Policy",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2921#en03"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2921#loc03"
           ]
         ]
       },
@@ -44,19 +51,19 @@
         "links": [
           [
             "Warranty Policy",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2886#e01"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2886#loc01"
           ],
           [
             "Warranty Period",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2886#e02"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2886#loc02"
           ],
           [
             "Warranty Service Procedure",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2886#e03"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2886#loc03"
           ],
           [
             "Repair Services",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2886#e04"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2886#loc04"
           ]
         ]
       },
@@ -65,19 +72,19 @@
         "links": [
           [
             "About Insta360",
-            "http://www.insta360.com/about"
+            "https://www.insta360.com/about"
           ],
           [
             "Newsroom",
-            "http://blog.insta360.com/"
+            "https://blog.insta360.com/"
           ],
           [
             "Join us",
-            "http://www.insta360.com/jobs"
+            "https://www.insta360.com/jobs"
           ],
           [
             "Contact us",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2939"
+            "https://www.insta360.com/contact"
           ]
         ]
       },
@@ -86,11 +93,11 @@
         "links": [
           [
             "Terms of Use",
-            "https://support.insta360.com/aftersales?name=mall&default_id=2888#en01"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2888"
           ],
           [
             "Privacy Policy",
-            "https://support.insta360.com/aftersales?name=mall&default_id=2888#en02"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2991"
           ]
         ]
       }

@@ -1,5 +1,6 @@
 module.exports = {
       LANG: 'zh_CN',
-      ENV: 'production'
+      ENV: 'production',
+      CACHE_VERSION: 'c111'
     }
   

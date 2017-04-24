@@ -10,15 +10,15 @@ export function getAllMeta() {
   return (dispatch) => {
     return request({
       url: API_META_GET_ALL,
-      token: true      
+      token: true
     }, (data) => {
       if (data.code === 0) {
-        dispatch({ 
-          type: META_GET_ALL_SUCCESS, 
-          data: { 
-            ...data.data, 
-            pagePayments: PAGE_SERVER_PAYMENT 
-          } 
+        dispatch({
+          type: META_GET_ALL_SUCCESS,
+          data: {
+            ...data.data,
+            pagePayments: PAGE_SERVER_PAYMENT
+          }
         })
       }
     }, (response) => {
@@ -35,6 +35,7 @@ export const ORDER_GET_USER_ORDERS_SUCCESS = 'ORDER_GET_USER_ORDERS_SUCCESS'
 export const ORDER_GET_ORDER_INFO_SUCCESS = 'ORDER_GET_ORDER_INFO_SUCCESS'
 export const ORDER_GET_INVOICE_MAILTO_SUCCESS = 'ORDER_GET_INVOICE_MAILTO_SUCCESS'
 export const ORDER_COUNT_EXTRA_FEE_SUCCESS = 'ORDER_COUNT_EXTRA_FEE_SUCCESS'
+export const ORDER_RESET_ORDER_INFO = 'ORDER_RESET_ORDER_INFO'
 
 const API_ORDER_CREATE = API_SERVER_MALL + '/order/createOrder'
 const API_ORDER_CANCEL = API_SERVER_MALL + '/order/cancelOrder'
@@ -97,8 +98,8 @@ export function cancelOrder(order) {
   }
 }
 
-export function refundOrder(order){
-    return (dispatch) => {
+export function refundOrder(order) {
+  return (dispatch) => {
     return request({
       url: API_ORDER_REFUND,
       method: 'post',
@@ -106,7 +107,7 @@ export function refundOrder(order){
       token: true
     }, (data) => {
       if (data.code === 0) {
-        dispatch({ type: ORDER_REFUND_SUCCESS, data:  data.data.order})
+        dispatch({ type: ORDER_REFUND_SUCCESS, data: data.data.order })
       }
     }, (response) => {
       console.log('#server', response)
@@ -114,11 +115,11 @@ export function refundOrder(order){
   }
 }
 
-export function getInvoiceMailto(){
-    return (dispatch) => {
+export function getInvoiceMailto() {
+  return (dispatch) => {
     return request({
       url: API_ORDER_GET_INVOICE_MAILTO,
-      method: 'get',      
+      method: 'get',
       token: false
     }, (data) => {
       if (data.code === 0) {
@@ -128,7 +129,7 @@ export function getInvoiceMailto(){
       console.log('#server', response)
     })
   }
-} 
+}
 
 
 export function countOrderExtraFee(order) {
@@ -184,6 +185,12 @@ export function getOrderInfo(id) {
   }
 }
 
+export function resetOrderInfo() {
+  return (dispatch) => {
+    dispatch({ type: ORDER_RESET_ORDER_INFO })
+  }
+}
+
 // CART
 export const CART_STATE_UPDATE = 'CART_STATE_UPDATE'
 
@@ -211,10 +218,11 @@ export function getCartPrice(items, type) {
       token: true,
       data: items
     }, (data) => {
-      if (data.code === 0) {        
-        dispatch({ 
-          type: type ==='once' ? CART_GET_ITEMS_ONCE_PRICE_SUCCESS : CART_GET_ITEMS_PRICE_SUCCESS,
-          data: data.data })        
+      if (data.code === 0) {
+        dispatch({
+          type: type === 'once' ? CART_GET_ITEMS_ONCE_PRICE_SUCCESS : CART_GET_ITEMS_PRICE_SUCCESS,
+          data: data.data
+        })
       }
     }, (response) => {
       console.log('#server', response)
@@ -253,7 +261,7 @@ export function addToCart(data, type) {
   }
   return (dispatch) => {
     dispatch({
-      type: type ==='once' ? CART_ADD_ITEM_ONCE : CART_ADD_ITEM,
+      type: type === 'once' ? CART_ADD_ITEM_ONCE : CART_ADD_ITEM,
       data: new_item
     })
   }
@@ -314,8 +322,8 @@ export function resetCartItemsOnce() {
   }
 }
 
-export function resetCartExtraFee(){
-  return (dispatch)=>{
+export function resetCartExtraFee() {
+  return (dispatch) => {
     dispatch({
       type: CART_EXTRA_FEE_RESET
     })
@@ -366,7 +374,7 @@ export function listDelivery() {
   }
 }
 
-export function addDelivery(delivery) {  
+export function addDelivery(delivery) {
   return (dispatch) => {
     return request({
       url: API_DELIVERY_ADD,
@@ -383,7 +391,7 @@ export function addDelivery(delivery) {
   }
 }
 
-export function updateDelivery(delivery) {  
+export function updateDelivery(delivery) {
   return (dispatch) => {
     return request({
       url: API_DELIVERY_UPDATE,

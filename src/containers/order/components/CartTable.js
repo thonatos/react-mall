@@ -4,8 +4,39 @@ import { LANG } from '../../../locales/'
 
 const Option = Select.Option
 
-function parsePrice (price){
+const G_CURRENCY = {
+  "USD": "$",
+  "CNY": "¥",
+  "undefined": ''
+}
+
+function parsePrice(price) {
   return Math.round(price * 100) / 100
+}
+
+function formatPrice(obj) {
+  if (obj.amount) {
+    if (obj.amount < 0) {
+      return '-' + G_CURRENCY[obj.currency] + (0 - obj.amount)
+    } else {
+      return G_CURRENCY[obj.currency] + obj.amount
+    }
+  } else {
+    return 0
+  }
+}
+
+function calcTotal(arr) {
+  let sum = 0
+  arr.forEach((v) => {
+    if (v.amount) {
+      sum += v.amount
+    }
+  })
+  return {
+    currency: arr[0].currency,
+    amount: parsePrice(sum)
+  }
 }
 
 class CartTable extends Component {
@@ -21,7 +52,9 @@ class CartTable extends Component {
       coupon: value
     }, () => {
       if (handleInputChange && coupons.length > 0) {
-        handleInputChange('coupon', coupons[this.state.coupon].id)
+        if (this.state.coupon !== '-1') {
+          handleInputChange('coupon', coupons[this.state.coupon].id)
+        }
       }
     })
   }
@@ -42,7 +75,7 @@ class CartTable extends Component {
               </Col>
               <Col span={10}>
                 <Select onChange={this.handleChange} style={{ width: 200 }} defaultValue="-1">
-                  <Option value="-1">none</Option>
+                  <Option value="-1">{LANG.c_cart_table_select_coupons_select_none}</Option>
                   {
                     coupons.map((v, key) => {
                       return (<Option key={key} value={key + ''}>{v.info.description}</Option>)
@@ -64,16 +97,35 @@ class CartTable extends Component {
     const { data, fee } = this.props
     const { orderExtraFee, coupons } = fee
 
-    let items_sum = 0
+    let ship = 0
+    let tax = 0
+    let total = 0
+    let coupon = this.state.coupon === '-1' ? 0 : coupons[this.state.coupon].fee
+    let items = {
+      currency: (data.length > 0 ? data[0].price.currency : 'USD'),
+      amount: 0
+    }
+
     data.forEach((v) => {
-      items_sum += v.count * v.price.amount
+      items.amount += v.count * v.price.amount
     })
 
-    const coupon = this.state.coupon === '-1' ? 0 : coupons[this.state.coupon].fee.amount
-    const ship = (orderExtraFee && orderExtraFee.shippingCost.amount) || 0
-    const tax = (orderExtraFee && orderExtraFee.tax.amount) || 0
-    const total = parsePrice(items_sum + ship + tax - coupon)    
-    
+    if (orderExtraFee && orderExtraFee.shippingCost) {
+      ship = orderExtraFee.shippingCost
+      tax = orderExtraFee.tax
+    }
+
+    if (coupon.amount && coupon.amount > 0) {
+      coupon.amount = -coupon.amount
+    }
+
+    total = calcTotal([ship, tax, items, coupon])
+
+    let taxPrice = formatPrice(tax)
+    let shipPrice = formatPrice(ship)
+    let totalPrice = formatPrice(total)
+    let itemsPrice = formatPrice(items)
+
     const priceStyle = {
       textAlign: 'right'
     }
@@ -90,7 +142,7 @@ class CartTable extends Component {
         return (
           <Row>
             <Col span={14}><h3>{LANG.c_cart_table_balance_coupons}</h3></Col>
-            <Col span={10} style={priceStyle}><span>{0 - coupon}</span></Col>
+            <Col span={10} style={priceStyle}><span>{formatPrice(coupon)}</span></Col>
           </Row>
         )
 
@@ -103,28 +155,25 @@ class CartTable extends Component {
 
           <Row>
             <Col span={14}><h3>{LANG.c_cart_table_balance_product}</h3></Col>
-            <Col span={10} style={priceStyle}><span>{items_sum}</span></Col>
+            <Col span={10} style={priceStyle}><span>{itemsPrice}</span></Col>
           </Row>
 
           {getCouponsNode()}
 
           <Row>
             <Col span={14}><h3>{LANG.c_cart_table_balance_tax}</h3></Col>
-            <Col span={10} style={priceStyle}><span>{tax}</span></Col>
+            <Col span={10} style={priceStyle}><span>{taxPrice}</span></Col>
           </Row>
 
           <Row>
             <Col span={14}><h3>{LANG.c_cart_table_balance_shipping_cost}</h3></Col>
-            <Col span={10} style={priceStyle}><span>{ship}</span></Col>
+            <Col span={10} style={priceStyle}><span>{shipPrice}</span></Col>
           </Row>
-
           <Row>
             <Col span={14}><h3>{LANG.c_cart_table_balance_total}</h3></Col>
-            <Col span={10} style={totalStyle}><span>{total}</span></Col>
+            <Col span={10} style={totalStyle}><span>{totalPrice}</span></Col>
           </Row>
-
         </Col>
-
       </Row>
     )
   }
@@ -152,14 +201,15 @@ class CartTable extends Component {
         key: 'name',
         render: (text, record, index) => {
           return record.commodity.info.name
-        }        
+        }
       },
       {
         title: LANG.c_cart_table_column_price,
         dataIndex: 'price',
         key: 'price',
         render: (text, record, index) => {
-          return (<p>{record.price.amount}</p>)
+          const price = formatPrice(record.price)
+          return (<p>{price}</p>)
         }
       },
       {
@@ -172,9 +222,11 @@ class CartTable extends Component {
         dataIndex: 'sum',
         key: 'sum',
         render: (text, record, index) => {
-          const amount = record.price.amount
-          const count = record.count
-          return (<p>{amount * count} </p>)
+          const total = formatPrice({
+            currency: record.price.currency,
+            amount: record.price.amount * record.count
+          })
+          return (<p>{total}</p>)
         }
       }
     ]

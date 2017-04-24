@@ -4,12 +4,12 @@
     "brand": {
       "href": "https://www.insta360.com",
       "eye": "https://static.insta360.com/assets/mall/eye@2x.png",
-      "home": "https://static.insta360.com/assets/mall/home@2x.png"
+      "home": "https://static.insta360.com/assets/mall/ic_header_shoppingbag@2x.png"
     },
     "links": [
       [
         "/",
-        "首页"
+        "Insta360 Pro"
       ]
     ]
   },
@@ -18,24 +18,31 @@
       "tell": "服务热线：400-833-4360",
       "work_day": "工作时间：周一至周五 09:00 - 18:00 (GMT+8)"
     },
+    "service":{
+      "s_title": "客服中心",
+      "s_mail": "客服邮箱：",
+      "s_link": "在线客服：",
+      "s_a": "立即咨询",
+      "s_href": "https://es.echatsoft.com/visitor/pc/chat.html?companyId=72&lan=zh&echatTag=mall "
+    },    
     "copyrighy": {
       "icp": "苏ICP备 14006102号-4"
     },
     "links": [
       {
         "title": "Pro销售协议",
-        "links": [          
+        "links": [        
           [
             "订单接收与确认",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2907#zh01"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2907#loc01"
           ],
           [
             "物流和交付",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2907#zh02"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2907#loc02"
           ],
           [
             "退货及换货",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2907#zh03"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2907#loc03"
           ]
         ]
       },
@@ -44,19 +51,19 @@
         "links": [
           [
             "售后服务流程",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2867#s01"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2867#loc01"
           ],
           [
             "售后服务政策",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2867#s02"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2867#loc02"
           ],
           [
             "付费维修流程",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2867#s03"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2867#loc03"
           ],
           [
             "部件保修期限",
-            "http://support.insta360.com/aftersales?name=mall&default_id=2867#s04"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2867#loc04"
           ]
         ]
       },
@@ -65,19 +72,19 @@
         "links": [
           [
             "公司简介",
-            "http://www.insta360.com/about"
+            "https://www.insta360.com/about"
           ],
           [
             "媒体报道",
-            "http://blog.insta360.com/"
+            "https://blog.insta360.com/"
           ],
           [
             "如何加入",
-            "http://www.insta360.com/jobs"
+            "https://www.insta360.com/jobs"
           ],
           [
             "联系我们",
-            "https://support.insta360.com/aftersales?name=mall&default_id=2937"
+            "http://www.insta360.com/contact"
           ]
         ]
       },
@@ -86,11 +93,11 @@
         "links": [
           [
             "使用条款",
-            "https://support.insta360.com/aftersales?name=mall&default_id=2872#zh01"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2872"
           ],
           [
             "隐私条款",
-            "https://support.insta360.com/aftersales?name=mall&default_id=2872#zh02"
+            "https://support.insta360.com/aftersales?name=mall&default_id=2987"
           ]
         ]
       }

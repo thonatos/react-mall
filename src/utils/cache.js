@@ -1,13 +1,15 @@
 import cookie from 'js-cookie'
 import { Base64 } from 'js-base64'
+import { CACHE_VERSION } from '../locales/'
 
 // Base64.encode
 
 class Cache {
 
   constructor(options) {
+      
     const defaultOptions = {
-      namespace: 'default',
+      namespace: CACHE_VERSION || 'default',
       encryption: 'base64'
     }
 
@@ -30,6 +32,7 @@ class Cache {
   }
 
   set(key, value) {
+    key = this.options.namespace + '_' + key
     value = this.__encrypt(value)
     if (window.localStorage) {
       window.localStorage.setItem(key, value)
@@ -40,6 +43,7 @@ class Cache {
   }
 
   get(key) {
+    key = this.options.namespace + '_' + key
     var value
     if (window.localStorage) {
       value = window.localStorage.getItem(key)
@@ -52,6 +56,7 @@ class Cache {
   }
 
   remove(key) {
+    key = this.options.namespace + '_' + key
     if (window.localStorage) {
       window.localStorage.removeItem(key)
     } else {
