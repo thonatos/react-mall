@@ -233,7 +233,7 @@ class Confirm extends Component {
           <Col span={24}>
             <div className="delivery-info">
               <h3>{LANG.confirm_meta_delivery} </h3>
-              <p className="tips">{delivery_info.deliveryTime}, {LANG.confirm_meta_batch} {delivery_info.batch}</p>
+              <p className="tips">{LANG.confirm_meta_batch} {delivery_info.batch}, {delivery_info.deliveryTime}</p>
             </div>
           </Col>
 
